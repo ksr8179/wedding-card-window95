@@ -3,8 +3,8 @@ export const weddingConfig = {
     // 1. 헤어로 섹션
     hero: {
       title: "WEDDING INVITATION",
-      names: ["김철수", "이영희"],
-      date: "2026.07.15",
+      names: ["김성래", "장혜민"],
+      date: "202x.xx.xx",
     },
     // 2. 초대 문구
     message: {
@@ -13,15 +13,15 @@ export const weddingConfig = {
     },
     // 3. 날짜 및 장소
     schedule: {
-      date: "2026년 7월 15일 (토)",
+      date: "202x년 x월 xx일 (토)",
       time: "오후 2시",
-      location: "서울시 강남구 레트로 웨딩홀 3층",
-      address: "서울시 강남구 테헤란로 123",
+      location: "xx시 xx구 xx로 웨딩홀 3층",
+      address: "xx시 xx구 xx로 123",
     },
     // 4. 계좌 정보
     accounts: {
-      groom: { name: "김철수", bank: "국민은행", number: "123-456-7890" },
-      bride: { name: "이영희", bank: "신한은행", number: "098-765-4321" },
+      groom: { name: "김성래", bank: "국민은행", number: "123-456-7890" },
+      bride: { name: "장혜민", bank: "신한은행", number: "098-765-4321" },
     },
     // 5. 연락처
     contacts: {
