@@ -29,7 +29,7 @@
         </div>
 
         <div class="max-h-[90vh] overflow-y-auto space-y-3 p-1">
-          <UiWindowFrame title="message.txt" wrapperClass="h-[610px]"><SectionsMessage /></UiWindowFrame>
+          <UiWindowFrame title="message.txt"><SectionsMessage /></UiWindowFrame>
           <UiWindowFrame title="schedule.ini"><SectionsSchedule /></UiWindowFrame>
           <UiWindowFrame title="gallery.exe"><SectionsGallery /></UiWindowFrame>
           <UiWindowFrame title="bank.txt"><SectionsBankContact /></UiWindowFrame>

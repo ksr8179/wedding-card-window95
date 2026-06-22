@@ -1,16 +1,17 @@
 <template>
-  <div
-      class="border border-[#808080] p-1 bg-white"
-    >
-    <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600">
-      IMAGE
+  <div class="flex flex-col h-[540px] md:h-[610px]">
+    
+    <div class="border border-[#808080] p-1 bg-white mb-1">
+      <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600">
+        IMAGE
+      </div>
     </div>
-  </div>
-  <div class="bg-white border border-[#808080] p-4 mt-1 h-[225px] overflow-y-auto shadow-inner">
-    <!-- 메모장 스타일의 텍스트 영역 -->
-    <div class="font-['Courier_New',monospace] text-sm text-black leading-relaxed whitespace-pre-line">
-      <span class="text-[#000000] text-sm tracking-wide">{{ displayedText }}</span>
-      <span class="inline-block w-[2px] h-[1.5em] bg-current ml-1 animate-[blink_0.7s_step-end_infinite] vertical-middle"></span>
+
+    <div class="flex-grow bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
+      <div class="font-['Courier_New',monospace] text-sm text-black leading-relaxed whitespace-pre-line">
+        <span class="text-[#000000] text-sm tracking-wide">{{ displayedText }}</span>
+        <span class="inline-block w-[2px] h-[1.2em] bg-black ml-1 animate-[blink_0.7s_step-end_infinite] align-middle"></span>
+      </div>
     </div>
   </div>
 </template>
