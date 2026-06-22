@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-3 gap-2">
+  <div class="grid grid-cols-1 gap-2">
     <div 
       v-for="(img, index) in galleryImages" 
       :key="index"
