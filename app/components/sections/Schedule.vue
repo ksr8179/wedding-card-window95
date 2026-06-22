@@ -13,7 +13,16 @@
 
     <div class="text-sm border-t border-gray-400 pt-3">
       <p class="mb-2 font-bold underline">LOCATION</p>
-      <p class="mb-4 text-gray-800">{{ config.schedule.location }}</p>
+      <p class="mb-2 text-gray-800">{{ config.schedule.location }}</p>
+      <div
+          class="mb-2 border border-[#808080] p-1 bg-white"
+        >
+        <div id="map-canvas" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
+        </div>
+        <div v-if="isLoading" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
+            Loading Map Engine...
+        </div>
+      </div>
       
       <div class="grid grid-cols-2 gap-2">
         <button class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]">
@@ -29,4 +38,21 @@
 
 <script setup lang="ts">
 import { weddingConfig as config } from '~/config/wedding.config';
+
+const { currentEngine, initMap, switchEngine } = useMapAdapter()
+
+const isLoading = ref(false)
+
+const loadMapData = async () => {
+  isLoading.value = true
+  try {
+    await initMap('map-canvas', { lat: 37.5665, lng: 126.9780 })
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(() => {
+  loadMapData();
+})
 </script>

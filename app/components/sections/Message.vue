@@ -1,5 +1,12 @@
 <template>
-  <div class="bg-white border border-[#808080] p-4 h-48 overflow-y-auto shadow-inner">
+  <div
+      class="border border-[#808080] p-1 bg-white"
+    >
+    <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600">
+      IMAGE
+    </div>
+  </div>
+  <div class="bg-white border border-[#808080] p-4 mt-1 h-[225px] overflow-y-auto shadow-inner">
     <!-- 메모장 스타일의 텍스트 영역 -->
     <div class="font-['Courier_New',monospace] text-sm text-black leading-relaxed whitespace-pre-line">
       <span class="text-[#000000] text-sm tracking-wide">{{ displayedText }}</span>
