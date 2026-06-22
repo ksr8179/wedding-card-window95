@@ -11,10 +11,9 @@ export default defineNuxtConfig({
   // },
 
   // 2. 앱 경로 설정
-  // app: {
-  //   // 실제 저장소 이름으로 변경
-  //   baseURL: '/wedding-card-window95/',
-  // },
+  app: {
+    baseURL: '/',
+  },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   runtimeConfig: {
