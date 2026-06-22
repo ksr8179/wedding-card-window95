@@ -18,11 +18,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     // 서버 사이드에서만 접근 가능 (비밀 키 등)
-    kakaoApiKey: process.env.KAKAO_API_KEY, 
+    //kakaoApiKey: process.env.KAKAO_API_KEY, 
 
     public: {
       // 클라이언트와 서버 모두 접근 가능 (API 주소 등)
-      //apiBase: process.env.API_BASE_URL || 'https://api.example.com'
+      kakaoApiKey: process.env.KAKAO_API_KEY, 
     }
   }
 })
