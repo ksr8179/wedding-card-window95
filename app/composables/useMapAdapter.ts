@@ -21,7 +21,7 @@ export const useMapAdapter = () => {
   // 2. 지도 초기화 (공통 인터페이스)
   const initMap = async (elementId: string, options: { lat: number; lng: number }) => {
     if (currentEngine.value === 'kakao') {
-        const APP_KEY = '10d6feb9e419cfbe910446e9dd2179e5';
+        const APP_KEY = "";
         const src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${APP_KEY}&autoload=false`;
         // 1. 기존에 남아있는 카카오 스크립트 제거 (HMR 충돌 방지)
         const existingScript = document.querySelector(`script[src="${src}"]`);
