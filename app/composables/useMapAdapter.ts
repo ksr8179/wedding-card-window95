@@ -5,7 +5,7 @@ export const useMapAdapter = () => {
   const currentEngine = ref<'kakao' | 'naver'>('kakao')
   const mapInstance = ref<any>(null)
   const config = useRuntimeConfig()
-
+  console.log(config.KAKAO_API_KEY)
   // 1. 스크립트 로드 유틸리티
   const loadScript = (src: string): Promise<void> => {
     return new Promise((resolve, reject) => {
