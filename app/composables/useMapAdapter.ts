@@ -5,7 +5,7 @@ export const useMapAdapter = () => {
   const currentEngine = ref<'kakao' | 'naver'>('kakao')
   const mapInstance = ref<any>(null)
   const config = useRuntimeConfig()
-  console.log(config.kakaoApiKey);
+  console.log(config.public.kakaoApiKey);
   // 1. 스크립트 로드 유틸리티
   const loadScript = (src: string): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ export const useMapAdapter = () => {
   // 2. 지도 초기화 (공통 인터페이스)
   const initMap = async (elementId: string, options: { lat: number; lng: number }) => {
     if (currentEngine.value === 'kakao') {
-        const APP_KEY = config.kakaoApiKey;
+        const APP_KEY = config.public.kakaoApiKey;
         const src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${APP_KEY}&autoload=false`;
         // 1. 기존에 남아있는 카카오 스크립트 제거 (HMR 충돌 방지)
         const existingScript = document.querySelector(`script[src="${src}"]`);
