@@ -20,16 +20,16 @@
         <div id="map-canvas" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
         </div>
         <div v-if="isLoading" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
-            Loading Map Engine...
+            로딩중...
         </div>
       </div>
       
       <div class="grid grid-cols-2 gap-2">
         <button class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]">
-          네이버 지도
+          카카오맵
         </button>
         <button class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]">
-          카카오맵
+          T맵
         </button>
       </div>
     </div>
@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { weddingConfig as config } from '~/config/wedding.config';
 
-const { currentEngine, initMap, switchEngine } = useMapAdapter()
+const { currentEngine, initMap } = useMapAdapter()
 
 const isLoading = ref(false)
 

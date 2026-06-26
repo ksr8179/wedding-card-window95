@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 export const useMapAdapter = () => {
-  const currentEngine = ref<'kakao' | 'naver'>('kakao')
+  const currentEngine = ref('kakao')
   const mapInstance = ref<any>(null)
   const config = useRuntimeConfig()
   
@@ -21,7 +21,6 @@ export const useMapAdapter = () => {
 
   // 2. 지도 초기화 (공통 인터페이스)
   const initMap = async (elementId: string, options: { lat: number; lng: number }) => {
-    if (currentEngine.value === 'kakao') {
         const APP_KEY = config.public.kakaoApiKey;
         const src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${APP_KEY}&autoload=false`;
         // 1. 기존에 남아있는 카카오 스크립트 제거 (HMR 충돌 방지)
@@ -55,26 +54,11 @@ export const useMapAdapter = () => {
                 resolve();
             })
         })
-    } else {
-      await loadScript('https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_KEY')
-      // @ts-ignore
-      mapInstance.value = new google.maps.Map(document.getElementById(elementId), {
-        center: options,
-        zoom: 15
-      })
-    }
-  }
-
-  // 3. 엔진 전환 함수
-  const switchEngine = (engine: 'kakao' | 'naver') => {
-    currentEngine.value = engine
-    // 필요 시 기존 mapInstance 파괴 로직 추가
   }
 
   return {
     currentEngine,
     initMap,
-    switchEngine,
     mapInstance
   }
 }
