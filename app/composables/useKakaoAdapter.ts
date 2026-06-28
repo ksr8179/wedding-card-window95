@@ -1,7 +1,7 @@
 // composables/useMapAdapter.ts
 import { ref } from 'vue'
 
-export const useMapAdapter = () => {
+export const useKakaoAdapter = () => {
   const currentEngine = ref('kakao')
   const mapInstance = ref<any>(null)
   const config = useRuntimeConfig()

@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { weddingConfig as config } from '~/config/wedding.config';
 
-const { currentEngine, initMap } = useMapAdapter()
+const { currentEngine, initMap } = useKakaoAdapter()
 
 const isLoading = ref(false)
 
