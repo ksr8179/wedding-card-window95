@@ -6,6 +6,9 @@ export const useKakaoMap = () => {
   const isMapLoading = ref(false);
 
   const loadKakaoMap = async (elementId: string, name: string,options: { lat: number; lng: number, level: number }) => {
+    if (!import.meta.client) return;
+
+    isMapLoading.value = true;
     try {
       // 1. utils의 지도 로더 호출
       const maps = await loadKakaoMap();

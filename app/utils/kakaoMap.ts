@@ -2,6 +2,9 @@ import { loadScript } from './script';
 
 export const loadKakaoMap = (): Promise<any> => {
   const config = useRuntimeConfig();
+
+  if (!import.meta.client) return;
+  if (window.Kakao?.maps) return window.Kakao;
   
   return new Promise((resolve, reject) => {
     if (!import.meta.client) return reject('Client-side only');
