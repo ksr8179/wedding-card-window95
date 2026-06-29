@@ -4,7 +4,6 @@ export const loadKakaoMap = (): Promise<any> => {
   const config = useRuntimeConfig();
   
   return new Promise((resolve, reject) => {
-    if (!import.meta.client) return reject('Client-side only');
     if (window.kakao?.maps) return resolve(window.kakao.maps);
 
     // 카카오맵은 뒤에 autoload=false를 붙여야 제어가 가능합니다.

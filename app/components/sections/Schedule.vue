@@ -25,11 +25,20 @@
       </div>
       
       <div class="grid grid-cols-2 gap-2">
-        <button class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]" @click="kakaoNaviOnclick()">
-          {{ isNaviLoading ? '연결 중...' : '카카오내비' }}
+        <button 
+          class="flex items-center justify-center gap-2 bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]" 
+          @click = "kakaoNaviOnclick()"
+        >
+          <img src="~/assets/img/kakao-navi.png" alt="카카오내비" class="w-4 h-4 border-none rounded-md" />
+          <span>카카오내비</span>
         </button>
-        <button class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]">
-          T맵
+
+        <button 
+          class="flex items-center justify-center gap-2 bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]"
+          @click = "tmapNaviOnclick()"
+          >
+          <img src="~/assets/img/tmap.png" alt="T맵" class="w-4 h-4 border-none rounded-md" />
+          <span>T맵</span>
         </button>
       </div>
     </div>
@@ -40,13 +49,18 @@
 import { weddingConfig as config } from '~/config/wedding.config';
 
 const { initKakaoMap, isMapLoading  } = useKakaoMap();
-const { startNavigation, isNaviLoading  } = useKakaoNavi();
+const { startKakaoNavigation } = useKakaoNavi();
+const { startTmapNavigation } = useTMap();
 
 onMounted(() => {
-  initKakaoMap('map-canvas', '판교역', { lat: 127.111208, lng: 37.394776, level: 3 })
+  initKakaoMap('map-canvas', '판교역', { lat: 37.394776, lng: 127.111208, level: 3 });
 })
 
 const kakaoNaviOnclick = () => {
-  startNavigation({ name: '판교역', x: 127.111208, y: 37.394776 });
+  startKakaoNavigation({ name: '판교역', x: 127.111208, y: 37.394776 });
+};
+
+const tmapNaviOnclick = () => {
+  startTmapNavigation({ name: '판교역', x: 127.111208, y: 37.394776 });
 };
 </script>

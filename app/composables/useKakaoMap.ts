@@ -24,8 +24,10 @@ export const useKakaoMap = () => {
         level: options.level
       });
 
-      const marker = new maps.Marker({position : locPosition, text: name});
+      const marker = new maps.Marker({position : locPosition, text : name});
       marker.setMap(mapInstance.value);
+
+      isMapLoading.value = false;
     } catch (error) {
       console.error('지도 생성 실패:', error);
     } finally {

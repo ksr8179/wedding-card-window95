@@ -1,7 +1,7 @@
 export const useKakaoNavi = () => {
   const isNaviLoading = ref(false);
 
-  const startNavigation = async (destination: { name: string; x: number; y: number }) => {
+  const startKakaoNavigation = async (destination: { name: string; x: number; y: number }) => {
     if (!import.meta.client) return;
 
     isNaviLoading.value = true;
@@ -25,6 +25,6 @@ export const useKakaoNavi = () => {
 
   return {
     isNaviLoading,
-    startNavigation
+    startKakaoNavigation
   };
 };
