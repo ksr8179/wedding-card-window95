@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event);
     
     // 2. TMAP API 호출 (서버 간 통신이므로 CORS 발생 안 함)
-    const tmapResponse = await $fetch('https://apis.openapi.sk.com/tmap/routes', {
+    const tmapResponse = await $fetch('https://apis.openapi.sk.com/tmap/app/routes', {
       method: 'GET',
       query: {
         ...query
