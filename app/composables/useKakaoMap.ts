@@ -5,7 +5,7 @@ export const useKakaoMap = () => {
   const mapInstance = ref<any>(null)
   const isMapLoading = ref(false);
 
-  const initMap = async (elementId: string, options: { lat: number; lng: number, level: number }) => {
+  const loadKakaoMap = async (elementId: string, name: string,options: { lat: number; lng: number, level: number }) => {
     try {
       // 1. utils의 지도 로더 호출
       const maps = await loadKakaoMap();
@@ -20,6 +20,9 @@ export const useKakaoMap = () => {
         center: locPosition,
         level: options.level
       });
+
+      const marker = new maps.Marker({position : locPosition, text: name});
+      marker.setMap(mapInstance.value);
     } catch (error) {
       console.error('지도 생성 실패:', error);
     } finally {

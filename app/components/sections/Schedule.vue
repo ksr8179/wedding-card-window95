@@ -43,7 +43,7 @@ const { initMap, isMapLoading  } = useKakaoMap();
 const { startNavigation, isNaviLoading  } = useKakaoNavi();
 
 onMounted(() => {
-  initMap('map-canvas', { lat: 37.5665, lng: 126.9780, level: 3 })
+  initMap('map-canvas', '판교역', { lat: 127.111208, lng: 37.394776, level: 3 })
 })
 
 const kakaoNaviOnclick = () => {
