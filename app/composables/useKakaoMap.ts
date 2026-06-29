@@ -5,7 +5,7 @@ export const useKakaoMap = () => {
   const mapInstance = ref<any>(null)
   const isMapLoading = ref(false);
 
-  const loadKakaoMap = async (elementId: string, name: string,options: { lat: number; lng: number, level: number }) => {
+  const initKakaoMap = async (elementId: string, name: string,options: { lat: number; lng: number, level: number }) => {
     if (!import.meta.client) return;
 
     isMapLoading.value = true;
@@ -34,7 +34,7 @@ export const useKakaoMap = () => {
   }
 
   return {
-    loadKakaoMap,
+    initKakaoMap,
     isMapLoading,
     mapInstance
   }

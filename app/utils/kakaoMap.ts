@@ -2,9 +2,6 @@ import { loadScript } from './script';
 
 export const loadKakaoMap = (): Promise<any> => {
   const config = useRuntimeConfig();
-
-  if (!import.meta.client) return;
-  if (window.Kakao?.maps) return window.Kakao;
   
   return new Promise((resolve, reject) => {
     if (!import.meta.client) return reject('Client-side only');
@@ -12,7 +9,6 @@ export const loadKakaoMap = (): Promise<any> => {
 
     // 카카오맵은 뒤에 autoload=false를 붙여야 제어가 가능합니다.
     const APP_KEY = config.public.kakaoApiKey;
-    
     const MAP_URL = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${APP_KEY}&autoload=false`;
     
     // 기존에 남아있는 카카오 스크립트 제거 (HMR 충돌 방지)

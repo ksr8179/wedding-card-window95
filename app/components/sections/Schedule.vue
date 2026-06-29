@@ -39,11 +39,11 @@
 <script setup lang="ts">
 import { weddingConfig as config } from '~/config/wedding.config';
 
-const { loadKakaoMap, isMapLoading  } = useKakaoMap();
+const { initKakaoMap, isMapLoading  } = useKakaoMap();
 const { startNavigation, isNaviLoading  } = useKakaoNavi();
 
 onMounted(() => {
-  loadKakaoMap('map-canvas', '판교역', { lat: 127.111208, lng: 37.394776, level: 3 })
+  initKakaoMap('map-canvas', '판교역', { lat: 127.111208, lng: 37.394776, level: 3 })
 })
 
 const kakaoNaviOnclick = () => {
