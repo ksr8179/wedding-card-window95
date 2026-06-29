@@ -19,14 +19,14 @@
         >
         <div id="map-canvas" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
         </div>
-        <div v-if="isLoading" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
+        <div v-if="isMapLoading" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
             로딩중...
         </div>
       </div>
       
       <div class="grid grid-cols-2 gap-2">
-        <button class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]">
-          카카오맵
+        <button class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]" @click="kakaoNaviOnclick()">
+          {{ isNaviLoading ? '연결 중...' : '카카오내비' }}
         </button>
         <button class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black px-2 py-1 text-xs active:translate-y-[1px]">
           T맵
@@ -39,20 +39,14 @@
 <script setup lang="ts">
 import { weddingConfig as config } from '~/config/wedding.config';
 
-const { currentEngine, initMap } = useKakaoAdapter()
-
-const isLoading = ref(false)
-
-const loadMapData = async () => {
-  isLoading.value = true
-  try {
-    await initMap('map-canvas', { lat: 37.5665, lng: 126.9780 })
-  } finally {
-    isLoading.value = false
-  }
-}
+const { initMap, isMapLoading  } = useKakaoMap();
+const { startNavigation, isNaviLoading  } = useKakaoNavi();
 
 onMounted(() => {
-  loadMapData();
+  initMap('map-canvas', { lat: 37.5665, lng: 126.9780, level: 3 })
 })
+
+const kakaoNaviOnclick = () => {
+  startNavigation({ name: '판교역', x: 127.111208, y: 37.394776 });
+};
 </script>

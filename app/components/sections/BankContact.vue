@@ -45,11 +45,11 @@
 <script setup>
 // config에서 리스트 형태로 가져온다고 가정
 const groomSide = [
-  { relation: '신랑', name: '김철수', bank: '국민', number: '123-456' },
+  { relation: '신랑', name: '김성래', bank: '국민', number: '123-456' },
   { relation: '부', name: '김OO', bank: '신한', number: '111-222' }
 ];
 const brideSide = [
-  { relation: '신부', name: '이영희', bank: '우리', number: '987-654' },
+  { relation: '신부', name: '장혜민', bank: '우리', number: '987-654' },
   // 추가 인원...
 ];
 
