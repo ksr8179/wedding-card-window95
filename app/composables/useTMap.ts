@@ -1,7 +1,7 @@
 export const useTMap = () => {
     const config = useRuntimeConfig();
 
-    const startTmapNavigation = async (name: string, x:number, y:number) => {
+    const startTmapNavigation = async (destination : {name: string, x:number, y:number}) => {
         const appKey = config.public.TmapAppKey;
 
         // 응답 데이터를 변수에 담지 않고 호출만 실행
@@ -9,9 +9,9 @@ export const useTMap = () => {
             method: 'GET',
             query: {
                 appKey : appKey,
-                goalname : name,
-                goalx : x,
-                goaly : y
+                goalname : destination.name,
+                goalx : destination.x,
+                goaly : destination.y
             }
         })
     };
