@@ -10,7 +10,7 @@ export const useKakaoNavi = () => {
       const kakao = await loadKakaoNavi();
 
       // 2. 카카오내비 실행
-      kakao.Navi.start({
+      kakao.Navi.share({
         name: destination.name,
         x: destination.x,
         y: destination.y,
