@@ -31,7 +31,7 @@ export const useKakaoMap = () => {
   }
 
   return {
-    initMap,
+    loadKakaoMap,
     isMapLoading,
     mapInstance
   }
