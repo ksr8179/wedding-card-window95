@@ -7,7 +7,7 @@ export const loadKakaoNavi = async (): Promise<any> => {
   if (window.Kakao?.Navi) return window.Kakao;
 
   const APP_KEY = config.public.kakaoApiKey;
-  //const APP_KEY = "df3fe0c0e3f30f2ffd5279039ab48dff";
+  
   const NAVI_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js';
 
   try {
