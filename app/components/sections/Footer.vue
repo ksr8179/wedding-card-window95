@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-const { shareKakaoMessage } = useKakaoShare;
+const { shareKakaoMessage } = useKakaoShare();
 
 useHead({
   meta: [

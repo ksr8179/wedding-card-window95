@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen w-full relative font-['Courier_New',monospace]">
+  <div class="min-h-screen w-full relative font-['Courier_New',monospace] bg-[#008080]">
     
     <div v-if="!showContent" class="fixed inset-0 z-50 flex flex-col items-center justify-end p-6 transition-all duration-700" 
          :class="isLoaded ? 'backdrop-blur-sm bg-black/30' : ''">
