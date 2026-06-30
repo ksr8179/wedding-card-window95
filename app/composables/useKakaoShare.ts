@@ -23,6 +23,6 @@ export const useKakaoShare = () => {
   };
 
   return {
-    useKakaoShare
+    shareKakaoMessage
   };
 };
