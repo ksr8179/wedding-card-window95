@@ -17,6 +17,8 @@ export const weddingConfig = {
       time: "오후 2시",
       location: "xx시 xx구 xx로 웨딩홀 3층",
       address: "xx시 xx구 xx로 123",
+      lat : 35.1747,
+      lng : 128.1256
     },
     // 4. 계좌 정보
     accounts: {
@@ -29,7 +31,8 @@ export const weddingConfig = {
       bride: "010-9876-5432",
     },
     gallery: [
-        "https://your-supabase-url.supabase.co/storage/v1/object/public/wedding/pic1.jpg",
-        "https://your-supabase-url.supabase.co/storage/v1/object/public/wedding/pic2.jpg"
-      ]
+      "https://your-supabase-url.supabase.co/storage/v1/object/public/wedding/pic1.jpg",
+      "https://your-supabase-url.supabase.co/storage/v1/object/public/wedding/pic2.jpg"
+    ]
+
   };

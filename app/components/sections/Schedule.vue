@@ -2,8 +2,8 @@
   <div class="space-y-4">
     <div class="flex items-center gap-4 bg-[#c0c0c0] p-2 border border-white border-b-[#808080] border-r-[#808080]">
       <div class="w-10 h-10 bg-white border border-black flex flex-col items-center justify-center">
-        <span class="text-[10px] text-red-600 font-bold">JUL</span>
-        <span class="text-lg font-bold">15</span>
+        <span class="text-[10px] text-red-600 font-bold">APR</span>
+        <span class="text-lg font-bold">12</span>
       </div>
       <div>
         <p class="font-bold text-sm">{{ config.schedule.date }}</p>
@@ -52,15 +52,17 @@ const { initKakaoMap, isMapLoading  } = useKakaoMap();
 const { startKakaoNavigation } = useKakaoNavi();
 const { startTmapNavigation } = useTMap();
 
+const naviParams = {name : config.schedule.location, x : config.schedule.lng, y : config.schedule.lat};
+
 onMounted(() => {
-  initKakaoMap('map-canvas', '판교역', { lat: 37.394776, lng: 127.111208, level: 3 });
+  initKakaoMap('map-canvas', config.schedule.location, { lat: config.schedule.lat, lng: config.schedule.lng, level: 3 });
 })
 
 const kakaoNaviOnclick = () => {
-  startKakaoNavigation({ name: '판교역', x: 127.111208, y: 37.394776 });
+  startKakaoNavigation(naviParams);
 };
 
 const tmapNaviOnclick = () => {
-  startTmapNavigation({ name: '판교역', x: 127.111208, y: 37.394776 });
+  startTmapNavigation(naviParams);
 };
 </script>
