@@ -10,7 +10,7 @@ export const useKakaoShare = () => {
 
       Kakao.Share.sendDefault({
         objectType: 'text',
-        text: config.message,
+        text: config.message.title + config.message.content,
         link: {
           // [앱] > [제품 링크 관리] > [웹 도메인]에서 등록한 사이트 도메인과 일치해야 함
           mobileWebUrl: config.WebUrl,
