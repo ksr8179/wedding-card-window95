@@ -33,6 +33,7 @@ export const weddingConfig = {
     gallery: [
       "https://your-supabase-url.supabase.co/storage/v1/object/public/wedding/pic1.jpg",
       "https://your-supabase-url.supabase.co/storage/v1/object/public/wedding/pic2.jpg"
-    ]
+    ],
+    WebUrl: 'https://wedding-card-window95.vercel.app/'
 
   };

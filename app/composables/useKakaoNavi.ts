@@ -7,7 +7,7 @@ export const useKakaoNavi = () => {
     isNaviLoading.value = true;
     try {
       // 1. utils의 내비 로더 호출
-      const kakao = await loadKakaoNavi();
+      const kakao = await loadKakaoSDK();
 
       // 2. 카카오내비 실행
       kakao.Navi.share({

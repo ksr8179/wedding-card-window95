@@ -1,6 +1,6 @@
 import { loadScript } from './script';
 
-export const loadKakaoNavi = async (): Promise<any> => {
+export const loadKakaoSDK = async (): Promise<any> => {
   const config = useRuntimeConfig();
 
   if (!import.meta.client) return;

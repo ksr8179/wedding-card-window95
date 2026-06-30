@@ -8,15 +8,17 @@
 </template>
 
 <script setup>
+const { shareKakaoMessage } = useKakaoShare
+
 useHead({
   meta: [
-    { property: 'og:title', content: '철수와 영희의 결혼식에 초대합니다' },
-    { property: 'og:description', content: '2026.07.15 | 레트로한 청첩장을 확인해보세요.' },
+    { property: 'og:title', content: '썽래와 혜민의 결혼식에 초대합니다' },
+    { property: 'og:description', content: '2026.07.15 | 청첩장을 확인해보세요.' },
     { property: 'og:image', content: '/og-thumbnail.jpg' }
   ]
 });
 
 const shareKakao = () => {
-  alert("카카오톡 SDK를 통해 친구에게 공유합니다.");
+  shareKakaoMessage();
 };
 </script>
