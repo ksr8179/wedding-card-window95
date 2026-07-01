@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/fonts'], // @nuxt/fonts도 꼭 넣으세요!
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/fonts'],
   css: ['~/assets/css/main.css'],
   tailwindcss: {
     exposeConfig: true,
