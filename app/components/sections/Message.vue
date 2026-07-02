@@ -47,5 +47,7 @@ const { data: photos, pending } = await useFetch('/api/gallery', {
 
 onMounted(() => {
   typeText();
+
+  console.log(photos);
 });
 </script>
