@@ -38,7 +38,7 @@ const typeText = async () => {
 };
 
 // $fetch를 포함한 useFetch는 쿼리 내부의 ref가 바뀌면 자동으로 백엔드 API를 재호출합니다.
-const { data: photos, pending } = await useFetch('/api/gallerys', {
+const { data: photos, pending } = await useFetch('/api/gallery', {
   query: {
     gubun: "SUB"
   }
