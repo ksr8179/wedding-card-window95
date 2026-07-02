@@ -1,17 +1,17 @@
 <template>
   <div class="grid grid-cols-1 gap-2">
-    <div v-if="pending"
+    <div v-if="pending" class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100">
+      <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
+        IMAGE
+      </div>
+    </div>
+    <div v-else
       v-for="(img, index) in data" 
       :key="index"
       @click="openModal(img.url)"
       class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100"
     >
       <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url">
-    </div>
-    <div v-else class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100">
-      <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
-        IMAGE
-      </div>
     </div>
 
     <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 
     if(gubun) {
       dbQuery = dbQuery.eq("gubun", gubun)
-    }else {
+    } else {
       // gubun이 없거나 빈 문자열일 경우에 대한 명확한 처리
       dbQuery = dbQuery.is('gubun', null); // 혹은 필요한 기본 조건
     }
