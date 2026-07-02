@@ -36,4 +36,8 @@ const { data, pending } = await useFetch('/api/gallery', {})
 const openModal = (img) => {
   selectedImage.value = img;
 };
+
+onMounted(() => {
+  console.log(data);
+}) 
 </script>
