@@ -13,7 +13,7 @@
     >
       <NuxtImg 
         class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" 
-        :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + Date.now()"
+        :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp"
         format="webp"/>
     </div>
 
@@ -35,8 +35,12 @@
 
 <script setup>
 import { weddingConfig as config } from '~/config/wedding.config';
+import { ref, onMounted } from 'vue';
+
 const runtimeConfig = useRuntimeConfig();
 const selectedImage = ref(null);
+const imageTimestamp = Date.now()
+
 // $fetch를 포함한 useFetch는 쿼리 내부의 ref가 바뀌면 자동으로 백엔드 API를 재호출합니다.
 const { data, pending } = await useFetch('/api/gallery', {})
 

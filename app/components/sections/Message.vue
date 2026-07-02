@@ -8,7 +8,7 @@
     <div v-else  class="border border-[#808080] p-1 bg-white mb-1">
       <NuxtImg
         class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" 
-        :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + Date.now()"
+        :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp"
         format="webp"/>
     </div>
 
@@ -32,6 +32,7 @@ const textToType = config.message.title + "-------------------------"
     + config.hero.names[0] + "&" + config.hero.names[1] + " 올림";
 const displayedText = ref('');
 const typingSpeed = 100; // 타이핑 속도 (ms)
+const imageTimestamp = null;
 
 const typeText = async () => {
   for (let i = 0; i < textToType.length; i++) {
@@ -49,5 +50,6 @@ const { data, pending } = await useFetch('/api/gallery', {
 
 onMounted(() => {
   typeText();
+  imageTimestamp = Date.now()
 });
 </script>
