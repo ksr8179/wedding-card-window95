@@ -15,21 +15,25 @@ export default defineEventHandler(async (event) => {
     case 'GET':
       const { gubun } = getQuery(event);
 
-      let dbQuery = client
-        .from('gallery')
-        .select('*')
+      let dbQuery = client.from('gallery').select('*')
 
       if(gubun !== '') {
         dbQuery = dbQuery.eq('gubun', gubun)
       }else {
-        dbQuery = dbQuery.eq('gubun', '')
+        dbQuery = dbQuery.is('gubun', null)
       }
 
       dbQuery = dbQuery.order('id', { ascending: true }) // 정렬
 
       const { data: photos, error: getErr } = await dbQuery
 
-      if (getErr) throw createError({ statusCode: 500, statusMessage: getErr.message })
+      if (getErr) {
+        console.error('Supabase Error:', getErr); // 서버 콘솔에 로그 기록
+        throw createError({ 
+          statusCode: 500, 
+          statusMessage: '데이터를 가져오는 중 오류가 발생했습니다.' 
+        })
+      }
 
       return photos
 
