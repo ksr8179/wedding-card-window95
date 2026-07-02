@@ -11,7 +11,7 @@
       @click="openModal(img.url)"
       class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100"
     >
-      <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url">
+      <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url?t=${Date.now()}`">
     </div>
 
     <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
