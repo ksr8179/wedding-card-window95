@@ -31,8 +31,6 @@ export default defineEventHandler(async (event) => {
 
       if (getErr) throw createError({ statusCode: 500, statusMessage: getErr.message })
 
-      console.log(getErr)
-      
       return photos
 
     // case 'POST':

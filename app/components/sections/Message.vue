@@ -7,7 +7,7 @@
       </div>
     </div>
     <div v-else  class="border border-[#808080] p-1 bg-white mb-1">
-      <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" :src="config.supabaseImgUrl + photos[0].url">
+      <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" :src="runtimeConfig.supabaseUrl + config.ImgPath + photos[0].url">
     </div>
 
     <div class="flex-grow bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
@@ -23,6 +23,7 @@
 import { weddingConfig as config } from '~/config/wedding.config';
 import { ref, onMounted } from 'vue';
 
+const runtimeConfig = useRuntimeConfig();
 const textToType = config.message.title + "-------------------------" 
     + config.message.content + "-------------------------\n" 
     + config.hero.date + "  " 

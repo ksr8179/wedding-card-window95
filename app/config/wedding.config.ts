@@ -30,5 +30,5 @@ export const weddingConfig = {
       groom: "010-1234-5678",
       bride: "010-9876-5432",
     },
-    supabaseImgUrl : 'https://ekregbyjrdzljjuoztas.supabase.co/storage/v1/object/public/uploads/'
+    ImgPath : '/storage/v1/object/public/uploads/'
   };
