@@ -1,13 +1,16 @@
 <template>
   <div class="grid grid-cols-1 gap-2">
-    <div 
-      v-for="(img, index) in galleryImages" 
+    <div v-if="pending"
+      v-for="(img, index) in data" 
       :key="index"
-      @click="openModal(img)"
+      @click="openModal(img.url)"
       class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100"
     >
+      <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url">
+    </div>
+    <div v-else class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100">
       <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
-        IMAGE_{{ index + 1 }}
+        IMAGE
       </div>
     </div>
 
@@ -26,8 +29,9 @@
 </template>
 
 <script setup>
-const galleryImages = ['/img1.jpg', '/img2.jpg', '/img3.jpg', '/img4.jpg', '/img5.jpg', '/img6.jpg'];
 const selectedImage = ref(null);
+// $fetch를 포함한 useFetch는 쿼리 내부의 ref가 바뀌면 자동으로 백엔드 API를 재호출합니다.
+const { data, pending } = await useFetch('/api/gallery', {})
 
 const openModal = (img) => {
   selectedImage.value = img;

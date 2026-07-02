@@ -25,7 +25,6 @@ export default defineEventHandler(async (event) => {
     
     return data
   } catch (err: any) {
-    // 에러가 나면 숨기지 말고 브라우저에 에러 메시지를 JSON으로 뱉어내라!
     return { 
       source: 'Server Crash Catch', 
       message: err.message, 
