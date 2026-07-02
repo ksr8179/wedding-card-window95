@@ -1,14 +1,14 @@
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
+  //const user = await serverSupabaseUser(event) //로그인이 필요할 경우
   const client = await serverSupabaseClient(event)
   const method = event.method
 
-  // 1. 보호된 API
-  if (!user) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
-  }
+  // 1. 보호된 API(로그인이 필요할 경우)
+  // if (!user) {
+  //   throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  // }
 
   // 2. 메서드에 따른 분기 처리
   switch (method) {

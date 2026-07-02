@@ -6,6 +6,10 @@ export default defineNuxtConfig({
     exposeConfig: true,
     viewer: true,
   },
+  supabase: {
+    // 자동 로그인 리다이렉션 기능을 완전히 끕니다.
+    redirect: false 
+  },
   // nitro: {
   //   preset: 'github_pages',
   // },
