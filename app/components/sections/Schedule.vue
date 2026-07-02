@@ -46,23 +46,23 @@
 </template>
 
 <script setup lang="ts">
-import { weddingConfig as config } from '~/config/wedding.config';
+  import { weddingConfig as config } from '~/config/wedding.config';
 
-const { initKakaoMap, isMapLoading  } = useKakaoMap();
-const { startKakaoNavigation } = useKakaoNavi();
-const { startTmapNavigation } = useTMap();
+  const { initKakaoMap, isMapLoading  } = useKakaoMap();
+  const { startKakaoNavigation } = useKakaoNavi();
+  const { startTmapNavigation } = useTMap();
 
-const naviParams = {name : config.schedule.location, x : config.schedule.lng, y : config.schedule.lat};
+  const naviParams = {name : config.schedule.location, x : config.schedule.lng, y : config.schedule.lat};
 
-onMounted(() => {
-  initKakaoMap('map-canvas', config.schedule.location, { lat: config.schedule.lat, lng: config.schedule.lng, level: 3 });
-})
+  onMounted(() => {
+    initKakaoMap('map-canvas', config.schedule.location, { lat: config.schedule.lat, lng: config.schedule.lng, level: 3 });
+  })
 
-const kakaoNaviOnclick = () => {
-  startKakaoNavigation(naviParams);
-};
+  const kakaoNaviOnclick = () => {
+    startKakaoNavigation(naviParams);
+  };
 
-const tmapNaviOnclick = () => {
-  startTmapNavigation(naviParams);
-};
+  const tmapNaviOnclick = () => {
+    startTmapNavigation(naviParams);
+  };
 </script>

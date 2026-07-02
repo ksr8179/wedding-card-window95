@@ -21,35 +21,34 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { weddingConfig as config } from '~/config/wedding.config';
-import { ref, onMounted } from 'vue';
+<script setup>
+  import { weddingConfig as config } from '~/config/wedding.config';
+  import { ref, onMounted } from 'vue';
 
-const runtimeConfig = useRuntimeConfig();
-const textToType = config.message.title + "-------------------------" 
-    + config.message.content + "-------------------------\n" 
-    + config.hero.date + "  " 
-    + config.hero.names[0] + "&" + config.hero.names[1] + " 올림";
-const displayedText = ref('');
-const typingSpeed = 100; // 타이핑 속도 (ms)
-const imageTimestamp = null;
+  const runtimeConfig = useRuntimeConfig();
+  const textToType = config.message.title + "-------------------------" 
+      + config.message.content + "-------------------------\n" 
+      + config.hero.date + "  " 
+      + config.hero.names[0] + "&" + config.hero.names[1] + " 올림";
+  const displayedText = ref('');
+  const typingSpeed = 100; // 타이핑 속도 (ms)
+  const imageTimestamp = Date.now();
 
-const typeText = async () => {
-  for (let i = 0; i < textToType.length; i++) {
-    await new Promise((resolve) => setTimeout(resolve, typingSpeed));
-    displayedText.value += textToType[i];
-  }
-};
+  const typeText = async () => {
+    for (let i = 0; i < textToType.length; i++) {
+      await new Promise((resolve) => setTimeout(resolve, typingSpeed));
+      displayedText.value += textToType[i];
+    }
+  };
 
-// $fetch를 포함한 useFetch는 쿼리 내부의 ref가 바뀌면 자동으로 백엔드 API를 재호출합니다.
-const { data, pending } = await useFetch('/api/gallery', {
-  query: {
-    gubun: "SUB"
-  }
-})
+  // $fetch를 포함한 useFetch는 쿼리 내부의 ref가 바뀌면 자동으로 백엔드 API를 재호출합니다.
+  const { data, pending } = await useFetch('/api/gallery', {
+    query: {
+      gubun: "SUB"
+    }
+  })
 
-onMounted(() => {
-  typeText();
-  imageTimestamp = Date.now()
-});
+  onMounted(() => {
+    typeText();
+  });
 </script>
