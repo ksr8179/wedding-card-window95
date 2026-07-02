@@ -11,7 +11,10 @@
       @click="openModal(img.url)"
       class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100"
     >
-      <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url?t=${Date.now()}`">
+      <NuxtImg 
+        class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" 
+        :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + Date.now()"
+        format="webp"/>
     </div>
 
     <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -21,7 +24,9 @@
           <button @click="selectedImage = null" class="bg-[#c0c0c0] text-black px-1 border border-black text-[10px]">X</button>
         </div>
         <div class="p-2">
-          <img :src="selectedImage" class="w-full border-2 border-black" />
+          <NuxtImg 
+            :src="selectedImage" class="w-full border-2 border-black"
+            format="webp" />
         </div>
       </div>
     </div>

@@ -1,13 +1,15 @@
 <template>
   <div class="flex flex-col h-[540px] md:h-[610px]">
-    
     <div v-if="pending" class="border border-[#808080] p-1 bg-white mb-1">
       <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600">
         로딩 중...
       </div>
     </div>
     <div v-else  class="border border-[#808080] p-1 bg-white mb-1">
-      <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url?t=${Date.now()}`">
+      <NuxtImg
+        class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" 
+        :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + Date.now()"
+        format="webp"/>
     </div>
 
     <div class="flex-grow bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
