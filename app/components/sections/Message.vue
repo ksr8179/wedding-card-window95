@@ -7,7 +7,7 @@
       </div>
     </div>
     <div v-else  class="border border-[#808080] p-1 bg-white mb-1">
-      <!-- <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" :src="runtimeConfig.public.supabaseUrl + config.ImgPath + photos[0].url"> -->
+      <img class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url">
     </div>
 
     <div class="flex-grow bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
@@ -39,7 +39,7 @@ const typeText = async () => {
 };
 
 // $fetch를 포함한 useFetch는 쿼리 내부의 ref가 바뀌면 자동으로 백엔드 API를 재호출합니다.
-const { data: photos, pending } = await useFetch('/api/gallery', {
+const { data, pending } = await useFetch('/api/gallery', {
   query: {
     gubun: "SUB"
   }
@@ -47,7 +47,5 @@ const { data: photos, pending } = await useFetch('/api/gallery', {
 
 onMounted(() => {
   typeText();
-
-  console.log(photos);
 });
 </script>
