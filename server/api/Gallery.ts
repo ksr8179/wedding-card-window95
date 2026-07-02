@@ -1,4 +1,4 @@
-import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
+import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   //const user = await serverSupabaseUser(event) //로그인이 필요할 경우

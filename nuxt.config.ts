@@ -28,7 +28,8 @@ export default defineNuxtConfig({
       // 클라이언트와 서버 모두 접근 가능 (API 주소 등)
       kakaoApiKey: process.env.KAKAO_API_KEY, 
       TmapAppKey: process.env.TMAP_APP_KEY,
-      supabaseUrl: process.env.SUPABASE_URL
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
     }
   }
 })
