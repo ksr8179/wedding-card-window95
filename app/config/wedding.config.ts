@@ -30,10 +30,5 @@ export const weddingConfig = {
       groom: "010-1234-5678",
       bride: "010-9876-5432",
     },
-    gallery: [
-      "https://your-supabase-url.supabase.co/storage/v1/object/public/wedding/pic1.jpg",
-      "https://your-supabase-url.supabase.co/storage/v1/object/public/wedding/pic2.jpg"
-    ],
-    WebUrl: 'https://wedding-card-window95.vercel.app/'
-
+    supabaseImgUrl : 'https://ekregbyjrdzljjuoztas.supabase.co/storage/v1/object/public/uploads/'
   };

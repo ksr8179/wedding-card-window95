@@ -1,34 +1,47 @@
-// import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
+import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
-// export default defineEventHandler(async (event) => {
-//   const user = await serverSupabaseUser(event)
-//   const client = await serverSupabaseClient(event)
-//   const method = event.method
+export default defineEventHandler(async (event) => {
+  const user = await serverSupabaseUser(event)
+  const client = await serverSupabaseClient(event)
+  const method = event.method
 
-//   // 1. 보호된 API (로그인 사용자만 접근 가능)
-//   if (!user) {
-//     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
-//   }
+  // 1. 보호된 API
+  if (!user) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  }
 
-//   // 2. 메서드에 따른 분기 처리
-//   switch (method) {
-//     case 'GET':
-//       const { data: getList, error: getErr } = await client
-//         .from('todos')
-//         .select('*')
-//         .eq('user_id', user.id)
-//       if (getErr) throw createError({ statusCode: 500, statusMessage: getErr.message })
-//       return getList
+  // 2. 메서드에 따른 분기 처리
+  switch (method) {
+    case 'GET':
+      const { gubun } = getQuery(event);
 
-//     case 'POST':
-//       const body = await readBody(event)
-//       const { data: postData, error: postErr } = await client
-//         .from('todos')
-//         .insert({ ...body, user_id: user.id })
-//       if (postErr) throw createError({ statusCode: 500, statusMessage: postErr.message })
-//       return postData
+      let dbQuery = client
+        .from('gallery')
+        .select('*')
 
-//     default:
-//       throw createError({ statusCode: 405, statusMessage: 'Method not allowed' })
-//   }
-// })
+      if(gubun !== '') {
+        dbQuery = dbQuery.eq('gubun', gubun)
+      }else {
+        dbQuery = dbQuery.eq('gubun', '')
+      }
+
+      dbQuery = dbQuery.order('id', { ascending: true }) // 정렬
+
+      const { data: photos, error: getErr } = await dbQuery
+
+      if (getErr) throw createError({ statusCode: 500, statusMessage: getErr.message })
+
+      return photos
+
+    // case 'POST':
+    //   const body = await readBody(event)
+    //   const { data: postData, error: postErr } = await client
+    //     .from('todos')
+    //     .insert({ ...body, user_id: user.id })
+    //   if (postErr) throw createError({ statusCode: 500, statusMessage: postErr.message })
+    //   return postData
+
+    // default:
+    //   throw createError({ statusCode: 405, statusMessage: 'Method not allowed' })
+  }
+})
