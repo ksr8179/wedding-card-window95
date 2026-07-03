@@ -14,7 +14,7 @@
       <NuxtImg 
         class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" 
         :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp"
-        loading="lazy" 
+        loading="eager" 
         quality="80"
         format="webp"/>
     </div>
@@ -28,7 +28,7 @@
         <div class="p-2">
           <NuxtImg 
             :src="selectedImage" class="w-full border-2 border-black"
-            loading="lazy" 
+            loading="eager" 
             quality="80"
             format="webp" />
         </div>
