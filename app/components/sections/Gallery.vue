@@ -45,15 +45,6 @@
         </div>
       </template>
     </Transition>
-    <Transition 
-        name="retro"
-        mode="out-in"
-        enter-active-class="duration-75 ease-linear"
-        enter-from-class="opacity-0 scale-95"
-        enter-to-class="opacity-100 scale-100"
-        leave-active-class="duration-75 ease-linear"
-        leave-from-class="opacity-100 scale-100"
-        leave-to-class="opacity-0 scale-95">
       <!-- 3. 모달 뷰어 (기존 유지) -->
       <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
         <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1">
@@ -70,7 +61,6 @@
           </div>
         </div>
       </div>
-    </Transition>
   </div>
 </template>
 

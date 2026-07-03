@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { weddingConfig as config } from '~/config/wedding.config';
+  import { weddingConfig as config } from '~/config/wedding.config';
 </script>
 
 <style>
