@@ -14,8 +14,9 @@ export default defineNuxtConfig({
     provider: 'ipx',
     domains: [process.env.SUPABASE_URL || 'localhost'], // 본인의 supabase 프로젝트 도메인 등록
     ipx: {
-      modifiers: {
-        rotate: 'auto' // 또는 true (버전에 따라 다름, 보통 생략해도 sharp 내부에서 auto 처리되나 명시적 지정)
+      sharpOptions: {
+        autoOrient: true // 최신 버전: 이 옵션이 가장 안전하고 주소를 터뜨리지 않습니다.
+        // 만약 모듈이 구버전이라면 autoOrient 대신 -> useExifOrientation: true 를 사용하세요.
       }
     }
   },
