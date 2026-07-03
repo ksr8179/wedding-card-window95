@@ -37,7 +37,7 @@
 <script setup>
   const showContent = ref(false);
   const loadingProgress = ref(0);
-  const loadingCount = ref(3);
+  const loadingCount = ref(5);
   const isLoaded = ref(false);
   const imageTimestamp =  useState('imageTimestamp', () => '');
 
