@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   image: {
     provider: 'ipx',
     domains: process.env.SUPABASE_URL, // 본인의 supabase 프로젝트 도메인 등록
-  }
+  },
   // nitro: {
   //   preset: 'github_pages',
   // },
