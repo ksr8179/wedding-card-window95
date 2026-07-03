@@ -32,7 +32,7 @@
       + config.hero.names[0] + "&" + config.hero.names[1] + " 올림";
   const displayedText = ref('');
   const typingSpeed = 100; // 타이핑 속도 (ms)
-  const imageTimestamp = Date.now();
+  const imageTimestamp = useState('imageTimestamp');
 
   const typeText = async () => {
     for (let i = 0; i < textToType.length; i++) {

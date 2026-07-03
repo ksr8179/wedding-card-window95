@@ -39,7 +39,7 @@
 
   const runtimeConfig = useRuntimeConfig();
   const selectedImage = ref(null);
-  const imageTimestamp = Date.now();
+  const imageTimestamp = useState('imageTimestamp')
 
   // $fetch를 포함한 useFetch는 쿼리 내부의 ref가 바뀌면 자동으로 백엔드 API를 재호출합니다.
   const { data, pending } = await useFetch('/api/gallery', {})
