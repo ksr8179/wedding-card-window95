@@ -8,12 +8,14 @@
     <div v-else
       v-for="(img, index) in data" 
       :key="index"
-      @click="openModal(img.url)"
+      @click="openModal(runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp)"
       class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100"
     >
       <NuxtImg 
         class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" 
         :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp"
+        loading="lazy" 
+        quality="80"
         format="webp"/>
     </div>
 
@@ -26,6 +28,8 @@
         <div class="p-2">
           <NuxtImg 
             :src="selectedImage" class="w-full border-2 border-black"
+            loading="lazy" 
+            quality="80"
             format="webp" />
         </div>
       </div>

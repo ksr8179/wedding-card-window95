@@ -9,6 +9,9 @@
       <NuxtImg
         class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" 
         :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp"
+        fetchpriority="high"
+        loading="eager"
+        quality="80"
         format="webp"/>
     </div>
 
