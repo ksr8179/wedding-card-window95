@@ -42,7 +42,7 @@
   const imageTimestamp =  useState('imageTimestamp', () => '');
 
   onMounted(() => {
-    setTimeout(() => { loadingProgress.value = 100; }, 20);
+    setTimeout(() => { loadingProgress.value = 100; }, 5000);
     setInterval(() => { loadingCount.value -= 1; }, 1000);
     setTimeout(() => { isLoaded.value = true; }, 5000); // 3초 로딩
     imageTimestamp.value = Date.now();
