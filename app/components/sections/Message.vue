@@ -1,11 +1,21 @@
 <template>
   <div class="flex flex-col h-[540px] md:h-[610px]">
-    <!-- 1. API 데이터가 아직 불러와지지 않았거나, 이미지 렌더링이 완료되지 않았을 때 -->
-    <div v-if="pending || !isImageLoaded" class="border border-[#808080] p-1 bg-white mb-1">
-      <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600">
-        로딩 중...
+    <Transition 
+        name="retro"
+        mode="out-in"
+        enter-active-class="duration-75 ease-linear"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="duration-75 ease-linear"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95">
+      <!-- 1. API 데이터가 아직 불러와지지 않았거나, 이미지 렌더링이 완료되지 않았을 때 -->
+      <div v-if="pending || !isImageLoaded" class="border border-[#808080] p-1 bg-white mb-1">
+        <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600">
+          로딩 중...
+        </div>
       </div>
-    </div>
+    </Transition>
 
     <!-- 2. API 데이터가 있고 이미지 렌더링도 끝났을 때 숨김 해제 -->
     <!-- v-if 대신 항상 DOM에 유지하되 조건부 노출(v-show)하여 백그라운드 로드를 트리거합니다 -->
