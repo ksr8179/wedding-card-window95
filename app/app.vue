@@ -9,7 +9,7 @@
 
       <div v-if="!isLoaded" class="w-full max-w-[600px] bg-[#c0c0c0] border-2 border-white border-b-black border-r-black p-1 mb-8 shadow-xl">
         <div class="bg-white border border-[#808080] h-6 relative flex items-center overflow-hidden">
-          <div class="bg-[#000080] h-full transition-all duration-[3000ms] ease-linear" :style="{ width: loadingProgress + '%' }"></div>
+          <div class="bg-[#000080] h-full transition-all duration-[5000ms] ease-linear" :style="{ width: loadingProgress + '%' }"></div>
           <span class="absolute w-full text-center text-[14px] font-bold tracking-wider mix-blend-difference text-white"> 로     딩     중 ...  ( {{ loadingCount }} seconds)</span>
         </div>
       </div>
@@ -26,7 +26,7 @@
         <button @click="showContent = false" class="text-[10px] bg-[#c0c0c0] text-black px-1 border border-black">X</button>
       </div>
       <UiWindowFrame title="message.txt"><SectionsMessage /></UiWindowFrame>
-      <UiWindowFrame v-if="showContent" title="schedule.ini" ><SectionsSchedule /></UiWindowFrame>
+      <UiWindowFrame v-if="showContent" title="schedule.ini"><SectionsSchedule /></UiWindowFrame>
       <UiWindowFrame title="gallery.exe"><SectionsGallery /></UiWindowFrame>
       <UiWindowFrame title="bank.txt"><SectionsBankContact /></UiWindowFrame>
       <UiWindowFrame title="footer.sys"><SectionsFooter /></UiWindowFrame>
@@ -42,7 +42,7 @@
   const imageTimestamp =  useState('imageTimestamp', () => '');
 
   onMounted(() => {
-    setTimeout(() => { loadingProgress.value = 100; }, 5000);
+    setTimeout(() => { loadingProgress.value = 100; }, 100);
     setInterval(() => { loadingCount.value -= 1; }, 1000);
     setTimeout(() => { isLoaded.value = true; }, 5000); // 3초 로딩
     imageTimestamp.value = Date.now();

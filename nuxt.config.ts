@@ -13,6 +13,11 @@ export default defineNuxtConfig({
   image: {
     provider: 'ipx',
     domains: [process.env.SUPABASE_URL || 'localhost'], // 본인의 supabase 프로젝트 도메인 등록
+    ipx: {
+      modifiers: {
+        rotate: 'auto' // 또는 true (버전에 따라 다름, 보통 생략해도 sharp 내부에서 auto 처리되나 명시적 지정)
+      }
+    }
   },
   // nitro: {
   //   preset: 'github_pages',
