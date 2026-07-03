@@ -44,7 +44,7 @@
   onMounted(() => {
     setTimeout(() => { loadingProgress.value = 100; }, 100);
     setInterval(() => { loadingCount.value -= 1; }, 1000);
-    setTimeout(() => { isLoaded.value = true; }, 3000); // 3초 로딩
+    setTimeout(() => { isLoaded.value = true; }, 5000); // 3초 로딩
     imageTimestamp.value = Date.now();
   });
 </script>

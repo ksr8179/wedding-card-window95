@@ -17,10 +17,10 @@
       <div
           class="mb-2 border border-[#808080] p-1 bg-white"
         >
-        <div id="map-canvas" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
-        </div>
         <div v-if="isMapLoading" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
             로딩중...
+        </div>
+        <div v-else id="map-canvas" class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
         </div>
       </div>
       
