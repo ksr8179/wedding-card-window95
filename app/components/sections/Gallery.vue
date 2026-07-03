@@ -26,8 +26,8 @@
           <button @click="selectedImage = null" class="bg-[#c0c0c0] text-black px-1 border border-black text-[10px]">X</button>
         </div>
         <div class="p-2">
-          <NuxtImg class="[image-orientation:from-image]"
-            :src="selectedImage" class="w-full border-2 border-black"
+          <NuxtImg
+            :src="selectedImage" class="w-full border-2 border-black [image-orientation:from-image]"
             loading="eager" 
             quality="80"
             format="webp" />
