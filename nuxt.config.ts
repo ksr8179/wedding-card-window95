@@ -10,6 +10,9 @@ export default defineNuxtConfig({
     // 자동 로그인 리다이렉션 기능을 완전히 끕니다.
     redirect: false 
   },
+  image: {
+    domains: process.env.SUPABASE_URL, // 본인의 supabase 프로젝트 도메인 등록
+  }
   // nitro: {
   //   preset: 'github_pages',
   // },
