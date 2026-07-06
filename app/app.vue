@@ -40,7 +40,7 @@
   const loadingCount = ref(5);
   const isLoaded = ref(false);
   const imageTimestamp =  useState('imageTimestamp', () => '');
-  const { play } = useSound('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAEQsAAABAAgAZGF0YQQAAAAfX19f');
+  const { play } = useSound('data:audio/wav;base64,UklGRksCAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YScCAACAwOvz16FgKxEaQ3644OjQn2U0HCNIfbLW38mdaTwmLEx8rM3Ww5tsQy4zUHunxc69mm9KNjpUeqK+xriYcVA9QFd6nrjAs5d0VURGWnqasrqvlXVZSktdeZettKuUd15PUGB5lKivp5N5YVRUYnmSpKukkXplWFhleY+gpqCQe2hcXGd5jZ2jno98amBfaXmMmp+bjn1tY2JreoqXnJiNfW9mZWx6iZWalox+cWhnbnqIkpeUi35ya2lveoeQlZKKf3RtbHF6ho+TkYl/dW9tcnuFjZGPiX92cG9ze4SMj46IgHdycXR7g4qOjYeAeHNydXuDiYyLh4B5dHN2fIKIi4qGgHp2dHd8goeKiYaAe3d1eHyChomIhYB7d3Z4fIGGiIiFgHx4d3l8gYWHh4SAfHl4eX2BhIaGhIB9enl6fYGEhoaEgH16eXp9gIOFhYOAfXt6e32Ag4WFg4B9e3p7fYCDhISDgH58e3x9gIKEhIKAfnx7fH6AgoODgoB+fHx8foCCg4OCgH59fH1+gIGCg4KAfn18fX6AgYKCgoB/fX19foCBgoKBgH9+fX1+gIGCgoGAf359fX5/gYGCgYB/fn1+fn+BgYGBgH9+fn5+f4CBgYGAf35+fn9/gIGBgYB/fn5+f3+AgYGBgH9/fn5/f4CBgYGAf39+fn9/gIGBgIB/f35+f3+AgIGAgH9/f39/f4CAgICAf39/f39/gICAgIB/f39/fw==');
 
   onMounted(() => {
     setTimeout(() => { loadingProgress.value = 100; }, 100);
