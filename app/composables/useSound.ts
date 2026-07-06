@@ -12,7 +12,7 @@ export const useSound = (audioUrl) => {
     if (!audio.value) {
       audio.value = new Audio(audioUrl)
     }
-    
+    audio.volume = 0.7; // 볼륨 조절 (0.0 ~ 1.0)
     audio.value.play().catch(err => {
       console.error("오디오 재생 실패:", err)
     })
