@@ -44,7 +44,7 @@
   const displayedText = ref('');
   const typingSpeed = 100; // 타이핑 속도 (ms)
   const imageTimestamp = useState('imageTimestamp');
-  const showContent = useState('showContent');
+  const showContent = ref(false);
 
   // [추가] 이미지 자체의 브라우저 렌더링 완료 여부 상태 변수
   const isImageLoaded = ref(false);
@@ -69,7 +69,7 @@
   onMounted(() => {
     setTimeout(()=>{
       typeText()
-    }, 2000)
+    }, 1500)
   });
 
   const typeText = async () => {

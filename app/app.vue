@@ -40,7 +40,7 @@
   const loadingCount = ref(5);
   const isLoaded = ref(false);
   
-  const showContent = useState('showContent', () => '');
+  const showContent = ref(false)
   const imageTimestamp =  useState('imageTimestamp', () => '');
   const { play } = useSound(config.mouseSound);
 
@@ -48,8 +48,7 @@
     setTimeout(() => { loadingProgress.value = 100; }, 100);
     setInterval(() => { loadingCount.value -= 1; }, 1000);
     setTimeout(() => { isLoaded.value = true; }, 5000); // 3초 로딩
-    imageTimestamp.value = Date.now();
-    showContent.value = false;
+    imageTimestamp.value = Date.now()
   });
 
   const handleOpenClick = async () => {
