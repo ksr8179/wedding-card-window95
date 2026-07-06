@@ -22,17 +22,20 @@
         >
           로딩 중...
         </div>
-
-        <!-- [수정] v-show와 @load를 추가하여 렌더링이 끝난 시점에만 노출 -->
-        <NuxtImg 
+        <div 
           v-show="loadedImages[index]"
-          class="w-auto h-auto aspect-auto bg-gray-300 flex items-center justify-center text-[8px] text-gray-500" 
-          :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp"
-          loading="eager" 
-          quality="80"
-          format="webp"
-          @load="handleImageLoad(index)"
-        />
+          class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500"
+        >
+          <!-- [수정] v-show와 @load를 추가하여 렌더링이 끝난 시점에만 노출 -->
+          <NuxtImg 
+            class="w-full h-full object-contain" 
+            :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp"
+            loading="eager" 
+            quality="80"
+            format="webp"
+            @load="handleImageLoad(index)"
+          />
+        </div>
       </div>
     </template>
     <!-- 3. 모달 뷰어 (기존 유지) -->
