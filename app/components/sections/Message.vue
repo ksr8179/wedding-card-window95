@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-[540px] md:h-[610px]">
+  <div class="flex flex-col h-[540px] md:h-[815px]">
     <!-- 1. API 데이터가 아직 불러와지지 않았거나, 이미지 렌더링이 완료되지 않았을 때 -->
     <div v-if="pending || !isImageLoaded" class="border border-[#808080] p-1 bg-white mb-1">
       <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600">
