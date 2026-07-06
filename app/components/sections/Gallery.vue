@@ -24,7 +24,7 @@
         </div>
         <div 
           v-show="loadedImages[index]"
-          class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500"
+          class="w-full aspect-square bg-gray-500 flex items-center justify-center text-[8px] text-gray-500"
         >
           <!-- [수정] v-show와 @load를 추가하여 렌더링이 끝난 시점에만 노출 -->
           <NuxtImg 

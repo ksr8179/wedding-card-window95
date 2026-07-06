@@ -9,11 +9,11 @@
 
     <!-- 2. API 데이터가 있고 이미지 렌더링도 끝났을 때 숨김 해제 -->
     <!-- v-if 대신 항상 DOM에 유지하되 조건부 노출(v-show)하여 백그라운드 로드를 트리거합니다 -->
-    <div v-show="!pending && isImageLoaded" class="border border-[#808080] p-1 bg-white mb-1">
+    <div v-show="!pending && isImageLoaded" class="aspect-square border border-[#808080] p-1 bg-white mb-1">
       <!-- data가 존재할 때만 src를 안전하게 바인딩하기 위해 v-if="data?.[0]" 사용 -->
       <NuxtImg
         v-if="data?.[0]"
-        class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" 
+        class="w-full h-full bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" 
         :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp"
         fetchpriority="high"
         loading="eager"
