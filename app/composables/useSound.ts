@@ -1,19 +1,32 @@
-import clickSound from '@/assets/sounds/mouse_click.mp3';
+// composables/useAudio.js
+import { ref } from 'vue'
 
-export function useSound() {
-    const audio = new Audio(clickSound); // 사운드 파일 경로
+export const useSound = (audioUrl) => {
+  const audio = ref(null)
+
+  // 1. 오디오 재생 함수 (사용자 상호작용으로 실행되므로 브라우저 환경이 보장됨)
+  const play = () => {
+    if (!process.client) return
+
+    // 싱글톤처럼 최초 실행 시점에만 Audio 객체 생성
+    if (!audio.value) {
+      audio.value = new Audio(audioUrl)
+    }
     
-    const playMouseClickSound = () => {
-        // 연속 클릭 시 소리가 겹치거나 끊기지 않도록 재생 위치를 초기화합니다.
-        audio.currentTime = 0;
-        audio.play().catch((error) => {
-            console.warn('오디오 재생 실패 (사용자 상호작용 필요):', error);
-        });
-    };
+    audio.value.play().catch(err => {
+      console.error("오디오 재생 실패:", err)
+    })
+  }
 
-    return {
-        playMouseClickSound
-    };
+  // 2. 오디오 일시정지 함수
+  const pause = () => {
+    if (audio.value) {
+      audio.value.pause()
+    }
+  }
 
+  return {
+    play,
+    pause
+  }
 }
-
