@@ -52,12 +52,11 @@
   const handleOpenClick = async () => {
     try {
       await play()
+
+      showContent.value = true // .value 잊지 말고 적용!
     }catch(err) {
       console.error("오디오 재생 실패:", err)
-    }finally {
-      setTimeout(() => {
-        showContent.value = true // .value 잊지 말고 적용!
-      }, 1500);
+      showContent.value = true // .value 잊지 말고 적용!
     }
   }
 </script>
