@@ -40,7 +40,7 @@
   const loadingCount = ref(5);
   const isLoaded = ref(false);
   const imageTimestamp =  useState('imageTimestamp', () => '');
-  const { play } = useSound('./sounds/mouse_click.mp3');
+  const { play } = useSound('data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=');
 
   onMounted(() => {
     setTimeout(() => { loadingProgress.value = 100; }, 100);
@@ -52,10 +52,9 @@
   const handleOpenClick = async () => {
     try {
       await play()
-
-      showContent.value = true // .value 잊지 말고 적용!
     }catch(err) {
       console.error("오디오 재생 실패:", err)
+    }finally {
       showContent.value = true // .value 잊지 말고 적용!
     }
   }
