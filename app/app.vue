@@ -40,7 +40,7 @@
   const loadingCount = ref(5);
   const isLoaded = ref(false);
   const imageTimestamp =  useState('imageTimestamp', () => '');
-  const { play } = useSound('data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YTAAAAAfHz8/Pz8/Pz9fX39/f39/f19fPz8/Pz8/Hx8fHz8/Pz8/P19fX19fX19fX18/Pz8/Pz8fHw==');
+  const { play } = useSound('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAEQsAAABAAgAZGF0YQQAAAAfX19f');
 
   onMounted(() => {
     setTimeout(() => { loadingProgress.value = 100; }, 100);
@@ -55,7 +55,9 @@
     }catch(err) {
       console.error("오디오 재생 실패:", err)
     }finally {
-      showContent.value = true // .value 잊지 말고 적용!
+      setTimeout(()=>{
+        showContent.value = true // .value 잊지 말고 적용!
+      }, 1000);
     }
   }
 </script>
