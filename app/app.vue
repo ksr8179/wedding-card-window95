@@ -40,7 +40,7 @@
   const loadingCount = ref(5);
   const isLoaded = ref(false);
   const imageTimestamp =  useState('imageTimestamp', () => '');
-  const { play } = useSound('@assets/sounds/mouse_click.mp3');
+  const { play } = useSound('./sounds/mouse_click.mp3');
 
   onMounted(() => {
     setTimeout(() => { loadingProgress.value = 100; }, 100);
