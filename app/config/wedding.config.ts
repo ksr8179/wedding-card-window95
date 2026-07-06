@@ -30,5 +30,6 @@ export const weddingConfig = {
       groom: "010-1234-5678",
       bride: "010-9876-5432",
     },
-    ImgPath : '/storage/v1/object/public/uploads/'
+    ImgPath : '/storage/v1/object/public/uploads/',
+    mouseSound : 'data:audio/wav;base64,UklGRmACAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YV8CAACAgICAf3m6w9u7WCsRJkN8uOHp0p9mNBwjSX6y2N/Jnmk8JixMfKvM1sObbEMuM1B7p8XOvZpvSjY6VHqivsa4mHFQPUBXep64wLOXdVVERlp6mrK6r5V1WUpLXXmXrbSrlHdeT1BgeZSor6eTeWFUbXmSoayknXlkWFljeY2eoJ6OfWxkXWh5i5ebmI18bWNiaXmKlZuYjHxvZmRpeYiTlpSLfXFpZ256h5CVkot9cmtpbXmHkJSSh390bGxxekWPkpGJfnRubHJ6hY2RkId9dXFuc3uEi4+Nh4B3c3F1e4OJjIuHgHl0c3Z8goiLiYWAenV0d3yChomJhYB7dnV4fIKGiYiFgHt3dnh8gYaIiIWAfHh3eXuChYeHhIB8eXh5fYGEhoaEgH16eXp9gYSGhoSAfXp5en2Ag4WFg4B9e3p7fYCDhYWDgH17enp9gIOEhIOAfnx7fH2AgoSEgoB+fHt8foCCg4OCgH58fHx+gIKDg4KAfX18fX6AgYKDgoB+fXx9foCBgoKCgH99fX1+gIGCgoGAf359fX6AgYKCgoB+fn19fn+BgYGBgH9+fn5+f4CBgYGAf35+fn9/gIGBgYB/fn5+f3+AgYGBgH9/fn5/f4CBgYGAf39+fn9/gIGBgIB/f35+f3+AgIGAgH9/f39/f4CAgICAf39/f39/gICAgIB/f39/fw=='
   };
