@@ -13,7 +13,7 @@
       <!-- data가 존재할 때만 src를 안전하게 바인딩하기 위해 v-if="data?.[0]" 사용 -->
       <NuxtImg
         v-if="data?.[0]"
-        class="w-auto h-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" 
+        class="w-auto aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600" 
         :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp"
         fetchpriority="high"
         loading="eager"
