@@ -63,17 +63,19 @@
 
   // [추가] 컴포넌트가 재사용되거나 새로운 데이터를 불러올 때 로딩 상태 리셋
   watch(() => data.value, () => {
-    isImageLoaded.value = false;
+    isImageLoaded.value = false
   });
 
   onMounted(() => {
-    typeText();
+    setTimeout(()=>{
+      typeText()
+    }, 1000)
   });
 
   const typeText = async () => {
     for (let i = 0; i < textToType.length; i++) {
-      await new Promise((resolve) => setTimeout(resolve, typingSpeed));
-      displayedText.value += textToType[i];
+      await new Promise((resolve) => setTimeout(resolve, typingSpeed))
+      displayedText.value += textToType[i]
     }
   };
 </script>
