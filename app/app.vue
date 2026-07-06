@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <button v-else @click="play(); showContent = true;"
+      <button v-else @click="handleOpenClick"
               class="mb-12 bg-[#c0c0c0] border-t-2 border-l-2 border-white border-b-2 border-r-2 border-b-black border-r-black px-12 py-3 text-lg font-bold hover:bg-[#d0d0d0] active:translate-y-[1px] shadow-lg animate-bounce">
         초대장 열기
       </button>
@@ -48,4 +48,14 @@
     setTimeout(() => { isLoaded.value = true; }, 5000); // 3초 로딩
     imageTimestamp.value = Date.now();
   });
+
+  const handleOpenClick = async () => {
+    try {
+      await play()
+    }catch(err) {
+      console.error("오디오 재생 실패:", err)
+    }finally {
+      showContent = true;
+    }
+  }
 </script>
