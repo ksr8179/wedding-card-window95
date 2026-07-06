@@ -55,7 +55,7 @@
     }catch(err) {
       console.error("오디오 재생 실패:", err)
     }finally {
-      showContent = true;
+      showContent.value = true;
     }
   }
 </script>
