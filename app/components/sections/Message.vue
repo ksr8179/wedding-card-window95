@@ -23,7 +23,7 @@
       />
     </div>
 
-    <div class="flex-grow bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
+    <div v-if="showContent" class="flex-grow bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
       <div class="font-['Courier_New',monospace] text-sm text-black leading-relaxed whitespace-pre-line">
         <span class="text-[#000000] text-sm tracking-wide">{{ displayedText }}</span>
         <span class="inline-block w-[2px] h-[1.2em] bg-black ml-1 animate-[blink_0.7s_step-end_infinite] align-middle"></span>
@@ -44,6 +44,7 @@
   const displayedText = ref('');
   const typingSpeed = 100; // 타이핑 속도 (ms)
   const imageTimestamp = useState('imageTimestamp');
+  const showContent = useState('showContent');
 
   // [추가] 이미지 자체의 브라우저 렌더링 완료 여부 상태 변수
   const isImageLoaded = ref(false);

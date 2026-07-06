@@ -25,7 +25,7 @@
         <span class="text-[11px] font-bold tracking-wide">청 첩 장.exe</span>
         <button @click="showContent = false" class="text-[10px] bg-[#c0c0c0] text-black px-1 border border-black">X</button>
       </div>
-      <UiWindowFrame v-if="showContent" title="message.txt"><SectionsMessage /></UiWindowFrame>
+      <UiWindowFrame title="message.txt"><SectionsMessage /></UiWindowFrame>
       <UiWindowFrame v-if="showContent" title="schedule.ini"><SectionsSchedule /></UiWindowFrame>
       <UiWindowFrame title="gallery.exe"><SectionsGallery /></UiWindowFrame>
       <UiWindowFrame title="bank.txt"><SectionsBankContact /></UiWindowFrame>
@@ -36,10 +36,11 @@
 
 <script setup>
   import { weddingConfig as config } from '~/config/wedding.config';
-  const showContent = ref(false);
   const loadingProgress = ref(0);
   const loadingCount = ref(5);
   const isLoaded = ref(false);
+  
+  const showContent = useState('showContent', () => '');
   const imageTimestamp =  useState('imageTimestamp', () => '');
   const { play } = useSound(config.mouseSound);
 
@@ -48,6 +49,7 @@
     setInterval(() => { loadingCount.value -= 1; }, 1000);
     setTimeout(() => { isLoaded.value = true; }, 5000); // 3초 로딩
     imageTimestamp.value = Date.now();
+    showContent.value = false;
   });
 
   const handleOpenClick = async () => {
