@@ -69,7 +69,7 @@
   onMounted(() => {
     setTimeout(()=>{
       typeText()
-    }, 1000)
+    }, 2000)
   });
 
   const typeText = async () => {
