@@ -1,29 +1,33 @@
 <template>
   <div class="flex flex-col h-[540px] md:h-[815px]">
-    <!-- 1. API 데이터가 아직 불러와지지 않았거나, 이미지 렌더링이 완료되지 않았을 때 -->
-    <div v-if="pending || !isImageLoaded" class="border border-[#808080] p-1 bg-white mb-1">
+    <!-- 1. 로딩 상태 박스 -->
+    <!-- box-border와 overflow-hidden을 추가하여 박스 밖으로 탈출하는 것을 방지합니다 -->
+    <div v-if="pending || !isImageLoaded" class="box-border border border-[#808080] p-1 bg-white mb-1 overflow-hidden">
       <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-600">
         로딩 중...
       </div>
     </div>
 
-    <!-- 2. API 데이터가 있고 이미지 렌더링도 끝났을 때 숨김 해제 -->
-    <!-- v-if 대신 항상 DOM에 유지하되 조건부 노출(v-show)하여 백그라운드 로드를 트리거합니다 -->
-    <div v-show="!pending && isImageLoaded" class="aspect-square border border-[#808080] p-1 bg-white mb-1">
-      <!-- data가 존재할 때만 src를 안전하게 바인딩하기 위해 v-if="data?.[0]" 사용 -->
-      <NuxtImg
-        v-if="data?.[0]"
-        class="w-full h-full object-cover bg-gray-500 flex items-center justify-center text-[8px] text-gray-600" 
-        :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp"
-        fetchpriority="high"
-        loading="eager"
-        quality="80"
-        format="webp"
-        @load="handleImageLoad"
-      />
+    <!-- 2. 이미지 노출 박스 -->
+    <!-- aspect-square 내부에서 p-1 때문에 터지는 것을 방지하기 위해 h-auto와 max-w-full 구조로 안전하게 변경합니다 -->
+    <div v-show="!pending && isImageLoaded" class="w-full border border-[#808080] bg-white mb-1 box-border">
+      <div class="aspect-square w-full p-1 flex items-center justify-center overflow-hidden">
+        <NuxtImg
+          v-if="data?.[0]"
+          class="w-full h-full object-cover bg-gray-500 text-[8px] text-gray-600" 
+          :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp"
+          fetchpriority="high"
+          loading="eager"
+          quality="80"
+          format="webp"
+          @load="handleImageLoad"
+        />
+      </div>
     </div>
 
-    <div v-if="showContent" class="flex-grow bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
+    <!-- 3. 텍스트 콘텐츠 영역 -->
+    <!-- flex-grow와 함께 최소 높이 제한(min-h-0)을 주어야 내부 스크롤(overflow-y-auto)이 무한히 늘어나지 않고 정상 작동합니다 -->
+    <div v-if="showContent" class="flex-grow min-h-0 bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
       <div class="font-['Courier_New',monospace] text-sm text-black leading-relaxed whitespace-pre-line">
         <span class="text-[#000000] text-sm tracking-wide">{{ displayedText }}</span>
         <span class="inline-block w-[2px] h-[1.2em] bg-black ml-1 animate-[blink_0.7s_step-end_infinite] align-middle"></span>
