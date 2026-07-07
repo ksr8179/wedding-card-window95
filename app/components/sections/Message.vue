@@ -26,7 +26,7 @@
     </div>
 
     <!-- 3. 텍스트 콘텐츠 영역 -->
-    <div v-if="showContent" class="bg-white border border-[#808080] p-4 shadow-inner">
+    <div v-if="showContent" class="flex-grow min-h-0 bg-white border border-[#808080] p-4 overflow-hidden hadow-inner">
       <div class="font-['Courier_New',monospace] text-sm text-black leading-relaxed whitespace-pre-line">
         <span class="text-[#000000] text-sm tracking-wide">{{ displayedText }}</span>
         <span class="inline-block w-[2px] h-[1.2em] bg-black ml-1 animate-[blink_0.7s_step-end_infinite] align-middle"></span>
