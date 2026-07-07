@@ -11,7 +11,7 @@
     <!-- 2. 이미지 노출 박스 -->
     <!-- aspect-square 내부에서 p-1 때문에 터지는 것을 방지하기 위해 h-auto와 max-w-full 구조로 안전하게 변경합니다 -->
     <div v-show="!pending && isImageLoaded" class="w-full border border-[#808080] bg-white mb-1 box-border">
-      <div @click="openModal(runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp)" class="aspect-square w-full p-1 flex items-center justify-center overflow-hidden">
+      <div class="aspect-square w-full p-1 flex items-center justify-center overflow-hidden">
         <NuxtImg
           v-if="data?.[0]"
           class="w-full h-full object-cover bg-gray-500 text-[8px] text-gray-600" 
@@ -33,22 +33,6 @@
       </div>
     </div>
   </div>
-  <!-- 3. 모달 뷰어 (기존 유지) -->
-  <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1">
-      <div class="bg-[#000080] text-white px-2 py-1 flex justify-between">
-        <span class="text-xs">viewer.exe</span>
-        <button @click="selectedImage = null" class="bg-[#c0c0c0] text-black px-1 border border-black text-[10px]">X</button>
-      </div>
-      <div class="p-2">
-        <NuxtImg
-          :src="selectedImage" class="w-full border-2 border-black"
-          loading="eager" 
-          quality="80"
-          format="webp" />
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup>
@@ -64,22 +48,9 @@
   const typingSpeed = 100; // 타이핑 속도 (ms)
   const imageTimestamp = useState('imageTimestamp');
   const showContent = ref(false);
-  const selectedImage = ref(null);
 
   // [추가] 이미지 자체의 브라우저 렌더링 완료 여부 상태 변수
   const isImageLoaded = ref(false);
-
-  // [추가] 컴포넌트가 재사용되거나 새로운 데이터를 불러올 때 로딩 상태 리셋
-  watch(() => data.value, () => {
-    isImageLoaded.value = false
-  });
-
-  onMounted(() => {
-    setTimeout(()=>{
-      showContent.value = true
-      typeText();
-    }, 5300)
-  });
 
   // [추가] 이미지 파일 로드가 끝났을 때 호출할 함수
   const handleImageLoad = () => {
@@ -93,14 +64,22 @@
     }
   })
 
+  // [추가] 컴포넌트가 재사용되거나 새로운 데이터를 불러올 때 로딩 상태 리셋
+  watch(() => data.value, () => {
+    isImageLoaded.value = false
+  });
+
+  onMounted(() => {
+    setTimeout(()=>{
+      showContent.value = true
+      typeText();
+    }, 5300)
+  });
+
   const typeText = async () => {
     for (let i = 0; i < textToType.length; i++) {
       await new Promise((resolve) => setTimeout(resolve, typingSpeed))
       displayedText.value += textToType[i]
     }
-  }
-  
-  const openModal = (img) => {
-    selectedImage.value = img;
-  }
+  };
 </script>
