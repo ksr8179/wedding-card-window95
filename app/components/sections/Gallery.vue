@@ -28,7 +28,7 @@
         >
           <!-- [수정] v-show와 @load를 추가하여 렌더링이 끝난 시점에만 노출 -->
           <NuxtImg 
-            class="w-full h-full object-contain" 
+            class="w-full h-full object-cover" 
             :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp"
             loading="eager" 
             quality="80"
