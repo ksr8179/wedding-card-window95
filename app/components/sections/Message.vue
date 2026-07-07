@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-[540px] md:h-[815px]">
+  <div class="flex flex-col min-h-[540px] md:min-h-[815px] h-auto">
     <!-- 1. 로딩 상태 박스 -->
     <!-- box-border와 overflow-hidden을 추가하여 박스 밖으로 탈출하는 것을 방지합니다 -->
     <div v-if="pending || !isImageLoaded" class="box-border border border-[#808080] p-1 bg-white mb-1 overflow-hidden">
@@ -26,8 +26,7 @@
     </div>
 
     <!-- 3. 텍스트 콘텐츠 영역 -->
-    <!-- flex-grow와 함께 최소 높이 제한(min-h-0)을 주어야 내부 스크롤(overflow-y-auto)이 무한히 늘어나지 않고 정상 작동합니다 -->
-    <div v-if="showContent" class="flex-grow min-h-0 bg-white border border-[#808080] p-4 overflow-y-auto shadow-inner">
+    <div v-if="showContent" class="bg-white border border-[#808080] p-4 shadow-inner">
       <div class="font-['Courier_New',monospace] text-sm text-black leading-relaxed whitespace-pre-line">
         <span class="text-[#000000] text-sm tracking-wide">{{ displayedText }}</span>
         <span class="inline-block w-[2px] h-[1.2em] bg-black ml-1 animate-[blink_0.7s_step-end_infinite] align-middle"></span>
