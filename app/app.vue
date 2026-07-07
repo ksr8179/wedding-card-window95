@@ -9,7 +9,7 @@
 
       <div v-if="!isLoaded" class="w-full max-w-[600px] bg-[#c0c0c0] border-2 border-white border-b-black border-r-black p-1 mb-8 shadow-xl">
         <div class="bg-white border border-[#808080] h-6 relative flex items-center overflow-hidden">
-          <div class="bg-[#000080] h-full transition-all duration-[5000ms] ease-linear" :style="{ width: loadingProgress + '%' }"></div>
+          <div class="bg-[#000080] h-full transition-all duration-[3000ms] ease-linear" :style="{ width: loadingProgress + '%' }"></div>
           <span class="absolute w-full text-center text-[14px] font-bold tracking-wider mix-blend-difference text-white"> 로     딩     중 ...  ( {{ loadingCount }} seconds)</span>
         </div>
       </div>
