@@ -68,8 +68,9 @@
 
   onMounted(() => {
     setTimeout(()=>{
-      typeText()
-    }, 1500)
+      showContent.value = true
+      typeText();
+    }, 2000)
   });
 
   const typeText = async () => {
