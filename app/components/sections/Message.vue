@@ -34,7 +34,7 @@
     </div>
   </div>
   <!-- 3. 모달 뷰어 (기존 유지) -->
-  <div v-if="selectedImage && isImageLoaded" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+  <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
     <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1">
       <div class="bg-[#000080] text-white px-2 py-1 flex justify-between">
         <span class="text-xs">viewer.exe</span>
@@ -99,7 +99,7 @@
       displayedText.value += textToType[i]
     }
   }
-
+  
   const openModal = (img) => {
     selectedImage.value = img;
   }
