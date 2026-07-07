@@ -37,7 +37,7 @@
 <script setup>
   import { weddingConfig as config } from '~/config/wedding.config';
   const loadingProgress = ref(0);
-  const loadingCount = ref(5);
+  const loadingCount = ref(3);
   const isLoaded = ref(false);
   
   const showContent = ref(false)
@@ -47,7 +47,7 @@
   onMounted(() => {
     setTimeout(() => { loadingProgress.value = 100; }, 100);
     setInterval(() => { loadingCount.value -= 1; }, 1000);
-    setTimeout(() => { isLoaded.value = true; }, 5000); // 3초 로딩
+    setTimeout(() => { isLoaded.value = true; }, 3000); // 3초 로딩
     imageTimestamp.value = Date.now()
   });
 
@@ -59,7 +59,7 @@
     }finally {
       setTimeout(()=>{
         showContent.value = true // .value 잊지 말고 적용!
-      }, 1000);
+      }, 2000);
     }
   }
 </script>

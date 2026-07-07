@@ -70,7 +70,7 @@
     setTimeout(()=>{
       showContent.value = true
       typeText();
-    }, 2000)
+    }, 5000)
   });
 
   const typeText = async () => {
