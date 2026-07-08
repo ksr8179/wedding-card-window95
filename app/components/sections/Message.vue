@@ -11,10 +11,10 @@
     <!-- 2. 이미지 노출 박스 -->
     <!-- aspect-square 내부에서 p-1 때문에 터지는 것을 방지하기 위해 h-auto와 max-w-full 구조로 안전하게 변경합니다 -->
     <div v-show="!pending && isImageLoaded" class="w-full border border-[#808080] bg-white mb-1 box-border">
-      <div class="aspect-square w-full p-1 flex items-center justify-center overflow-hidden">
+      <div class="aspect-square w-full overflow-hidden">
         <NuxtImg
           v-if="data?.[0]"
-          class="w-full h-full object-cover bg-gray-500 text-[8px] text-gray-600" 
+          class="w-full h-full aspect-square object-cover bg-gray-500 text-[8px] text-gray-600" 
           :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp"
           fetchpriority="high"
           loading="eager"
