@@ -41,12 +41,12 @@
     <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1 my-auto">
       
       <!-- 타이틀 바: items-center로 X 버튼이 위로 튀지 않게 수직 중앙 정렬 -->
-      <div class="bg-[#000080] text-white px-2 py-1 flex items-center justify-between">
+      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between">
         <span class="text-xs">viewer.exe</span>
         <!-- X 버튼: 기존 스타일 유지 + flex 정렬로 위치 고정 -->
         <button 
           @click="selectedImage = null" 
-          class="bg-[#c0c0c0] text-black px-1 border border-black text-[10px] flex items-center justify-center h-4"
+          class="bg-[#c0c0c0] text-black px-1.5 py-0.5 border border-t-white border-l-white border-b-black border-r-black text-[10px] active:border-b-white active:border-r-white active:border-t-black active:border-l-black font-bold h-4 flex items-center justify-center min-w-[16px]"
         >
           X
         </button>

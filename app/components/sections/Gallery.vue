@@ -41,9 +41,9 @@
     <!-- 3. 모달 뷰어 (기존 유지) -->
     <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1">
-        <div class="bg-[#000080] text-white px-2 py-1 flex justify-between">
+        <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex justify-between">
           <span class="text-xs">viewer.exe</span>
-          <button @click="selectedImage = null" class="bg-[#c0c0c0] text-black px-1 border border-black text-[10px]">X</button>
+          <button @click="selectedImage = null" class="bg-[#c0c0c0] text-black px-1.5 py-0.5 border border-t-white border-l-white border-b-black border-r-black text-[10px] active:border-b-white active:border-r-white active:border-t-black active:border-l-black font-bold h-4 flex items-center justify-center min-w-[16px]">X</button>
         </div>
         <div class="p-2">
           <NuxtImg
