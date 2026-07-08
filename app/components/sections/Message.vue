@@ -34,16 +34,15 @@
       </div>
     </div>
   </div>
-  <!-- 팝업 배경: items-center justify-center로 중앙 정렬 -->
+  <!-- 팝업 배경 -->
   <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
     
-    <!-- 팝업 창: 기존 95 스타일 테두리 색상 완벽 유지 + my-auto 추가 -->
-    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1 my-auto">
+    <!-- 팝업 창: max-w 제한을 없애고 이미지 크기대로 커지게 설정 -->
+    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-auto p-1 my-auto flex flex-col">
       
-      <!-- 타이틀 바: items-center로 X 버튼이 위로 튀지 않게 수직 중앙 정렬 -->
-      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between">
+      <!-- 타이틀 바 -->
+      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between shrink-0">
         <span class="text-xs">viewer.exe</span>
-        <!-- X 버튼: 기존 스타일 유지 + flex 정렬로 위치 고정 -->
         <button 
           @click="selectedImage = null" 
           class="bg-[#c0c0c0] text-black px-1.5 py-0.5 border border-t-white border-l-white border-b-black border-r-black text-[10px] active:border-b-white active:border-r-white active:border-t-black active:border-l-black font-bold h-4 flex items-center justify-center min-w-[16px]"
@@ -52,11 +51,11 @@
         </button>
       </div>
       
-      <!-- 이미지 영역: max-h 설정을 더해 이미지가 화면을 벗어나 버튼을 밀어내는 현상 방지 -->
-      <div class="p-2">
+      <!-- 이미지 영역: overflow와 높이 제한을 전부 제거 -->
+      <div class="p-2 bg-[#808080]">
         <NuxtImg
           :src="selectedImage" 
-          class="w-full max-h-[70vh] object-contain border-2 border-black"
+          class="block max-w-none h-auto object-none border-2 border-white bg-white"
           loading="eager" 
           quality="80"
           format="webp" 
