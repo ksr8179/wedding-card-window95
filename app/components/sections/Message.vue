@@ -51,11 +51,10 @@
         </button>
       </div>
       
-      <!-- 이미지 영역: 스크롤바가 원천 차단되도록 overflow-hidden 적용 -->
-      <div class="p-2 bg-[#808080] overflow-hidden">
+      <div class="p-2 bg-[#808080] flex-grow max-h-[calc(90vh-40px)] flex items-center justify-center overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
-          class="w-auto h-auto block object-contain border-2 border-white bg-black"
+          class="block object-contain max-w-full max-h-full border-2 border-white bg-black"
           loading="eager" 
           quality="80"
           format="webp" 
