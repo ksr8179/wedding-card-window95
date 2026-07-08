@@ -21,6 +21,7 @@
           quality="80"
           format="webp"
           @load="handleImageLoad"
+          @click="openModal(runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp)"
         />
       </div>
     </div>
@@ -30,6 +31,21 @@
       <div class="font-['Courier_New',monospace] text-sm text-black leading-relaxed whitespace-pre-line">
         <span class="text-[#000000] text-sm tracking-wide">{{ displayedText }}</span>
         <span class="inline-block w-[2px] h-[1.2em] bg-black ml-1 animate-[blink_0.7s_step-end_infinite] align-middle"></span>
+      </div>
+    </div>
+  </div>
+  <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1">
+      <div class="bg-[#000080] text-white px-2 py-1 flex justify-between">
+        <span class="text-xs">viewer.exe</span>
+        <button @click="selectedImage = null" class="bg-[#c0c0c0] text-black px-1 border border-black text-[10px]">X</button>
+      </div>
+      <div class="p-2">
+        <NuxtImg
+          :src="selectedImage" class="w-full border-2 border-black"
+          loading="eager" 
+          quality="80"
+          format="webp" />
       </div>
     </div>
   </div>
@@ -48,6 +64,7 @@
   const typingSpeed = 100; // 타이핑 속도 (ms)
   const imageTimestamp = useState('imageTimestamp');
   const showContent = ref(false);
+  const selectedImage = ref(null);
 
   // [추가] 이미지 자체의 브라우저 렌더링 완료 여부 상태 변수
   const isImageLoaded = ref(false);
@@ -82,4 +99,8 @@
       displayedText.value += textToType[i]
     }
   };
+  
+  const openModal = (img) => {
+    selectedImage.value = img;
+  }
 </script>
