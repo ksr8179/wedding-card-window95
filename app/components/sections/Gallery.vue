@@ -43,7 +43,7 @@
     <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
       
       <!-- 팝업 창: 고전 윈도우 스타일 테두리 및 그림자 보강 -->
-      <div class="bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-gray-700 border-r-gray-700 w-full max-w-sm p-1 shadow-2xl my-auto">
+      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] border-2 border-t-white border-l-white border-b-gray-700 border-r-gray-700 w-full max-w-sm p-1 shadow-2xl my-auto">
         
         <!-- 타이틀 바: flex와 items-center로 X 버튼 수직 정렬 맞춤 -->
         <div class="bg-[#000080] text-white px-2 py-1 flex items-center justify-between h-6">

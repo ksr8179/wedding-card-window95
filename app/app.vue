@@ -21,7 +21,7 @@
     </div>
 
     <div v-show="showContent" class="w-full max-w-[480px] bg-[#c0c0c0] p-1 border-2 border-white border-b-black border-r-black mx-auto">
-      <div class="bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-gray-700 border-r-gray-700 px-2 py-0.5 flex justify-between items-center mb-2">
+      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-0.5 flex justify-between items-center mb-2">
         <span class="text-[11px] font-bold tracking-wide">청 첩 장.exe</span>
         <button @click="showContent = false" class="bg-[#c0c0c0] text-black px-1.5 py-0.5 border border-t-white border-l-white border-b-black border-r-black text-[10px] active:border-b-white active:border-r-white active:border-t-black active:border-l-black font-bold h-4 flex items-center justify-center min-w-[16px]">X</button>
       </div>
