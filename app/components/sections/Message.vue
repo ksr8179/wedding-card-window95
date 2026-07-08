@@ -36,7 +36,7 @@
   </div>
   <!-- 팝업 배경 -->
   <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1 flex flex-col">
+    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-xl max-h-[85vh] p-1 flex flex-col overflow-hidden">
       
       <!-- 타이틀 바 -->
       <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between shrink-0">
@@ -49,10 +49,10 @@
         </button>
       </div>
       
-      <div class="p-2 bg-[#808080] flex-grow flex items-center justify-center overflow-hidden">
+      <div class="p-2 bg-[#808080] flex-grow min-h-0 flex items-center justify-center overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
-          class="w-full object-contain border-2 border-white bg-black"
+          class="w-max-w-full max-h-full w-auto h-auto block object-contain border-2 border-white bg-black"
           loading="eager" 
           quality="80"
           format="webp" 
