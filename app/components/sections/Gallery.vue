@@ -39,33 +39,18 @@
       </div>
     </template>
     <!-- 3. 모달 뷰어 (기존 유지) -->
-    <!-- 팝업 배경: items-center justify-center 유지 및 스크롤 대비 -->
-    <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
-      
-      <!-- 팝업 창: 고전 윈도우 스타일 테두리 및 그림자 보강 -->
-      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] border-2 border-t-white border-l-white border-b-gray-700 border-r-gray-700 w-full max-w-sm p-1 shadow-2xl my-auto">
-        
-        <!-- 타이틀 바: flex와 items-center로 X 버튼 수직 정렬 맞춤 -->
-        <div class="bg-[#000080] text-white px-2 py-1 flex items-center justify-between h-6">
-          <span class="text-xs font-bold font-mono">viewer.exe</span>
-          <!-- X 버튼: 크기 고정 및 클릭 영역 확보 -->
-          <button 
-            @click="selectedImage = null" 
-            class="bg-[#c0c0c0] text-black px-1.5 py-0.5 border border-t-white border-l-white border-b-black border-r-black text-[10px] active:border-b-white active:border-r-white active:border-t-black active:border-l-black font-bold h-4 flex items-center justify-center min-w-[16px]"
-          >
-            X
-          </button>
+    <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1">
+        <div class="bg-[#000080] text-white px-2 py-1 flex justify-between">
+          <span class="text-xs">viewer.exe</span>
+          <button @click="selectedImage = null" class="bg-[#c0c0c0] text-black px-1 border border-black text-[10px]">X</button>
         </div>
-        
-        <!-- 이미지 영역 -->
-        <div class="p-2 bg-[#c0c0c0]">
+        <div class="p-2">
           <NuxtImg
-            :src="selectedImage" 
-            class="w-full max-h-[70vh] object-contain border-2 border-t-gray-700 border-l-gray-700 border-b-white border-r-white bg-black"
+            :src="selectedImage" class="w-full border-2 border-black"
             loading="eager" 
             quality="80"
-            format="webp" 
-          />
+            format="webp" />
         </div>
       </div>
     </div>

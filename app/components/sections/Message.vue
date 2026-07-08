@@ -34,29 +34,29 @@
       </div>
     </div>
   </div>
-  <!-- 팝업 배경: items-center justify-center 유지 및 스크롤 대비 -->
-  <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
+  <!-- 팝업 배경: items-center justify-center로 중앙 정렬 -->
+  <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
     
-    <!-- 팝업 창: 고전 윈도우 스타일 테두리 및 그림자 보강 -->
-    <div class="bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-gray-700 border-r-gray-700 w-full max-w-sm p-1 shadow-2xl my-auto">
+    <!-- 팝업 창: 기존 95 스타일 테두리 색상 완벽 유지 + my-auto 추가 -->
+    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1 my-auto">
       
-      <!-- 타이틀 바: flex와 items-center로 X 버튼 수직 정렬 맞춤 -->
-      <div class="bg-[#000080] text-white px-2 py-1 flex items-center justify-between h-6">
-        <span class="text-xs font-bold font-mono">viewer.exe</span>
-        <!-- X 버튼: 크기 고정 및 클릭 영역 확보 -->
+      <!-- 타이틀 바: items-center로 X 버튼이 위로 튀지 않게 수직 중앙 정렬 -->
+      <div class="bg-[#000080] text-white px-2 py-1 flex items-center justify-between">
+        <span class="text-xs">viewer.exe</span>
+        <!-- X 버튼: 기존 스타일 유지 + flex 정렬로 위치 고정 -->
         <button 
           @click="selectedImage = null" 
-          class="bg-[#c0c0c0] text-black px-1.5 py-0.5 border border-t-white border-l-white border-b-black border-r-black text-[10px] active:border-b-white active:border-r-white active:border-t-black active:border-l-black font-bold h-4 flex items-center justify-center min-w-[16px]"
+          class="bg-[#c0c0c0] text-black px-1 border border-black text-[10px] flex items-center justify-center h-4"
         >
           X
         </button>
       </div>
       
-      <!-- 이미지 영역 -->
-      <div class="p-2 bg-[#c0c0c0]">
+      <!-- 이미지 영역: max-h 설정을 더해 이미지가 화면을 벗어나 버튼을 밀어내는 현상 방지 -->
+      <div class="p-2">
         <NuxtImg
           :src="selectedImage" 
-          class="w-full max-h-[70vh] object-contain border-2 border-t-gray-700 border-l-gray-700 border-b-white border-r-white bg-black"
+          class="w-full max-h-[70vh] object-contain border-2 border-black"
           loading="eager" 
           quality="80"
           format="webp" 
