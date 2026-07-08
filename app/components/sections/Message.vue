@@ -36,9 +36,7 @@
   </div>
   <!-- 팝업 배경 -->
   <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-    
-    <!-- 팝업 창: 너무 작았던 max-w-sm 대신, 넉넉하고 깔끔한 max-w-xl(576px)로 확장 -->
-    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-xl max-h-[90vh] p-1 my-auto flex flex-col">
+    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1 flex flex-col">
       
       <!-- 타이틀 바 -->
       <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between shrink-0">
@@ -51,10 +49,10 @@
         </button>
       </div>
       
-      <div class="p-2 bg-[#808080] flex-grow max-h-[calc(90vh-40px)] flex items-center justify-center overflow-hidden">
+      <div class="p-2 bg-[#808080] flex-grow flex items-center justify-center overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
-          class="block object-contain max-w-full max-h-full border-2 border-white bg-black"
+          class="w-full object-contain border-2 border-white bg-black"
           loading="eager" 
           quality="80"
           format="webp" 
