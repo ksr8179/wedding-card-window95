@@ -14,7 +14,7 @@
       <div class="aspect-square w-full overflow-hidden">
         <NuxtImg
           v-if="data?.[0]"
-          class="w-full h-full aspect-square object-cover bg-gray-500 text-[8px] text-gray-600" 
+          class="w-full h-full aspect-square object-cover bg-gray-500 text-[8px] text-gray-600 border-2 border-white" 
           :src="runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp"
           fetchpriority="high"
           loading="eager"
@@ -55,7 +55,7 @@
       <div class="p-2 bg-[#808080] overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
-          class="w-full h-auto block border-2 border-white bg-white"
+          class="w-full h-auto block border-2 border-white bg-black"
           loading="eager" 
           quality="80"
           format="webp" 

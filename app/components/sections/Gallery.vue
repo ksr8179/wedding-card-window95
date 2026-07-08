@@ -47,7 +47,7 @@
         </div>
         <div class="p-2">
           <NuxtImg
-            :src="selectedImage" class="w-full border-2 border-white"
+            :src="selectedImage" class="w-full border-2 border-black"
             loading="eager" 
             quality="80"
             format="webp" />
