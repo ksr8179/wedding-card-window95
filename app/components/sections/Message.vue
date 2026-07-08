@@ -37,8 +37,8 @@
   <!-- 팝업 배경 -->
   <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
     
-    <!-- 팝업 창: max-w 제한을 없애고 이미지 크기대로 커지게 설정 -->
-    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-auto p-1 my-auto flex flex-col">
+    <!-- 팝업 창: 너무 작았던 max-w-sm 대신, 넉넉하고 깔끔한 max-w-xl(576px)로 확장 -->
+    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-xl p-1 my-auto flex flex-col">
       
       <!-- 타이틀 바 -->
       <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between shrink-0">
@@ -51,11 +51,11 @@
         </button>
       </div>
       
-      <!-- 이미지 영역: overflow와 높이 제한을 전부 제거 -->
-      <div class="p-2 bg-[#808080]">
+      <!-- 이미지 영역: 스크롤바가 원천 차단되도록 overflow-hidden 적용 -->
+      <div class="p-2 bg-[#808080] overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
-          class="block max-w-none h-auto object-none border-2 border-white bg-white"
+          class="w-full h-auto block border-2 border-white bg-white"
           loading="eager" 
           quality="80"
           format="webp" 
