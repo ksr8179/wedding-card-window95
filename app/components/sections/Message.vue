@@ -55,7 +55,7 @@
       <div class="p-2 bg-[#808080] overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
-          class="max-w-full max-h-full block object-contain border-2 border-white bg-black"
+          class="w-auto h-auto block object-contain border-2 border-white bg-black"
           loading="eager" 
           quality="80"
           format="webp" 
