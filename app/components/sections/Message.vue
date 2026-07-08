@@ -36,7 +36,7 @@
   </div>
   <!-- 팝업 배경 -->
   <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-xl max-h-[85vh] p-1 flex flex-col overflow-hidden">
+    <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-xl max-h-[90vh] p-1 flex flex-col overflow-hidden">
       
       <!-- 타이틀 바 -->
       <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between shrink-0">
