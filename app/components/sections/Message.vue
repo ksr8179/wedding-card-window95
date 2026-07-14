@@ -37,8 +37,7 @@
   <!-- 팝업 배경 -->
   <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
     <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-xl max-h-[90vh] p-1 flex flex-col overflow-hidden">
-      
-      <!-- 타이틀 바 -->
+      <!-- 타이틀 바 (그대로 유지) -->
       <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex items-center justify-between shrink-0">
         <span class="text-xs">viewer.exe</span>
         <button 
@@ -49,10 +48,11 @@
         </button>
       </div>
       
-      <div class="p-2 bg-[#808080] flex-grow min-h-0 flex items-center justify-center overflow-hidden">
+      <!-- 🌟 변경 1: 부모 div에 h-[60vh] 같은 기준 높이 또는 flex-grow 구조를 위해 relative 추가 -->
+      <div class="relative p-2 bg-[#808080] flex-grow min-h-[300px] overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
-          class="max-w-full max-h-full block border-2 border-white bg-black"
+          class="absolute inset-2 m-auto max-w-[calc(100%-1rem)] max-h-[calc(100%-1rem)] block border-2 border-white bg-black object-contain"
           loading="eager" 
           quality="80"
           format="webp" 
