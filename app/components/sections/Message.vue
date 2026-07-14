@@ -52,7 +52,7 @@
       <div class="p-2 bg-[#808080] flex-grow min-h-0 flex items-center justify-center overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
-          class="w-max-w-full max-h-full w-auto h-auto block object-contain border-2 border-white bg-black"
+          class="w-full h-full object-contain block border-2 border-white"
           loading="eager" 
           quality="80"
           format="webp" 
