@@ -49,7 +49,7 @@
       </div>
       
       <!-- 🌟 변경 1: 부모 div에 h-[60vh] 같은 기준 높이 또는 flex-grow 구조를 위해 relative 추가 -->
-      <div class="relative p-2 bg-[#808080] flex-grow min-h-[300px] overflow-hidden">
+      <div class="relative p-2 bg-[#808080] flex-grow min-h-[525px] md:min-h-[800px] overflow-hidden">
         <NuxtImg
           :src="selectedImage" 
           class="absolute inset-2 m-auto max-w-[calc(100%-1rem)] max-h-[calc(100%-1rem)] block border-2 border-white bg-black object-contain"
