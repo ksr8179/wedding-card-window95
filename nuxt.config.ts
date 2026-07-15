@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     redirect: false 
   },
   image: {
-    provider: 'ipx',
+    provider: 'supabase',
     domains: [process.env.SUPABASE_URL || 'localhost'], // 본인의 supabase 프로젝트 도메인 등록
     ipx: {
       sharpOptions: {
