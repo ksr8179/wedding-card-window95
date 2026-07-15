@@ -11,10 +11,7 @@ export default defineNuxtConfig({
     redirect: false 
   },
   image: {
-    provider: 'supabase',
-    supabase: {
-      baseURL: `${process.env.SUPABASE_URL || 'https://ekregbyjrdzljjuoztas.supabase.co'}/storage/v1/object/public/`
-    }
+    domains: [process.env.SUPABASE_URL || 'localhost'], // 본인의 supabase 프로젝트 도메인 등록
   },
   // nitro: {
   //   preset: 'github_pages',

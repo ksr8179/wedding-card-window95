@@ -21,7 +21,7 @@
           quality="80"
           format="webp"
           @load="handleImageLoad"
-          @click="openModal('uploads/' + data[0].url + '?t=' + imageTimestamp)"
+          @click="openModal(runtimeConfig.public.supabaseUrl + config.ImgPath + data[0].url + '?t=' + imageTimestamp)"
         />
       </div>
     </div>
