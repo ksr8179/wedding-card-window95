@@ -12,12 +12,8 @@ export default defineNuxtConfig({
   },
   image: {
     provider: 'supabase',
-    domains: [process.env.SUPABASE_URL || 'localhost'], // 본인의 supabase 프로젝트 도메인 등록
-    ipx: {
-      sharpOptions: {
-        autoOrient: true // 최신 버전: 이 옵션이 가장 안전하고 주소를 터뜨리지 않습니다.
-        // 만약 모듈이 구버전이라면 autoOrient 대신 -> useExifOrientation: true 를 사용하세요.
-      }
+    supabase: {
+      baseURL: `${process.env.SUPABASE_URL || 'https://ekregbyjrdzljjuoztas.supabase.co'}/storage/v1/object/public/`
     }
   },
   // nitro: {
