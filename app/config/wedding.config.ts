@@ -16,9 +16,9 @@ export const weddingConfig = {
       date: "2027년 1월 30일 (토)",
       time: "오후 1시 20분",
       location: "MBC컨벤션진주 1관 컨벤션홀",
-      address: "경상남도 진주시 충무 공동 415",
-      lat : 35.1818,
-      lng : 128.1364
+      address: "경상남도 진주시 동진로 415 진주종합경기장내",
+      lat : 35.1782,
+      lng : 128.1259
     },
     // 4. 계좌 정보
     accounts: {
