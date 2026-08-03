@@ -46,10 +46,14 @@
 // config에서 리스트 형태로 가져온다고 가정
 const groomSide = [
   { relation: '신랑', name: '김성래', bank: '국민', number: '123-456' },
-  { relation: '부', name: '김OO', bank: '신한', number: '111-222' }
+  { relation: '부', name: '김OO', bank: '신한', number: '111-222' },
+  { relation: '모', name: '박OO', bank: '신한', number: '111-222' }
 ];
 const brideSide = [
   { relation: '신부', name: '장혜민', bank: '우리', number: '987-654' },
+  { relation: '부', name: '장OO', bank: '우리', number: '987-654' },
+  { relation: '모', name: '정OO', bank: '우리', number: '987-654' },
+  { relation: '장남', name: '장OO', bank: '우리', number: '987-654' },
   // 추가 인원...
 ];
 
