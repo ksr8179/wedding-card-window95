@@ -15,15 +15,15 @@ export const weddingConfig = {
     schedule: {
       date: "2027년 1월 30일 (토)",
       time: "오후 1시 20분",
-      location: "MBC컨벤션진주 1관",
+      location: "MBC컨벤션진주 1관 컨벤션홀",
       address: "경상남도 진주시 충무 공동 415",
-      lat : 35.1828367,
-      lng : 128.1355786
+      lat : 35.1818,
+      lng : 128.1364
     },
     // 4. 계좌 정보
     accounts: {
       groom: { name: "김성래", bank: "부산은행", number: "123-456-7890" },
-      bride: { name: "장혜민", bank: "신한은행", number: "098-765-4321" },
+      bride: { name: "장혜민", bank: "국민은행", number: "098-765-4321" },
     },
     // 5. 연락처
     contacts: {
