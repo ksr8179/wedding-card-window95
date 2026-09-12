@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getSupabasePublicConfig } from '~/utils/supabasePublic'
-import { weddingConfig as config } from '~/config/wedding.config
+import { weddingConfig as config } from '~/config/wedding.config'
 
 interface GalleryItem {
   id?: number
