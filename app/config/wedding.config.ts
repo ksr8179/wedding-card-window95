@@ -111,5 +111,13 @@ export const weddingConfig = {
   },
 } as const
 
+export const weddingSeo = {
+  title: `${weddingConfig.couple.groom.en} & ${weddingConfig.couple.bride.en} | Wedding Invitation`,
+  description: `${weddingConfig.couple.groom.ko} ♥ ${weddingConfig.couple.bride.ko} 결혼식에 초대합니다. ${weddingConfig.schedule.dateKo} ${weddingConfig.schedule.venueKo}`,
+  ogTitle: `${weddingConfig.couple.groom.ko} ♥ ${weddingConfig.couple.bride.ko} 결혼식에 초대합니다`,
+  ogDescription: `${weddingConfig.schedule.dateEn} ${weddingConfig.schedule.timeEn} · ${weddingConfig.schedule.venueEn}`,
+  ogImage: weddingConfig.photos.left,
+}
+
 export type WeddingConfig = typeof weddingConfig
 export type AccountPerson = (typeof weddingConfig.accounts.groomSide.people)[number]

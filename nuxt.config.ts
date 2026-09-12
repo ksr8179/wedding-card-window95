@@ -1,3 +1,5 @@
+import { weddingSeo } from './app/config/wedding.config'
+
 const readEnv = (...keys: string[]) => {
   for (const key of keys) {
     const value = process.env[key]?.trim().replace(/^['"]|['"]$/g, '')
@@ -52,14 +54,14 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/',
     head: {
-      title: 'Sung rae & Hye min | Wedding Invitation',
+      title: weddingSeo.title,
       htmlAttrs: { lang: 'ko' },
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' },
-        { name: 'description', content: '김성래 ♥ 장혜민 결혼식에 초대합니다. 2027년 1월 30일 MBC컨벤션진주' },
-        { property: 'og:title', content: '김성래 ♥ 장혜민 결혼식에 초대합니다' },
-        { property: 'og:description', content: '2027.01.30 SAT 1:20 PM · MBC Convention Jinju' },
-        { property: 'og:image', content: '/images/invitation-cover.jpg' },
+        { name: 'description', content: weddingSeo.description },
+        { property: 'og:title', content: weddingSeo.ogTitle },
+        { property: 'og:description', content: weddingSeo.ogDescription },
+        { property: 'og:image', content: weddingSeo.ogImage },
       ],
     },
   },
