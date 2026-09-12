@@ -35,8 +35,8 @@ export const weddingConfig = {
     venueEn: 'MBC Convention Jinju',
     venueKo: 'MBC컨벤션진주 1관 컨벤션홀',
     address: '경상남도 진주시 동진로 415 진주종합경기장내',
-    lat: 35.1782,
-    lng: 128.1259,
+    lat: 35.1829,
+    lng: 128.1358,
   },
 
   photos: {
