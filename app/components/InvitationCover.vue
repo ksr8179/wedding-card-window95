@@ -22,24 +22,25 @@ const COVER = {
       {{ COVER.kicker }}
     </p>
 
-    <div class="relative mx-auto mt-6 min-h-[220px] max-w-[280px]">
-      <div class="absolute left-0 top-10 h-[92px] w-[92px] overflow-hidden bg-sky-photo shadow-sm">
+    <div class="relative mx-auto mt-6 min-h-[240px] max-w-[280px]">
+      <!-- 사진 원본이 2:3 세로라 프레임도 2:3으로 맞춰 잘림 없이 담는다. -->
+      <div class="absolute left-0 top-7 aspect-[2/3] w-[84px] overflow-hidden bg-sky-photo shadow-sm">
         <img
           :src="COVER.photos.left"
           :alt="`${COVER.groom.ko}와 ${COVER.bride.ko}`"
-          class="h-full w-full object-cover"
+          class="h-full w-full object-contain"
         >
       </div>
 
-      <div class="absolute right-0 top-0 h-[148px] w-[148px] overflow-hidden bg-sky-photo shadow-md">
+      <div class="absolute right-0 top-0 aspect-[2/3] w-[124px] overflow-hidden bg-sky-photo shadow-md">
         <img
           :src="COVER.photos.right"
           :alt="`${COVER.groom.en} and ${COVER.bride.en}`"
-          class="h-full w-full object-cover"
+          class="h-full w-full object-contain"
         >
       </div>
 
-      <p class="absolute left-0 top-[138px] text-left font-script text-[1.85rem] leading-none text-ink">
+      <p class="absolute left-0 top-[166px] text-left font-script text-[1.85rem] leading-none text-ink">
         {{ COVER.groom.en }}
       </p>
       <p class="absolute bottom-2 left-[4.5rem] font-script text-lg italic text-ink">

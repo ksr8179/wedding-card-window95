@@ -9,12 +9,9 @@ interface GalleryItem {
 
 const selectedIndex = ref<number | null>(null)
 const { url: supabaseUrl } = getSupabasePublicConfig(useRuntimeConfig())
-const gubunQuery = weddingConfig.gallery.gubun == null ? 'null' : String(weddingConfig.gallery.gubun)
 
 const { data, pending } = await useFetch<GalleryItem[]>('/api/gallery', {
-  query: {
-    gubun: gubunQuery,
-  },
+  query: weddingConfig.gallery.gubun ? { gubun: weddingConfig.gallery.gubun } : {},
   key: 'wedding-gallery',
   server: false,
 })

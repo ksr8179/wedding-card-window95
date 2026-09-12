@@ -1,4 +1,6 @@
-import { getSupabasePublicConfig } from '~/utils/supabasePublic'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { serverSupabaseClient, serverSupabaseServiceRole } from '#supabase/server'
+import type { H3Event } from 'h3'
 
 type GalleryRow = {
   id: number
@@ -6,47 +8,67 @@ type GalleryRow = {
   gubun?: string | null
 }
 
-const parseGubunParam = (value: unknown) => {
+const readParam = (value: unknown) => {
   const raw = Array.isArray(value) ? value[0] : value
-  if (raw === undefined || raw === null) return null
-  const gubun = String(raw).trim()
-  if (gubun.length === 0 || gubun.toLowerCase() === 'null') return null
-  return gubun
+  if (raw === undefined || raw === null) return ''
+  return String(raw).trim()
 }
 
-const isEmptyGubun = (value: unknown) => {
-  if (value == null) return true
-  const gubun = String(value).trim().toLowerCase()
-  return gubun.length === 0 || gubun === 'null'
+// service_role은 RLS를 우회한다. 없으면 anon 클라이언트로 떨어진다.
+const resolveClient = async (event: H3Event) => {
+  const serviceRoleKey = String(useRuntimeConfig(event).supabaseServiceRoleKey || '').trim()
+  if (serviceRoleKey) {
+    try {
+      return {
+        client: serverSupabaseServiceRole(event) as unknown as SupabaseClient,
+        role: 'service_role' as const,
+      }
+    }
+    catch (error) {
+      console.error('serverSupabaseServiceRole 실패', error)
+    }
+  }
+
+  return {
+    client: (await serverSupabaseClient(event)) as unknown as SupabaseClient,
+    role: 'anon' as const,
+  }
 }
 
 export default defineEventHandler(async (event) => {
-  const { url, key } = getSupabasePublicConfig(useRuntimeConfig(event))
-  if (!url || !key) {
+  const { client, role } = await resolveClient(event)
+  const gubun = readParam(getQuery(event).gubun)
+  const wantsNull = gubun.length === 0 || gubun.toLowerCase() === 'null'
+  const debug = readParam(getQuery(event).debug).length > 0
+
+  if (debug) {
+    const { data, error, count } = await client
+      .from('gallery')
+      .select('id, url, gubun', { count: 'exact' })
+      .order('id', { ascending: true })
+      .limit(20)
+
+    return {
+      role,
+      requestedGubun: gubun || null,
+      totalCount: count,
+      error: error ? { message: error.message, code: error.code, details: error.details } : null,
+      rows: data ?? [],
+    }
+  }
+
+  let dbQuery = client.from('gallery').select('id, url, gubun').order('id', { ascending: true })
+  dbQuery = wantsNull ? dbQuery.is('gubun', null) : dbQuery.eq('gubun', gubun)
+
+  const { data, error } = await dbQuery
+  if (error) {
     throw createError({
-      statusCode: 500,
-      statusMessage: 'Supabase URL/Key가 설정되지 않았습니다.',
+      statusCode: 502,
+      statusMessage: `gallery 조회 실패 (${role}): ${error.message}`,
     })
   }
 
-  const gubun = parseGubunParam(getQuery(event).gubun)
-  const rows = await $fetch<GalleryRow[]>(`${url.replace(/\/$/, '')}/rest/v1/gallery`, {
-    query: {
-      select: 'id,url,gubun',
-      order: 'id.asc',
-    },
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-    },
-  })
-
-  const list = Array.isArray(rows) ? rows : []
-
-  return list
-    .filter((row) => {
-      if (typeof row.url !== 'string' || row.url.length === 0) return false
-      return gubun === null ? isEmptyGubun(row.gubun) : String(row.gubun ?? '').trim() === gubun
-    })
+  return ((data ?? []) as GalleryRow[])
+    .filter((row): row is GalleryRow & { url: string } => typeof row.url === 'string' && row.url.length > 0)
     .map(row => ({ id: row.id, url: row.url }))
 })

@@ -47,7 +47,7 @@ export const weddingConfig = {
 
   gallery: {
     imgPath: '/storage/v1/object/public/uploads/',
-    gubun: null,
+    gubun: null as string | null,
   },
 
   music: {
