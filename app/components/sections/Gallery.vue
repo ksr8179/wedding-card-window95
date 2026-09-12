@@ -9,14 +9,10 @@ interface GalleryItem {
 
 const runtimeConfig = useRuntimeConfig()
 const selectedIndex = ref<number | null>(null)
-const imageTimestamp = useState('imageTimestamp', () => Date.now())
 
 const { url: supabaseUrl } = getSupabasePublicConfig(runtimeConfig)
 
-const { data, pending } = await useFetch<GalleryItem[] | Record<string, unknown>>('/api/gallery', {
-  query: {
-    gubun: config.gallery.gubun,
-  },
+const { data, pending } = await useFetch<GalleryItem[]>('/api/gallery', {
   default: () => [],
 })
 
@@ -26,22 +22,13 @@ const items = computed<GalleryItem[]>(() => {
   return payload.filter(item => typeof item?.url === 'string' && item.url.length > 0)
 })
 
-const imageSrc = (url: string) => {
-  if (!supabaseUrl || url.startsWith('http') || url.startsWith('/')) return url
-  return `${supabaseUrl}${config.gallery.imgPath}${url}?t=${imageTimestamp.value}`
+const imageSrc = (filename: string) => {
+  return `${supabaseUrl}${config.gallery.imgPath}${filename}`
 }
-
-const displayItems = computed(() => {
-  if (items.value.length) return items.value
-  return [
-    { url: config.photos.left },
-    { url: config.photos.right },
-  ]
-})
 
 const selectedSrc = computed(() => {
   if (selectedIndex.value === null) return ''
-  return imageSrc(displayItems.value[selectedIndex.value]?.url ?? '')
+  return imageSrc(items.value[selectedIndex.value]?.url ?? '')
 })
 
 const openModal = (index: number) => {
@@ -53,13 +40,13 @@ const closeModal = () => {
 }
 
 const showPrev = () => {
-  if (selectedIndex.value === null || !displayItems.value.length) return
-  selectedIndex.value = (selectedIndex.value + displayItems.value.length - 1) % displayItems.value.length
+  if (selectedIndex.value === null || !items.value.length) return
+  selectedIndex.value = (selectedIndex.value + items.value.length - 1) % items.value.length
 }
 
 const showNext = () => {
-  if (selectedIndex.value === null || !displayItems.value.length) return
-  selectedIndex.value = (selectedIndex.value + 1) % displayItems.value.length
+  if (selectedIndex.value === null || !items.value.length) return
+  selectedIndex.value = (selectedIndex.value + 1) % items.value.length
 }
 
 const onKeydown = (event: KeyboardEvent) => {
@@ -102,7 +89,7 @@ onBeforeUnmount(() => {
 
     <div v-else class="mt-8 grid grid-cols-2 gap-2">
       <button
-        v-for="(img, index) in displayItems"
+        v-for="(img, index) in items"
         :key="img.id ?? `${img.url}-${index}`"
         type="button"
         class="group relative aspect-square overflow-hidden rounded-xl bg-sky-photo shadow-paper"
@@ -136,7 +123,7 @@ onBeforeUnmount(() => {
           >
             <div class="flex items-center justify-between px-1 pb-2">
               <p class="font-sans text-[10px] uppercase tracking-invitation text-ink-faint">
-                {{ (selectedIndex ?? 0) + 1 }} / {{ displayItems.length }}
+                {{ (selectedIndex ?? 0) + 1 }} / {{ items.length }}
               </p>
               <button
                 type="button"
