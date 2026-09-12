@@ -89,6 +89,7 @@ export const weddingConfig = {
           relation: '신부',
           name: '장혜민',
           bank: '국민은행',
+          kakaoPayUrl: 'https://qr.kakaopay.com/FdMM0Tucg',
         },
         {
           key: 'brideFather',
