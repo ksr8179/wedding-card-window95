@@ -27,7 +27,7 @@ const COVER = {
         <img
           :src="COVER.photos.left"
           :alt="`${COVER.groom.ko}와 ${COVER.bride.ko}`"
-          class="h-full w-full scale-[4.4] object-cover"
+          class="h-full w-full object-cover"
         >
       </div>
 
@@ -35,7 +35,7 @@ const COVER = {
         <img
           :src="COVER.photos.right"
           :alt="`${COVER.groom.en} and ${COVER.bride.en}`"
-          class="h-full w-full scale-[2.7] object-cover"
+          class="h-full w-full object-cover"
         >
       </div>
 

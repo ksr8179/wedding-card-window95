@@ -11,20 +11,27 @@ const supabase = useSupabaseClient()
 const selectedIndex = ref<number | null>(null)
 const { url: supabaseUrl } = getSupabasePublicConfig(useRuntimeConfig())
 
-const { data, pending } = await useAsyncData('wedding-gallery', async () => {
-  const { data: rows, error } = await supabase
-    .from('gallery')
-    .select('id, url')
-    .is('gubun', null)
-    .order('id', { ascending: true })
+const { data, pending } = await useAsyncData(
+  'wedding-gallery',
+  async () => {
+    const { data: rows, error } = await supabase
+      .from('gallery')
+      .select('id, url, gubun')
+      .order('id', { ascending: true })
 
-  if (error) {
-    console.error(error)
-    return []
-  }
+    if (error) {
+      console.error(error)
+      return []
+    }
 
-  return (rows ?? []).filter((item): item is GalleryItem => typeof item.url === 'string' && item.url.length > 0)
-})
+    return (rows ?? []).filter((item): item is GalleryItem => {
+      const gubun = item.gubun == null ? '' : String(item.gubun).trim().toLowerCase()
+      const emptyGubun = gubun.length === 0 || gubun === 'null'
+      return emptyGubun && typeof item.url === 'string' && item.url.length > 0
+    })
+  },
+  { server: false },
+)
 
 const items = computed<GalleryItem[]>(() => data.value ?? [])
 
