@@ -39,23 +39,6 @@ export default defineEventHandler(async (event) => {
   const { client, role } = await resolveClient(event)
   const gubun = readParam(getQuery(event).gubun)
   const wantsNull = gubun.length === 0 || gubun.toLowerCase() === 'null'
-  const debug = readParam(getQuery(event).debug).length > 0
-
-  if (debug) {
-    const { data, error, count } = await client
-      .from('gallery')
-      .select('id, url, gubun', { count: 'exact' })
-      .order('id', { ascending: true })
-      .limit(20)
-
-    return {
-      role,
-      requestedGubun: gubun || null,
-      totalCount: count,
-      error: error ? { message: error.message, code: error.code, details: error.details } : null,
-      rows: data ?? [],
-    }
-  }
 
   let dbQuery = client.from('gallery').select('id, url, gubun').order('id', { ascending: true })
   dbQuery = wantsNull ? dbQuery.is('gubun', null) : dbQuery.eq('gubun', gubun)

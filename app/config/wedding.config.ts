@@ -107,10 +107,6 @@ export const weddingConfig = {
     },
   },
 
-  contacts: {
-    groom: '010-7244-8179',
-    bride: '010-9116-7592',
-  },
 } as const
 
 export const weddingSeo = {
@@ -121,7 +117,6 @@ export const weddingSeo = {
   ogImage: weddingConfig.photos.left,
 }
 
-export type WeddingConfig = typeof weddingConfig
 export type AccountPerson =
   | (typeof weddingConfig.accounts.groomSide.people)[number]
   | (typeof weddingConfig.accounts.brideSide.people)[number]
