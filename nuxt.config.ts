@@ -59,7 +59,7 @@ export default defineNuxtConfig({
       kakaoApiKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
       tmapAppKey: process.env.NUXT_PUBLIC_TMAP_APP_KEY || process.env.TMAP_APP_KEY,
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,
-      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_KEY,
+      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
     },
   },
 })
