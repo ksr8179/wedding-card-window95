@@ -1,11 +1,23 @@
 import { getSupabasePublicConfig } from '~/utils/supabasePublic'
 
+type GalleryRow = {
+  id: number
+  url: string
+  gubun?: string | null
+}
+
 const readGubun = (value: unknown) => {
   const raw = Array.isArray(value) ? value[0] : value
   if (raw === undefined || raw === null) return null
   const gubun = String(raw).trim()
   if (gubun.length === 0 || gubun === 'null') return null
   return gubun
+}
+
+const matchesGubun = (row: GalleryRow, gubun: string | null) => {
+  const value = row.gubun == null ? '' : String(row.gubun).trim()
+  if (gubun === null) return value.length === 0
+  return value === gubun
 }
 
 export default defineEventHandler(async (event) => {
@@ -18,32 +30,19 @@ export default defineEventHandler(async (event) => {
   }
 
   const gubun = readGubun(getQuery(event).gubun)
-  const query: Record<string, string> = {
-    select: 'id,url',
-    order: 'id.asc',
-  }
 
-  if (gubun === null) {
-    query.or = '(gubun.is.null,gubun.eq."")'
-  } else {
-    query.gubun = `eq.${gubun}`
-  }
+  const rows = await $fetch<GalleryRow[]>(`${url}/rest/v1/gallery`, {
+    query: {
+      select: 'id,url,gubun',
+      order: 'id.asc',
+    },
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+    },
+  })
 
-  try {
-    const data = await $fetch<Array<{ id: number; url: string }>>(`${url}/rest/v1/gallery`, {
-      query,
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-      },
-    })
-
-    return Array.isArray(data) ? data : []
-  } catch (error) {
-    console.error(error)
-    throw createError({
-      statusCode: 502,
-      statusMessage: '갤러리를 불러오지 못했습니다.',
-    })
-  }
+  return (Array.isArray(rows) ? rows : [])
+    .filter(row => typeof row?.url === 'string' && row.url.length > 0 && matchesGubun(row, gubun))
+    .map(row => ({ id: row.id, url: row.url }))
 })
