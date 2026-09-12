@@ -7,33 +7,23 @@ interface GalleryItem {
   url: string
 }
 
-const supabase = useSupabaseClient()
 const selectedIndex = ref<number | null>(null)
 const { url: supabaseUrl } = getSupabasePublicConfig(useRuntimeConfig())
+const gubunQuery = weddingConfig.gallery.gubun == null ? 'null' : String(weddingConfig.gallery.gubun)
 
-const { data, pending } = await useAsyncData(
-  'wedding-gallery',
-  async () => {
-    const { data: rows, error } = await supabase
-      .from('gallery')
-      .select('id, url, gubun')
-      .order('id', { ascending: true })
-
-    if (error) {
-      console.error(error)
-      return []
-    }
-
-    return (rows ?? []).filter((item): item is GalleryItem => {
-      const gubun = item.gubun == null ? '' : String(item.gubun).trim().toLowerCase()
-      const emptyGubun = gubun.length === 0 || gubun === 'null'
-      return emptyGubun && typeof item.url === 'string' && item.url.length > 0
-    })
+const { data, pending } = await useFetch<GalleryItem[]>('/api/gallery', {
+  query: {
+    gubun: gubunQuery,
   },
-  { server: false },
-)
+  key: 'wedding-gallery',
+  server: false,
+})
 
-const items = computed<GalleryItem[]>(() => data.value ?? [])
+const items = computed<GalleryItem[]>(() => {
+  const payload = data.value
+  if (!Array.isArray(payload)) return []
+  return payload.filter(item => typeof item?.url === 'string' && item.url.length > 0)
+})
 
 const imageSrc = (filename: string) => {
   return `${supabaseUrl}${weddingConfig.gallery.imgPath}${filename}`
