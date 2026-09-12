@@ -8,7 +8,7 @@ export interface GuestbookEntry {
   created_at: string
 }
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 3
 
 export const useGuestbook = () => {
   const runtimeConfig = useRuntimeConfig()
