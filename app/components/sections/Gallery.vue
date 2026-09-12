@@ -13,11 +13,7 @@ const selectedIndex = ref<number | null>(null)
 const { url: supabaseUrl } = getSupabasePublicConfig(runtimeConfig)
 
 const { data, pending } = await useFetch<GalleryItem[]>('/api/gallery', {
-  query: {
-    gubun: config.gallery.gubun == null ? 'null' : String(config.gallery.gubun),
-  },
-  key: 'wedding-gallery',
-  default: () => [],
+  query: config.gallery.gubun ? { gubun: config.gallery.gubun } : {},
 })
 
 const items = computed<GalleryItem[]>(() => {

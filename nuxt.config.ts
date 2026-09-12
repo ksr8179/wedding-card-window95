@@ -36,8 +36,6 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect: false,
-    url: supabaseUrl || undefined,
-    key: supabaseKey || undefined,
   },
   fonts: {
     families: [
@@ -74,8 +72,8 @@ export default defineNuxtConfig({
       kakaoJsKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
       kakaoApiKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
       tmapAppKey: process.env.NUXT_PUBLIC_TMAP_APP_KEY || process.env.TMAP_APP_KEY,
-      supabaseUrl,
-      supabaseKey,
+      supabaseUrl: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
     },
   },
 })
