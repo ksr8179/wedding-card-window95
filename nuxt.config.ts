@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/',
     head: {
-      title: 'Seong rae & Hye min | Wedding Invitation',
+      title: 'Sung rae & Hye min | Wedding Invitation',
       htmlAttrs: { lang: 'ko' },
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' },

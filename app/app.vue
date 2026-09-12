@@ -42,7 +42,7 @@
                 <Guestbook />
               </InvitationReveal>
               <footer class="px-6 pb-12 pt-2 text-center">
-                <p class="font-script text-2xl text-wine">Seong rae & Hye min</p>
+                <p class="font-script text-2xl text-wine">Sung rae & Hye min</p>
                 <p class="mt-2 font-sans text-[10px] tracking-invitation text-ink-faint">JANUARY 30, 2027</p>
               </footer>
             </div>

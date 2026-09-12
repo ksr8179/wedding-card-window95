@@ -2,7 +2,7 @@ export const weddingConfig = {
   couple: {
     groom: {
       ko: '김성래',
-      en: 'Seong rae',
+      en: 'Sung rae',
     },
     bride: {
       ko: '장혜민',
