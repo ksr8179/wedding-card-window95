@@ -40,8 +40,8 @@ export const weddingConfig = {
   },
 
   photos: {
-    left: '/images/invitation-cover.jpg',
-    right: '/images/invitation-cover.jpg',
+    left: '/images/left_image.JPG',
+    right: '/images/right_image.JPG',
     welcome: '/images/welcome_cover.jpg',
   },
 
