@@ -48,14 +48,14 @@ onMounted(() => {
         class="rounded-full bg-wine py-3 font-sans text-[11px] tracking-wide text-paper"
         @click="startKakaoNavigation(naviParams)"
       >
-        카카오내비로 오시기
+        카카오내비
       </button>
       <button
         type="button"
         class="rounded-full border border-wine/25 bg-paper-warm py-3 font-sans text-[11px] tracking-wide text-ink"
         @click="startTmapNavigation(naviParams)"
       >
-        티맵으로 오시기
+        티맵
       </button>
     </div>
   </section>
