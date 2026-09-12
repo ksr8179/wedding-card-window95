@@ -1,29 +1,35 @@
 <script setup lang="ts">
 import { getSupabasePublicConfig } from '~/utils/supabasePublic'
-import { weddingConfig as config } from '~/config/wedding.config'
+import { weddingConfig } from '~/config/wedding.config'
 
 interface GalleryItem {
   id?: number
   url: string
 }
 
-const runtimeConfig = useRuntimeConfig()
+const supabase = useSupabaseClient()
 const selectedIndex = ref<number | null>(null)
+const { url: supabaseUrl } = getSupabasePublicConfig(useRuntimeConfig())
 
-const { url: supabaseUrl } = getSupabasePublicConfig(runtimeConfig)
+const { data, pending } = await useAsyncData('wedding-gallery', async () => {
+  const { data: rows, error } = await supabase
+    .from('gallery')
+    .select('id, url')
+    .is('gubun', null)
+    .order('id', { ascending: true })
 
-const { data, pending } = await useFetch<GalleryItem[]>('/api/gallery', {
-  query: config.gallery.gubun ? { gubun: config.gallery.gubun } : {},
+  if (error) {
+    console.error(error)
+    return []
+  }
+
+  return (rows ?? []).filter((item): item is GalleryItem => typeof item.url === 'string' && item.url.length > 0)
 })
 
-const items = computed<GalleryItem[]>(() => {
-  const payload = data.value
-  if (!Array.isArray(payload)) return []
-  return payload.filter(item => typeof item?.url === 'string' && item.url.length > 0)
-})
+const items = computed<GalleryItem[]>(() => data.value ?? [])
 
 const imageSrc = (filename: string) => {
-  return `${supabaseUrl}${config.gallery.imgPath}${filename}`
+  return `${supabaseUrl}${weddingConfig.gallery.imgPath}${filename}`
 }
 
 const selectedSrc = computed(() => {
