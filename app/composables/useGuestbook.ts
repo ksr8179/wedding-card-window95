@@ -8,16 +8,29 @@ export interface GuestbookEntry {
   created_at: string
 }
 
+const PAGE_SIZE = 5
+
 export const useGuestbook = () => {
   const runtimeConfig = useRuntimeConfig()
   const supabase = useSupabaseClient()
   const entries = useState<GuestbookEntry[]>('guestbook-entries', () => [])
+  const total = useState('guestbook-total', () => 0)
   const loading = useState('guestbook-loading', () => false)
+  const loadingMore = useState('guestbook-loading-more', () => false)
   const submitting = useState('guestbook-submitting', () => false)
   const errorMessage = useState('guestbook-error', () => '')
   const configured = computed(() => getSupabasePublicConfig(runtimeConfig).configured)
+  const hasMore = computed(() => entries.value.length < total.value)
 
+  const selectRange = (from: number, to: number) => {
+    return supabase
+      .from('guestbook')
+      .select('id, name, message, created_at', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to)
+  }
 
+  // 이미 펼쳐 둔 만큼은 유지한 채 목록을 처음부터 다시 채운다.
   const fetchEntries = async () => {
     if (!configured.value) {
       errorMessage.value = 'Supabase URL/Anon Key를 .env에 설정하면 방명록이 활성화됩니다.'
@@ -25,18 +38,38 @@ export const useGuestbook = () => {
     }
     loading.value = true
     errorMessage.value = ''
-    const { data, error } = await supabase
-      .from('guestbook')
-      .select('id, name, message, created_at')
-      .order('created_at', { ascending: false })
+
+    const size = Math.max(entries.value.length, PAGE_SIZE)
+    const { data, error, count } = await selectRange(0, size - 1)
 
     if (error) {
       errorMessage.value = '방명록을 불러오지 못했습니다.'
       console.error(error)
-    } else {
+    }
+    else {
       entries.value = (data ?? []) as GuestbookEntry[]
+      total.value = count ?? entries.value.length
     }
     loading.value = false
+  }
+
+  const loadMore = async () => {
+    if (!configured.value || loadingMore.value || !hasMore.value) return
+    loadingMore.value = true
+    errorMessage.value = ''
+
+    const from = entries.value.length
+    const { data, error, count } = await selectRange(from, from + PAGE_SIZE - 1)
+
+    if (error) {
+      errorMessage.value = '이전 메시지를 불러오지 못했습니다.'
+      console.error(error)
+    }
+    else {
+      entries.value = [...entries.value, ...((data ?? []) as GuestbookEntry[])]
+      total.value = count ?? total.value
+    }
+    loadingMore.value = false
   }
 
   const createEntry = async (payload: { name: string; password: string; message: string }) => {
@@ -71,6 +104,7 @@ export const useGuestbook = () => {
     }
     if (!data) return false
     entries.value = entries.value.filter(item => item.id !== id)
+    total.value = Math.max(total.value - 1, entries.value.length)
     return true
   }
 
@@ -94,11 +128,15 @@ export const useGuestbook = () => {
 
   return {
     entries,
+    total,
     loading,
+    loadingMore,
     submitting,
     errorMessage,
     configured,
+    hasMore,
     fetchEntries,
+    loadMore,
     createEntry,
     deleteEntry,
     subscribeRealtime,

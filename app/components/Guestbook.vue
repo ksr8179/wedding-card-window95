@@ -17,10 +17,14 @@ const deletePassword = ref('')
 const { showToast } = useToast()
 const {
   entries,
+  total,
   loading,
+  loadingMore,
   submitting,
   errorMessage,
+  hasMore,
   fetchEntries,
+  loadMore,
   createEntry,
   deleteEntry,
   subscribeRealtime,
@@ -120,8 +124,12 @@ const onDelete = async (id: string) => {
       </button>
     </form>
 
-    <ul class="mt-8 space-y-3">
-      <li v-if="loading" class="py-8 text-center font-sans text-xs text-ink-faint">불러오는 중...</li>
+    <p v-if="total" class="mt-8 text-center font-sans text-[10px] tracking-invitation text-ink-faint">
+      총 {{ total }}개의 메시지
+    </p>
+
+    <ul class="mt-3 space-y-3">
+      <li v-if="loading && !entries.length" class="py-8 text-center font-sans text-xs text-ink-faint">불러오는 중...</li>
       <li v-else-if="!entries.length" class="py-8 text-center font-myeongjo text-sm text-ink-faint">
         첫 축하의 글을 남겨 주세요.
       </li>
@@ -164,5 +172,15 @@ const onDelete = async (id: string) => {
         </div>
       </li>
     </ul>
+
+    <button
+      v-if="hasMore"
+      type="button"
+      :disabled="loadingMore"
+      class="mt-4 w-full rounded-full border border-wine/20 py-3 font-sans text-[11px] tracking-wide text-wine transition active:scale-[0.99] disabled:opacity-60"
+      @click="loadMore"
+    >
+      {{ loadingMore ? '불러오는 중...' : `이전 메시지 더 보기 (${total - entries.length})` }}
+    </button>
   </section>
 </template>
