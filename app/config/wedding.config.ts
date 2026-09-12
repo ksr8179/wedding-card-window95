@@ -63,7 +63,7 @@ export const weddingConfig = {
           name: '김성래',
           bank: '부산은행',
           number: '241-12-030845-2',
-          kakaoPayUrl: 'https://qr.kakaopay.com/example-groom',
+          kakaoPayUrl: 'https://qr.kakaopay.com/Ej8BcUYjE',
         },
         {
           relation: '혼주 (부)',
