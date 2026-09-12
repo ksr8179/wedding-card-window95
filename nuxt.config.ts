@@ -7,32 +7,59 @@ export default defineNuxtConfig({
     viewer: true,
   },
   supabase: {
-    // 자동 로그인 리다이렉션 기능을 완전히 끕니다.
-    redirect: false 
+    redirect: false,
+    // 로컬에서 .env가 없어도 앱이 부팅되도록 placeholder를 둡니다.
+    // Vercel/로컬 .env의 SUPABASE_URL · SUPABASE_KEY가 있으면 그 값이 우선합니다.
+    url: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+    key: process.env.SUPABASE_KEY || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || 'public-anon-key',
+  },
+  fonts: {
+    families: [
+      { name: 'Homemade Apple', provider: 'google' },
+      { name: 'Great Vibes', provider: 'google' },
+      { name: 'Cormorant Garamond', weights: [400, 500, 600, 700], provider: 'google' },
+      { name: 'Nanum Myeongjo', weights: [400, 700], provider: 'google' },
+      { name: 'Jost', weights: [300, 400, 500, 600], provider: 'google' },
+    ],
   },
   image: {
-    domains: [process.env.SUPABASE_URL || 'localhost'], // 본인의 supabase 프로젝트 도메인 등록
+    domains: [process.env.NUXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || 'localhost'],
   },
-  // nitro: {
-  //   preset: 'github_pages',
-  // },
-
-  // 2. 앱 경로 설정
   app: {
     baseURL: '/',
+    head: {
+      title: 'Seong rae & Hye min | Wedding Invitation',
+      htmlAttrs: { lang: 'ko' },
+      meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' },
+        { name: 'description', content: '김성래 ♥ 장혜민 결혼식에 초대합니다. 2027년 1월 30일 MBC컨벤션진주' },
+        { property: 'og:title', content: '김성래 ♥ 장혜민 결혼식에 초대합니다' },
+        { property: 'og:description', content: '2027.01.30 SAT 1:20 PM · MBC Convention Jinju' },
+        { property: 'og:image', content: '/images/invitation-cover.jpg' },
+      ],
+    },
   },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   runtimeConfig: {
-    // 서버 사이드에서만 접근 가능 (비밀 키 등)
-    //kakaoApiKey: process.env.KAKAO_API_KEY, 
+    /**
+     * 서버 전용 (Vercel Environment Variables → Server)
+     * 브라우저 번들에 노출되지 않습니다.
+     */
+    kakaoRestApiKey: process.env.KAKAO_REST_API_KEY,
+    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
 
+    /**
+     * 클라이언트 + 서버
+     * 카카오 JavaScript 키, Supabase Anon Key는 프론트에서 필요하므로 public에 둡니다.
+     * Vercel에는 NUXT_PUBLIC_* 또는 아래 키 이름을 그대로 등록하세요.
+     */
     public: {
-      // 클라이언트와 서버 모두 접근 가능 (API 주소 등)
-      kakaoApiKey: process.env.KAKAO_API_KEY, 
-      TmapAppKey: process.env.TMAP_APP_KEY,
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabaseKey: process.env.SUPABASE_KEY,
-    }
-  }
+      kakaoJsKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
+      kakaoApiKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
+      tmapAppKey: process.env.NUXT_PUBLIC_TMAP_APP_KEY || process.env.TMAP_APP_KEY,
+      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,
+      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_KEY,
+    },
+  },
 })

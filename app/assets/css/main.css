@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-wine-deep text-ink antialiased;
+}
+
+.lace-edge {
+  background-image: radial-gradient(circle at 8px 8px, transparent 7px, #fffdf8 7.5px);
+  background-size: 16px 16px;
+}
+
+.paper-grain {
+  background-color: #f7f1e8;
+  background-image:
+    radial-gradient(rgba(90, 40, 30, 0.035) 0.6px, transparent 0.6px),
+    linear-gradient(180deg, rgba(255, 252, 247, 0.7), rgba(247, 241, 232, 1));
+  background-size: 3px 3px, 100% 100%;
+}

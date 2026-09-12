@@ -1,65 +1,61 @@
 <template>
-  <div class="min-h-screen w-full relative font-['Courier_New',monospace] bg-[#008080]">
-    <div v-show="!showContent" class="fixed inset-0 z-50 flex flex-col items-center justify-end p-6 transition-all duration-700" 
-        :class="isLoaded ? 'backdrop-blur-sm bg-black/30' : ''">
-      
-      <img src="~/assets/img/hamburger.gif" alt="Invitation" 
-          class="absolute inset-0 w-full h-full object-contain -z-10 transition-all duration-700"
-          :class="isLoaded ? 'opacity-40 blur-[1px]' : ''" />
-
-      <div v-if="!isLoaded" class="w-full max-w-[600px] bg-[#c0c0c0] border-2 border-white border-b-black border-r-black p-1 mb-8 shadow-xl">
-        <div class="bg-white border border-[#808080] h-6 relative flex items-center overflow-hidden">
-          <div class="bg-[#000080] h-full transition-all duration-[3000ms] ease-linear" :style="{ width: loadingProgress + '%' }"></div>
-          <span class="absolute w-full text-center text-[14px] font-bold tracking-wider mix-blend-difference text-white"> 로     딩     중 ...  ( {{ loadingCount }} seconds)</span>
+  <div class="min-h-screen bg-wine-deep">
+    <div class="mx-auto min-h-screen w-full max-w-md overflow-x-hidden bg-wine shadow-phone">
+      <div class="px-2 py-4 sm:px-3 sm:py-6">
+        <div class="relative overflow-hidden rounded-[42px] border-[10px] border-paper-lace bg-paper-lace shadow-[0_0_0_1px_rgba(255,255,255,0.4)]">
+          <div class="pointer-events-none absolute inset-0 scallop-border" />
+          <div class="paper-grain relative m-[14px] min-h-[calc(100vh-3.5rem)] rounded-[28px]">
+            <InvitationReveal>
+              <InvitationCover />
+            </InvitationReveal>
+            <div class="mx-8 h-px bg-wine/10" />
+            <InvitationReveal delay="80ms">
+              <InvitationGreeting />
+            </InvitationReveal>
+            <div class="mx-8 h-px bg-wine/10" />
+            <InvitationReveal delay="120ms">
+              <InvitationAccount />
+            </InvitationReveal>
+            <div class="mx-8 h-px bg-wine/10" />
+            <InvitationReveal delay="160ms">
+              <InvitationMap />
+            </InvitationReveal>
+            <div class="mx-8 h-px bg-wine/10" />
+            <InvitationReveal delay="200ms">
+              <Guestbook />
+            </InvitationReveal>
+            <footer class="px-6 pb-12 pt-2 text-center">
+              <p class="font-script text-2xl text-wine">Seong rae & Hye min</p>
+              <p class="mt-2 font-sans text-[10px] tracking-invitation text-ink-faint">JANUARY 30, 2027</p>
+            </footer>
+          </div>
         </div>
       </div>
-
-      <button v-else @click="handleOpenClick"
-              class="mb-12 bg-[#c0c0c0] border-t-2 border-l-2 border-white border-b-2 border-r-2 border-b-black border-r-black px-12 py-3 text-lg font-bold hover:bg-[#d0d0d0] active:translate-y-[1px] shadow-lg animate-bounce">
-        초대장 열기
-      </button>
     </div>
-
-    <div v-show="showContent" class="w-full max-w-[480px] bg-[#c0c0c0] p-1 border-2 border-white border-b-black border-r-black mx-auto">
-      <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-0.5 flex justify-between items-center mb-2">
-        <span class="text-[11px] font-bold tracking-wide">청 첩 장.exe</span>
-        <button @click="showContent = false" class="bg-[#c0c0c0] text-black px-1.5 py-0.5 border border-t-white border-l-white border-b-black border-r-black text-[10px] active:border-b-white active:border-r-white active:border-t-black active:border-l-black font-bold h-4 flex items-center justify-center min-w-[16px]">X</button>
-      </div>
-      <UiWindowFrame title="message.txt"><SectionsMessage /></UiWindowFrame>
-      <UiWindowFrame v-if="showContent" title="schedule.ini"><SectionsSchedule /></UiWindowFrame>
-      <UiWindowFrame title="gallery.exe"><SectionsGallery /></UiWindowFrame>
-      <UiWindowFrame title="bank.txt"><SectionsBankContact /></UiWindowFrame>
-      <UiWindowFrame title="footer.sys"><SectionsFooter /></UiWindowFrame>
-    </div>
+    <InvitationToast />
   </div>
 </template>
 
-<script setup>
-  import { weddingConfig as config } from '~/config/wedding.config';
-  const loadingProgress = ref(0);
-  const loadingCount = ref(3);
-  const isLoaded = ref(false);
-  
-  const showContent = ref(false)
-  const imageTimestamp =  useState('imageTimestamp', () => '');
-  const { play } = useSound(config.mouseSound);
-
-  onMounted(() => {
-    setTimeout(() => { loadingProgress.value = 100; }, 100);
-    setInterval(() => { loadingCount.value -= 1; }, 1000);
-    setTimeout(() => { isLoaded.value = true; }, 3000); // 3초 로딩
-    imageTimestamp.value = Date.now()
-  });
-
-  const handleOpenClick = async () => {
-    try {
-      await play()
-    }catch(err) {
-      console.error("오디오 재생 실패:", err)
-    }finally {
-      setTimeout(()=>{
-        showContent.value = true // .value 잊지 말고 적용!
-      }, 2000);
-    }
-  }
+<script setup lang="ts">
+useHead({
+  bodyAttrs: {
+    class: 'bg-wine-deep',
+  },
+})
 </script>
+
+<style scoped>
+.scallop-border {
+  background:
+    radial-gradient(circle at 12px 12px, transparent 9px, #fffdf8 9.5px) top left / 24px 24px repeat;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  padding: 12px;
+}
+</style>
