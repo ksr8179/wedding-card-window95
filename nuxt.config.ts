@@ -36,6 +36,7 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect: false,
+    types: false,
   },
   fonts: {
     families: [
