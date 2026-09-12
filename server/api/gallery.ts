@@ -1,4 +1,4 @@
-import { serverSupabaseClient } from '#supabase/server'
+import { getSupabasePublicConfig } from '~/utils/supabasePublic'
 
 const readGubun = (value: unknown) => {
   const raw = Array.isArray(value) ? value[0] : value
@@ -9,23 +9,41 @@ const readGubun = (value: unknown) => {
 }
 
 export default defineEventHandler(async (event) => {
+  const { url, key } = getSupabasePublicConfig(useRuntimeConfig(event))
+  if (!url || !key) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Supabase URL/Key가 설정되지 않았습니다.',
+    })
+  }
+
+  const gubun = readGubun(getQuery(event).gubun)
+  const query: Record<string, string> = {
+    select: 'id,url',
+    order: 'id.asc',
+  }
+
+  if (gubun === null) {
+    query.or = '(gubun.is.null,gubun.eq."")'
+  } else {
+    query.gubun = `eq.${gubun}`
+  }
+
   try {
-    const client = await serverSupabaseClient(event)
-    const gubun = readGubun(getQuery(event).gubun)
+    const data = await $fetch<Array<{ id: number; url: string }>>(`${url}/rest/v1/gallery`, {
+      query,
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+      },
+    })
 
-    let dbQuery = client.from('gallery').select('id, url').order('id', { ascending: true })
-    dbQuery = gubun === null ? dbQuery.is('gubun', null) : dbQuery.eq('gubun', gubun)
-
-    const { data, error } = await dbQuery
-
-    if (error) {
-      console.error(error)
-      return []
-    }
-
-    return data ?? []
+    return Array.isArray(data) ? data : []
   } catch (error) {
     console.error(error)
-    return []
+    throw createError({
+      statusCode: 502,
+      statusMessage: '갤러리를 불러오지 못했습니다.',
+    })
   }
 })
