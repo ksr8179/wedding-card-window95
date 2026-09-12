@@ -11,12 +11,13 @@ const runtimeConfig = useRuntimeConfig()
 const selectedIndex = ref<number | null>(null)
 const imageTimestamp = useState('imageTimestamp', () => Date.now())
 
-const { url: supabaseUrl, configured: galleryEnabled } = getSupabasePublicConfig(runtimeConfig)
+const { url: supabaseUrl } = getSupabasePublicConfig(runtimeConfig)
 
 const { data, pending } = await useFetch<GalleryItem[] | Record<string, unknown>>('/api/gallery', {
+  query: {
+    gubun: config.gallery.gubun,
+  },
   default: () => [],
-  immediate: galleryEnabled,
-  watch: false,
 })
 
 const items = computed<GalleryItem[]>(() => {

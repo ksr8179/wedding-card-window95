@@ -1,27 +1,15 @@
 // server/api/gallery.ts
 import { serverSupabaseClient } from '#supabase/server'
-import { getSupabasePublicConfig } from '~/utils/supabasePublic'
-
 export default defineEventHandler(async (event) => {
-  const { configured } = getSupabasePublicConfig(useRuntimeConfig(event))
-  if (!configured) {
-    return []
-  }
-
   try {
     const client = await serverSupabaseClient(event)
     const { gubun } = getQuery(event)
-    
-    let dbQuery = client.from('gallery').select('*')
 
-    if(gubun) {
-      dbQuery = dbQuery.eq("gubun", gubun)
-    } else {
-      // gubun이 없거나 빈 문자열일 경우에 대한 명확한 처리
-      dbQuery = dbQuery.is('gubun', null); // 혹은 필요한 기본 조건
+    let dbQuery = client.from('gallery').select('*').order('id', { ascending: true })
+
+    if (typeof gubun === 'string' && gubun.length > 0) {
+      dbQuery = dbQuery.eq('gubun', gubun)
     }
-
-    dbQuery = dbQuery.order('id', { ascending: true }) // 정렬
 
     const { data, error } = await dbQuery
     
