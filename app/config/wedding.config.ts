@@ -42,6 +42,16 @@ export const weddingConfig = {
   photos: {
     left: '/images/invitation-cover.jpg',
     right: '/images/invitation-cover.jpg',
+    welcome: '/images/welcome_cover.jpg',
+  },
+
+  gallery: {
+    imgPath: '/storage/v1/object/public/uploads/',
+  },
+
+  music: {
+    src: '/audio/wedding_sound.mp3',
+    volume: 0.45,
   },
 
   accounts: {
@@ -52,19 +62,19 @@ export const weddingConfig = {
           relation: '신랑',
           name: '김성래',
           bank: '부산은행',
-          number: '123-456-7890',
+          number: '241-12-030845-2',
           kakaoPayUrl: 'https://qr.kakaopay.com/example-groom',
         },
         {
           relation: '혼주 (부)',
-          name: '김OO',
-          bank: '신한은행',
+          name: '김남호',
+          bank: '부산은행',
           number: '110-111-222222',
         },
         {
           relation: '혼주 (모)',
-          name: '박OO',
-          bank: '신한은행',
+          name: '박송',
+          bank: '부산은행',
           number: '110-333-444444',
         },
       ],
@@ -81,13 +91,13 @@ export const weddingConfig = {
         },
         {
           relation: '혼주 (부)',
-          name: '장OO',
+          name: '장중진',
           bank: '우리은행',
           number: '1002-000-000000',
         },
         {
           relation: '혼주 (모)',
-          name: '정OO',
+          name: '정덕순',
           bank: '우리은행',
           number: '1002-111-111111',
         },

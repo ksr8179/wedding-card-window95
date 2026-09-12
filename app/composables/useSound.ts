@@ -1,32 +1,61 @@
-// composables/useAudio.js
-import { ref } from 'vue'
+import { weddingConfig } from '~/config/wedding.config'
 
-export const useSound = (audioUrl) => {
-  const audio = ref(null)
+export const useSound = (audioUrl?: string) => {
+  const src = audioUrl ?? weddingConfig.music.src
+  const isPlaying = useState('wedding-bgm-playing', () => false)
+  const player = useState<HTMLAudioElement | null>('wedding-bgm-el', () => null)
 
-  // 1. 오디오 재생 함수 (사용자 상호작용으로 실행되므로 브라우저 환경이 보장됨)
-  const play = () => {
-    if (!process.client) return
-
-    // 싱글톤처럼 최초 실행 시점에만 Audio 객체 생성
-    if (!audio.value) {
-      audio.value = new Audio(audioUrl)
+  const ensure = () => {
+    if (!import.meta.client) return null
+    if (!player.value) {
+      const el = new Audio(src)
+      el.loop = true
+      el.preload = 'auto'
+      el.volume = weddingConfig.music.volume
+      el.addEventListener('play', () => {
+        isPlaying.value = true
+      })
+      el.addEventListener('pause', () => {
+        isPlaying.value = false
+      })
+      player.value = el
     }
-    audio.volume = 0.9 // 볼륨 조절 (0.0 ~ 1.0)
-    audio.value.play().catch(err => {
-      console.error("오디오 재생 실패:", err)
-    })
+    return player.value
   }
 
-  // 2. 오디오 일시정지 함수
-  const pause = () => {
-    if (audio.value) {
-      audio.value.pause()
+  const play = async () => {
+    const el = ensure()
+    if (!el) return
+    try {
+      await el.play()
+    } catch (error) {
+      console.error('오디오 재생 실패:', error)
     }
+  }
+
+  const pause = () => {
+    player.value?.pause()
+  }
+
+  const stop = () => {
+    if (!player.value) return
+    player.value.pause()
+    player.value.currentTime = 0
+  }
+
+  const toggle = async () => {
+    if (isPlaying.value) {
+      stop()
+      return
+    }
+    await play()
   }
 
   return {
     play,
-    pause
+    pause,
+    stop,
+    toggle,
+    isPlaying,
   }
 }

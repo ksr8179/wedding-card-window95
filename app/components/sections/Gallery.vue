@@ -1,89 +1,175 @@
-<template>
-  <div class="grid grid-cols-1 gap-2">
-    <!-- 1. API 데이터 요청 중일 때 -->
-    <div v-if="pending" class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100">
-      <div class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500">
-        로딩 중...
-      </div>
-    </div>
+<script setup lang="ts">
+import { weddingConfig as config } from '~/config/wedding.config'
 
-      <!-- 2. API 데이터 로드 완료 후 -->
-    <template v-else>
-      <div 
-        v-for="(img, index) in data" 
-        :key="index"
-        @click="openModal(runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp)"
-        class="cursor-pointer border border-[#808080] p-1 bg-white hover:bg-blue-100"
-      >
-        <!-- [추가] 실제 이미지가 화면에 렌더링되기 전까지 보여줄 플레이스홀더 -->
-        <div 
-          v-if="!loadedImages[index]" 
-          class="w-full aspect-square bg-gray-300 flex items-center justify-center text-[8px] text-gray-500"
-        >
-          로딩 중...
-        </div>
-        <div 
-          v-show="loadedImages[index]"
-          class="w-full aspect-square bg-gray-500 flex items-center justify-center text-[8px] text-gray-500"
-        >
-          <!-- [수정] v-show와 @load를 추가하여 렌더링이 끝난 시점에만 노출 -->
-          <NuxtImg 
-            class="w-full h-full object-cover" 
-            :src="runtimeConfig.public.supabaseUrl + config.ImgPath + img.url +'?t=' + imageTimestamp"
-            loading="eager" 
-            quality="80"
-            format="webp"
-            @load="handleImageLoad(index)"
-          />
-        </div>
-      </div>
-    </template>
-    <!-- 3. 모달 뷰어 (기존 유지) -->
-    <div v-if="selectedImage" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div class="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black w-full max-w-sm p-1">
-        <div class="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-2 py-1 flex justify-between">
-          <span class="text-xs">viewer.exe</span>
-          <button @click="selectedImage = null" class="bg-[#c0c0c0] text-black px-1.5 py-0.5 border border-t-white border-l-white border-b-black border-r-black text-[10px] active:border-b-white active:border-r-white active:border-t-black active:border-l-black font-bold h-4 flex items-center justify-center min-w-[16px]">X</button>
-        </div>
-        <div class="p-2">
-          <NuxtImg
-            :src="selectedImage" class="w-full border-2 border-white"
-            loading="eager" 
-            quality="80"
-            format="webp" />
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+interface GalleryItem {
+  id?: number
+  url: string
+}
 
-<script setup>
-  import { weddingConfig as config } from '~/config/wedding.config';
-  import { ref, watch } from 'vue'; // watch 추가
+const runtimeConfig = useRuntimeConfig()
+const selectedIndex = ref<number | null>(null)
+const imageTimestamp = useState('imageTimestamp', () => Date.now())
 
-  const runtimeConfig = useRuntimeConfig();
-  const selectedImage = ref(null);
-  const imageTimestamp = useState('imageTimestamp')
+const supabaseUrl = String(runtimeConfig.public.supabaseUrl || '')
+const galleryEnabled = Boolean(supabaseUrl) && !supabaseUrl.includes('placeholder.supabase.co')
 
-  // $fetch를 포함한 useFetch는 쿼리 내부의 ref가 바뀌면 자동으로 백엔드 API를 재호출합니다.
-  const { data, pending } = await useFetch('/api/gallery', {})
+const { data, pending } = await useFetch<GalleryItem[] | Record<string, unknown>>('/api/gallery', {
+  default: () => [],
+  immediate: galleryEnabled,
+  watch: false,
+})
 
-  // [추가] 각 이미지의 렌더링 완료 상태를 인덱스별로 관리할 반응형 배열
-  const loadedImages = ref([]);
+const items = computed<GalleryItem[]>(() => {
+  const payload = data.value
+  if (!Array.isArray(payload)) return []
+  return payload.filter(item => typeof item?.url === 'string' && item.url.length > 0)
+})
 
-  // [추가] useFetch로 데이터가 정상적으로 들어오면 이미지 개수만큼 false 배열 초기화
-  watch(() => data.value, (newData) => {
-    if (newData && Array.isArray(newData)) {
-      loadedImages.value = new Array(newData.length).fill(false);
-    }
-  }, { immediate: true });
+const imageSrc = (url: string) => {
+  const base = String(runtimeConfig.public.supabaseUrl || '')
+  if (!base || url.startsWith('http') || url.startsWith('/')) return url
+  return `${base}${config.gallery.imgPath}${url}?t=${imageTimestamp.value}`
+}
 
-  // [추가] 특정 인덱스의 이미지가 완료되었을 때 실행할 함수
-  const handleImageLoad = (index) => {
-    loadedImages.value[index] = true;
-  };
+const displayItems = computed(() => {
+  if (items.value.length) return items.value
+  return [
+    { url: config.photos.left },
+    { url: config.photos.right },
+  ]
+})
 
-  const openModal = (img) => {
-    selectedImage.value = img;
-  }
+const selectedSrc = computed(() => {
+  if (selectedIndex.value === null) return ''
+  return imageSrc(displayItems.value[selectedIndex.value]?.url ?? '')
+})
+
+const openModal = (index: number) => {
+  selectedIndex.value = index
+}
+
+const closeModal = () => {
+  selectedIndex.value = null
+}
+
+const showPrev = () => {
+  if (selectedIndex.value === null || !displayItems.value.length) return
+  selectedIndex.value = (selectedIndex.value + displayItems.value.length - 1) % displayItems.value.length
+}
+
+const showNext = () => {
+  if (selectedIndex.value === null || !displayItems.value.length) return
+  selectedIndex.value = (selectedIndex.value + 1) % displayItems.value.length
+}
+
+const onKeydown = (event: KeyboardEvent) => {
+  if (selectedIndex.value === null) return
+  if (event.key === 'Escape') closeModal()
+  if (event.key === 'ArrowLeft') showPrev()
+  if (event.key === 'ArrowRight') showNext()
+}
+
+watch(selectedIndex, (value) => {
+  if (!import.meta.client) return
+  document.body.style.overflow = value === null ? '' : 'hidden'
+})
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKeydown)
+  document.body.style.overflow = ''
+})
 </script>
+
+<template>
+  <section class="px-6 py-12">
+    <p class="text-center font-sans text-[10px] uppercase tracking-invitation text-ink-faint">Gallery</p>
+    <h2 class="mt-3 text-center font-myeongjo text-xl tracking-wide text-ink">우리의 순간</h2>
+    <p class="mt-3 text-center font-myeongjo text-sm leading-7 text-ink-muted">
+      사진을 누르면 크게 볼 수 있습니다.
+    </p>
+
+    <div v-if="pending" class="mt-8 grid grid-cols-2 gap-2">
+      <div
+        v-for="n in 4"
+        :key="n"
+        class="aspect-square animate-pulse rounded-xl bg-wine/10"
+      />
+    </div>
+
+    <div v-else class="mt-8 grid grid-cols-2 gap-2">
+      <button
+        v-for="(img, index) in displayItems"
+        :key="img.id ?? `${img.url}-${index}`"
+        type="button"
+        class="group relative aspect-square overflow-hidden rounded-xl bg-sky-photo shadow-paper"
+        @click="openModal(index)"
+      >
+        <img
+          class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          :src="imageSrc(img.url)"
+          alt="웨딩 갤러리 사진"
+        >
+      </button>
+    </div>
+
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div
+          v-if="selectedIndex !== null"
+          class="fixed inset-0 z-[90] flex items-center justify-center bg-wine-deep/80 p-4 backdrop-blur-sm"
+          @click="closeModal"
+        >
+          <div
+            class="relative w-full max-w-md overflow-hidden rounded-2xl bg-paper-lace p-3 shadow-phone"
+            @click.stop
+          >
+            <div class="flex items-center justify-between px-1 pb-2">
+              <p class="font-sans text-[10px] uppercase tracking-invitation text-ink-faint">
+                {{ (selectedIndex ?? 0) + 1 }} / {{ displayItems.length }}
+              </p>
+              <button
+                type="button"
+                class="rounded-full bg-wine px-3 py-1 font-sans text-[11px] text-paper"
+                @click="closeModal"
+              >
+                닫기
+              </button>
+            </div>
+            <img
+              :src="selectedSrc"
+              class="max-h-[70vh] w-full rounded-xl object-contain"
+              alt="선택한 웨딩 사진"
+            >
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                class="rounded-full border border-wine/20 py-2 font-sans text-[11px] text-ink"
+                @click="showPrev"
+              >
+                이전
+              </button>
+              <button
+                type="button"
+                class="rounded-full bg-wine py-2 font-sans text-[11px] text-paper"
+                @click="showNext"
+              >
+                다음
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+  </section>
+</template>

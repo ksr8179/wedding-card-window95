@@ -2,6 +2,12 @@
 import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig(event)
+  const supabaseUrl = String(config.public.supabaseUrl || '')
+  if (!supabaseUrl || supabaseUrl.includes('placeholder.supabase.co')) {
+    return []
+  }
+
   try {
     const client = await serverSupabaseClient(event)
     const { gubun } = getQuery(event)
