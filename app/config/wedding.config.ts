@@ -55,28 +55,29 @@ export const weddingConfig = {
     volume: 0.45,
   },
 
+  // 계좌번호는 저장소에 남기지 않는다. key로 runtimeConfig.public.accountNumbers를 찾아 쓴다.
   accounts: {
     groomSide: {
       label: '신랑측',
       people: [
         {
+          key: 'groom',
           relation: '신랑',
           name: '김성래',
           bank: '부산은행',
-          number: '241-12-030845-2',
           kakaoPayUrl: 'https://qr.kakaopay.com/Ej8BcUYjE',
         },
         {
+          key: 'groomFather',
           relation: '혼주 (부)',
           name: '김남호',
           bank: '부산은행',
-          number: '110-111-222222',
         },
         {
+          key: 'groomMother',
           relation: '혼주 (모)',
           name: '박송',
           bank: '부산은행',
-          number: '110-333-444444',
         },
       ],
     },
@@ -84,23 +85,22 @@ export const weddingConfig = {
       label: '신부측',
       people: [
         {
+          key: 'bride',
           relation: '신부',
           name: '장혜민',
           bank: '국민은행',
-          number: '098-765-4321',
-          kakaoPayUrl: 'https://qr.kakaopay.com/example-bride',
         },
         {
+          key: 'brideFather',
           relation: '혼주 (부)',
           name: '장중진',
           bank: '우리은행',
-          number: '1002-000-000000',
         },
         {
+          key: 'brideMother',
           relation: '혼주 (모)',
           name: '정덕순',
           bank: '우리은행',
-          number: '1002-111-111111',
         },
       ],
     },
@@ -121,4 +121,6 @@ export const weddingSeo = {
 }
 
 export type WeddingConfig = typeof weddingConfig
-export type AccountPerson = (typeof weddingConfig.accounts.groomSide.people)[number]
+export type AccountPerson =
+  | (typeof weddingConfig.accounts.groomSide.people)[number]
+  | (typeof weddingConfig.accounts.brideSide.people)[number]

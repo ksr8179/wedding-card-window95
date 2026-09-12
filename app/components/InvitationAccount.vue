@@ -5,11 +5,14 @@ type SideKey = 'groomSide' | 'brideSide'
 
 const ACCOUNT = weddingConfig.accounts
 const { showToast } = useToast()
+const accountNumbers = useRuntimeConfig().public.accountNumbers as Record<string, string | undefined>
 
 const activeSide = ref<SideKey>('groomSide')
 const open = ref(true)
 
 const people = computed(() => ACCOUNT[activeSide.value].people)
+
+const numberOf = (person: AccountPerson) => accountNumbers?.[person.key]?.trim() ?? ''
 
 const selectSide = (side: SideKey) => {
   activeSide.value = side
@@ -17,11 +20,14 @@ const selectSide = (side: SideKey) => {
 }
 
 const copyAccount = async (person: AccountPerson) => {
+  const number = numberOf(person)
+  if (!number) return
+
   try {
-    await navigator.clipboard.writeText(person.number)
+    await navigator.clipboard.writeText(number)
     showToast('계좌번호가 복사되었습니다')
   } catch {
-    window.alert(`${person.bank} ${person.number}`)
+    window.alert(`${person.bank} ${number}`)
   }
 }
 </script>
@@ -81,10 +87,12 @@ const copyAccount = async (person: AccountPerson) => {
               <p class="font-sans text-[10px] uppercase tracking-wider text-wine">{{ person.relation }}</p>
               <p class="mt-1 font-serif text-lg text-ink">{{ person.name }}</p>
               <p class="mt-1 font-sans text-xs text-ink-muted">
-                {{ person.bank }} · {{ person.number }}
+                <template v-if="numberOf(person)">{{ person.bank }} · {{ numberOf(person) }}</template>
+                <template v-else>계좌번호 준비 중입니다</template>
               </p>
             </div>
             <button
+              v-if="numberOf(person)"
               type="button"
               class="shrink-0 rounded-full border border-wine/20 px-3 py-1.5 font-sans text-[11px] text-wine"
               @click="copyAccount(person)"

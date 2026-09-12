@@ -74,6 +74,14 @@ export default defineNuxtConfig({
       tmapAppKey: process.env.NUXT_PUBLIC_TMAP_APP_KEY || process.env.TMAP_APP_KEY,
       supabaseUrl: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
+      accountNumbers: {
+        groom: readEnv('NUXT_PUBLIC_ACCOUNT_GROOM', 'ACCOUNT_GROOM'),
+        groomFather: readEnv('NUXT_PUBLIC_ACCOUNT_GROOM_FATHER', 'ACCOUNT_GROOM_FATHER'),
+        groomMother: readEnv('NUXT_PUBLIC_ACCOUNT_GROOM_MOTHER', 'ACCOUNT_GROOM_MOTHER'),
+        bride: readEnv('NUXT_PUBLIC_ACCOUNT_BRIDE', 'ACCOUNT_BRIDE'),
+        brideFather: readEnv('NUXT_PUBLIC_ACCOUNT_BRIDE_FATHER', 'ACCOUNT_BRIDE_FATHER'),
+        brideMother: readEnv('NUXT_PUBLIC_ACCOUNT_BRIDE_MOTHER', 'ACCOUNT_BRIDE_MOTHER'),
+      },
     },
   },
 })
