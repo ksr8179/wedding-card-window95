@@ -1,15 +1,11 @@
 import { hashPassword } from '~/utils/hashPassword'
+import { getSupabasePublicConfig } from '~/utils/supabasePublic'
 
 export interface GuestbookEntry {
   id: string
   name: string
   message: string
   created_at: string
-}
-
-const isConfiguredSupabase = (url?: string, key?: string) => {
-  if (!url || !key) return false
-  return !url.includes('placeholder.supabase.co') && key !== 'public-anon-key'
 }
 
 export const useGuestbook = () => {
@@ -19,12 +15,8 @@ export const useGuestbook = () => {
   const loading = useState('guestbook-loading', () => false)
   const submitting = useState('guestbook-submitting', () => false)
   const errorMessage = useState('guestbook-error', () => '')
-  const configured = computed(() =>
-    isConfiguredSupabase(
-      String(runtimeConfig.public.supabaseUrl || ''),
-      String(runtimeConfig.public.supabaseKey || ''),
-    ),
-  )
+  const configured = computed(() => getSupabasePublicConfig(runtimeConfig).configured)
+
 
   const fetchEntries = async () => {
     if (!configured.value) {

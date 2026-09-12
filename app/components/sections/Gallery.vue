@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { weddingConfig as config } from '~/config/wedding.config'
+import { getSupabasePublicConfig } from '~/utils/supabasePublic'
+import { weddingConfig as config } from '~/config/wedding.config
 
 interface GalleryItem {
   id?: number
@@ -10,8 +11,7 @@ const runtimeConfig = useRuntimeConfig()
 const selectedIndex = ref<number | null>(null)
 const imageTimestamp = useState('imageTimestamp', () => Date.now())
 
-const supabaseUrl = String(runtimeConfig.public.supabaseUrl || '')
-const galleryEnabled = Boolean(supabaseUrl) && !supabaseUrl.includes('placeholder.supabase.co')
+const { url: supabaseUrl, configured: galleryEnabled } = getSupabasePublicConfig(runtimeConfig)
 
 const { data, pending } = await useFetch<GalleryItem[] | Record<string, unknown>>('/api/gallery', {
   default: () => [],
@@ -26,9 +26,8 @@ const items = computed<GalleryItem[]>(() => {
 })
 
 const imageSrc = (url: string) => {
-  const base = String(runtimeConfig.public.supabaseUrl || '')
-  if (!base || url.startsWith('http') || url.startsWith('/')) return url
-  return `${base}${config.gallery.imgPath}${url}?t=${imageTimestamp.value}`
+  if (!supabaseUrl || url.startsWith('http') || url.startsWith('/')) return url
+  return `${supabaseUrl}${config.gallery.imgPath}${url}?t=${imageTimestamp.value}`
 }
 
 const displayItems = computed(() => {

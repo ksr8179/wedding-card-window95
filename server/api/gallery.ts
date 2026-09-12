@@ -1,10 +1,10 @@
 // server/api/gallery.ts
 import { serverSupabaseClient } from '#supabase/server'
+import { getSupabasePublicConfig } from '~/utils/supabasePublic'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
-  const supabaseUrl = String(config.public.supabaseUrl || '')
-  if (!supabaseUrl || supabaseUrl.includes('placeholder.supabase.co')) {
+  const { configured } = getSupabasePublicConfig(useRuntimeConfig(event))
+  if (!configured) {
     return []
   }
 

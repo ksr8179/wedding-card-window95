@@ -1,3 +1,29 @@
+const readEnv = (...keys: string[]) => {
+  for (const key of keys) {
+    const value = process.env[key]?.trim().replace(/^['"]|['"]$/g, '')
+    if (value) return value
+  }
+  return ''
+}
+
+const supabaseUrl = readEnv('NUXT_PUBLIC_SUPABASE_URL', 'SUPABASE_URL')
+const supabaseKey = readEnv(
+  'NUXT_PUBLIC_SUPABASE_KEY',
+  'NUXT_PUBLIC_SUPABASE_ANON_KEY',
+  'SUPABASE_KEY',
+  'SUPABASE_ANON_KEY',
+  'SUPABASE_PUBLISHABLE_KEY',
+  'NUXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY',
+)
+
+const supabaseHost = (() => {
+  try {
+    return supabaseUrl ? new URL(supabaseUrl).host : 'localhost'
+  } catch {
+    return 'localhost'
+  }
+})()
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxt/fonts', '@nuxt/image', '@nuxtjs/supabase'],
@@ -8,6 +34,8 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect: false,
+    url: supabaseUrl || undefined,
+    key: supabaseKey || undefined,
   },
   fonts: {
     families: [
@@ -19,7 +47,7 @@ export default defineNuxtConfig({
     ],
   },
   image: {
-    domains: [process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL || 'localhost'],
+    domains: [supabaseHost],
   },
   app: {
     baseURL: '/',
@@ -38,24 +66,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   runtimeConfig: {
-    /**
-     * 서버 전용 (Vercel Environment Variables → Server)
-     * 브라우저 번들에 노출되지 않습니다.
-     */
     kakaoRestApiKey: process.env.KAKAO_REST_API_KEY,
     supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
-
-    /**
-     * 클라이언트 + 서버
-     * 카카오 JavaScript 키, Supabase Anon Key는 프론트에서 필요하므로 public에 둡니다.
-     * Vercel에는 NUXT_PUBLIC_* 또는 아래 키 이름을 그대로 등록하세요.
-     */
     public: {
       kakaoJsKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
       kakaoApiKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
       tmapAppKey: process.env.NUXT_PUBLIC_TMAP_APP_KEY || process.env.TMAP_APP_KEY,
-      supabaseUrl: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL,
-      supabaseKey: process.env.SUPABASE_ANON_KEY || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY,
+      supabaseUrl,
+      supabaseKey,
     },
   },
 })
