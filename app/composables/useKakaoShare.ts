@@ -1,6 +1,6 @@
 export const useKakaoShare = () => {
   const shareKakaoMessage = async () => {
-    if (!import.meta.client) return;
+    if (!import.meta.client) return false;
 
     try {
       // 1. utils의 SDK 로더 호출
@@ -9,8 +9,10 @@ export const useKakaoShare = () => {
       kakao.Share.sendCustom({
         templateId: 134868  // 공유 할 메시지 템플릿 ID 입력
       });
+      return true;
     } catch (error) {
       console.error('공유하기 실행 실패:', error);
+      return false;
     }
   };
 

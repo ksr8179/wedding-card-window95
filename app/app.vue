@@ -41,10 +41,14 @@
               <InvitationReveal delay="200ms">
                 <Guestbook />
               </InvitationReveal>
-              <footer class="px-6 pb-12 pt-2 text-center">
+              <footer class="px-6 pb-8 pt-2 text-center">
                 <p class="font-script text-2xl text-wine">{{ weddingConfig.couple.groom.en }} & {{ weddingConfig.couple.bride.en }}</p>
                 <p class="mt-2 font-sans text-[10px] tracking-invitation text-ink-faint">{{ weddingConfig.schedule.dateEn }}</p>
               </footer>
+              <div class="mx-8 h-px bg-wine/10" />
+              <InvitationReveal delay="220ms">
+                <InvitationShare />
+              </InvitationReveal>
             </div>
           </div>
         </div>
