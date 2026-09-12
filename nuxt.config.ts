@@ -8,10 +8,6 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect: false,
-    // 로컬에서 .env가 없어도 앱이 부팅되도록 placeholder를 둡니다.
-    // Vercel/로컬 .env의 SUPABASE_URL · SUPABASE_KEY가 있으면 그 값이 우선합니다.
-    url: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
-    key: process.env.SUPABASE_KEY || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || 'public-anon-key',
   },
   fonts: {
     families: [
@@ -23,7 +19,7 @@ export default defineNuxtConfig({
     ],
   },
   image: {
-    domains: [process.env.NUXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || 'localhost'],
+    domains: [process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL || 'localhost'],
   },
   app: {
     baseURL: '/',
@@ -58,8 +54,8 @@ export default defineNuxtConfig({
       kakaoJsKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
       kakaoApiKey: process.env.NUXT_PUBLIC_KAKAO_JS_KEY || process.env.KAKAO_API_KEY,
       tmapAppKey: process.env.NUXT_PUBLIC_TMAP_APP_KEY || process.env.TMAP_APP_KEY,
-      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,
-      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
+      supabaseUrl: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_ANON_KEY || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY,
     },
   },
 })
