@@ -16,11 +16,122 @@ const { data, pending } = await useFetch<GalleryItem[]>('/api/gallery', {
   server: false,
 })
 
+const MAX_VISIBLE = 20
+const PAGE_SIZE = 10
+const PAGE_AUTO_MS = 5000
+const PAGE_SWIPE_THRESHOLD = 48
+const PAGE_DRAG_SLOP = 8
+
 const items = computed<GalleryItem[]>(() => {
   const payload = data.value
   if (!Array.isArray(payload)) return []
-  return payload.filter(item => typeof item?.url === 'string' && item.url.length > 0)
+  return payload
+    .filter(item => typeof item?.url === 'string' && item.url.length > 0)
+    .slice(0, MAX_VISIBLE)
 })
+
+const pages = computed(() => {
+  const source = items.value
+  const grouped: GalleryItem[][] = []
+  for (let i = 0; i < source.length; i += PAGE_SIZE) {
+    grouped.push(source.slice(i, i + PAGE_SIZE))
+  }
+  return grouped
+})
+
+const pageCount = computed(() => pages.value.length)
+const pageIndex = ref(0)
+const pageDragX = ref(0)
+const pageDragging = ref(false)
+
+let pageTimer: ReturnType<typeof setInterval> | null = null
+let pageStartX = 0
+let pageStartY = 0
+let pageGesture: 'idle' | 'swipe' | 'vertical' = 'idle'
+let pagePointerActive = false
+let suppressGridClick = false
+
+const stopPageTimer = () => {
+  if (!pageTimer) return
+  clearInterval(pageTimer)
+  pageTimer = null
+}
+
+const restartPageTimer = () => {
+  stopPageTimer()
+  if (!import.meta.client) return
+  if (pageCount.value <= 1) return
+  if (selectedIndex.value !== null) return
+  pageTimer = setInterval(() => {
+    pageIndex.value = (pageIndex.value + 1) % pageCount.value
+  }, PAGE_AUTO_MS)
+}
+
+const goToPage = (next: number) => {
+  if (pageCount.value <= 1) return
+  pageIndex.value = ((next % pageCount.value) + pageCount.value) % pageCount.value
+  restartPageTimer()
+}
+
+const pageTrackStyle = computed(() => ({
+  transform: `translate3d(calc(${-pageIndex.value * 100}% + ${pageDragX.value}px), 0, 0)`,
+  transition: pageDragging.value ? 'none' : 'transform 420ms ease',
+}))
+
+const onPagerPointerDown = (event: PointerEvent) => {
+  if (pageCount.value <= 1 || (event.pointerType === 'mouse' && event.button !== 0)) return
+  if (!event.isPrimary) return
+  pagePointerActive = true
+  pageStartX = event.clientX
+  pageStartY = event.clientY
+  pageGesture = 'idle'
+  pageDragX.value = 0
+}
+
+const onPagerPointerMove = (event: PointerEvent) => {
+  if (!pagePointerActive || pageCount.value <= 1 || !event.isPrimary) return
+  const dx = event.clientX - pageStartX
+  const dy = event.clientY - pageStartY
+
+  if (pageGesture === 'idle') {
+    if (Math.abs(dx) < PAGE_DRAG_SLOP && Math.abs(dy) < PAGE_DRAG_SLOP) return
+    pageGesture = Math.abs(dx) > Math.abs(dy) ? 'swipe' : 'vertical'
+    if (pageGesture === 'swipe') {
+      pageDragging.value = true
+      ;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)
+    }
+  }
+
+  if (pageGesture === 'swipe') {
+    event.preventDefault()
+    pageDragX.value = dx
+  }
+}
+
+const onPagerPointerUp = (event: PointerEvent) => {
+  if (!pagePointerActive) return
+  pagePointerActive = false
+  if (pageCount.value <= 1) return
+  if (pageGesture === 'swipe') {
+    const dx = event.clientX - pageStartX
+    if (Math.abs(dx) >= PAGE_SWIPE_THRESHOLD) {
+      suppressGridClick = true
+      goToPage(pageIndex.value + (dx < 0 ? 1 : -1))
+    } else {
+      restartPageTimer()
+    }
+  }
+  pageDragging.value = false
+  pageDragX.value = 0
+  pageGesture = 'idle'
+}
+
+const onPagerClickCapture = (event: MouseEvent) => {
+  if (!suppressGridClick) return
+  event.preventDefault()
+  event.stopPropagation()
+  suppressGridClick = false
+}
 
 const imageSrc = (filename: string) => {
   return `${supabaseUrl}${weddingConfig.gallery.imgPath}${filename}`
@@ -214,15 +325,23 @@ watch(selectedIndex, (value) => {
   resetZoom()
   if (!import.meta.client) return
   document.body.style.overflow = value === null ? '' : 'hidden'
+  restartPageTimer()
+})
+
+watch(pageCount, (count) => {
+  if (pageIndex.value >= count) pageIndex.value = Math.max(count - 1, 0)
+  restartPageTimer()
 })
 
 onMounted(() => {
   window.addEventListener('keydown', onKeydown)
+  restartPageTimer()
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeydown)
   document.body.style.overflow = ''
+  stopPageTimer()
 })
 </script>
 
@@ -242,20 +361,49 @@ onBeforeUnmount(() => {
       />
     </div>
 
-    <div v-else class="mt-8 grid grid-cols-2 gap-2">
-      <button
-        v-for="(img, index) in items"
-        :key="img.id ?? `${img.url}-${index}`"
-        type="button"
-        class="group relative aspect-square overflow-hidden rounded-xl bg-sky-photo shadow-paper"
-        @click="openModal(index)"
-      >
-        <img
-          class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-          :src="imageSrc(img.url)"
-          alt="웨딩 갤러리 사진"
+    <div
+      v-else
+      class="mt-8 overflow-hidden touch-pan-y"
+      @pointerdown="onPagerPointerDown"
+      @pointermove="onPagerPointerMove"
+      @pointerup="onPagerPointerUp"
+      @pointercancel="onPagerPointerUp"
+      @click.capture="onPagerClickCapture"
+    >
+      <div class="flex will-change-transform" :style="pageTrackStyle">
+        <div
+          v-for="(page, pageIdx) in pages"
+          :key="pageIdx"
+          class="grid w-full shrink-0 basis-full grid-cols-2 gap-2"
         >
-      </button>
+          <button
+            v-for="(img, index) in page"
+            :key="img.id ?? `${img.url}-${pageIdx * PAGE_SIZE + index}`"
+            type="button"
+            class="group relative aspect-square overflow-hidden rounded-xl bg-sky-photo shadow-paper"
+            @click="openModal(pageIdx * PAGE_SIZE + index)"
+          >
+            <img
+              class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              :src="imageSrc(img.url)"
+              alt="웨딩 갤러리 사진"
+            >
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="!pending && pageCount > 1"
+      class="mt-4 flex items-center justify-center gap-1.5"
+      aria-hidden="true"
+    >
+      <span
+        v-for="n in pageCount"
+        :key="n"
+        class="h-1.5 w-1.5 rounded-full transition-colors"
+        :class="n - 1 === pageIndex ? 'bg-wine' : 'bg-wine/25'"
+      />
     </div>
 
     <Teleport to="body">
