@@ -57,8 +57,7 @@ export const weddingConfig = {
     quality: 0.8,
     maxOriginalMb: 15,
     // Asia/Seoul 기준 이 날짜 0시부터 업로드 가능. 닫는 날짜를 넣으면 그날 24시까지.
-    // 삭제 테스트용으로 임시 개방. 끝나면 예식일(2027-01-30)로 되돌린다.
-    opensOn: '2026-09-20',
+    opensOn: '2027-01-30',
     closesOn: null as string | null,
   },
 

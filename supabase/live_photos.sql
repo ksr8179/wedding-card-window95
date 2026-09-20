@@ -35,7 +35,7 @@ create policy "live_photos_insert_public"
   for insert
   to anon, authenticated
   with check (
-    (timezone('Asia/Seoul', now()))::date >= date '2026-09-20'
+    (timezone('Asia/Seoul', now()))::date >= date '2027-01-30'
   );
 
 revoke update, delete on public.live_photos from anon, authenticated;
@@ -108,7 +108,7 @@ create policy "live_photos_storage_insert"
   with check (
     bucket_id = 'live-photos'
     and lower(storage.extension(name)) in ('jpg', 'jpeg', 'png', 'webp')
-    and (timezone('Asia/Seoul', now()))::date >= date '2026-09-20'
+    and (timezone('Asia/Seoul', now()))::date >= date '2027-01-30'
   );
 
 drop policy if exists "live_photos_storage_delete" on storage.objects;
