@@ -1,3 +1,4 @@
+import { hashPassword } from '~/utils/hashPassword'
 import { weddingConfig } from '~/config/wedding.config'
 import { getSupabasePublicConfig } from '~/utils/supabasePublic'
 
@@ -139,10 +140,14 @@ export const useLivePhotos = () => {
     })
   }
 
-  const uploadPhoto = async (payload: { name: string; message: string; file: File }) => {
+  const uploadPhoto = async (payload: { name: string; message: string; password: string; file: File }) => {
     if (!configured) return false
     if (!isLivePhotoUploadOpen()) {
       errorMessage.value = '예식 당일부터 사진을 올릴 수 있습니다.'
+      return false
+    }
+    if (payload.password.trim().length < 4) {
+      errorMessage.value = '비밀번호는 4자 이상이어야 합니다.'
       return false
     }
     const invalid = validateFile(payload.file)
@@ -174,10 +179,12 @@ export const useLivePhotos = () => {
       }
 
       uploadStatus.value = 'saving'
+      const password_hash = await hashPassword(payload.password)
       const { error: insertError } = await supabase.from('live_photos').insert({
         name: payload.name.trim(),
         message: payload.message.trim(),
         storage_path: storagePath,
+        password_hash,
       })
 
       if (insertError) {
@@ -197,6 +204,22 @@ export const useLivePhotos = () => {
       submitting.value = false
       uploadStatus.value = 'idle'
     }
+  }
+
+  const deletePhoto = async (id: string, password: string) => {
+    const { data, error } = await supabase.rpc('delete_live_photo', {
+      p_id: id,
+      p_password: password,
+    })
+
+    if (error) {
+      console.error(error)
+      return false
+    }
+    if (!data) return false
+    photos.value = photos.value.filter(item => item.id !== id)
+    total.value = Math.max(total.value - 1, photos.value.length)
+    return true
   }
 
   const subscribeRealtime = () => {
@@ -232,6 +255,7 @@ export const useLivePhotos = () => {
     fetchPhotos,
     loadMore,
     uploadPhoto,
+    deletePhoto,
     subscribeRealtime,
   }
 }

@@ -3,11 +3,13 @@ import { weddingConfig } from '~/config/wedding.config'
 
 interface FormState {
   name: string
+  password: string
   message: string
 }
 
 const FORM_INIT: FormState = {
   name: '',
+  password: '',
   message: '',
 }
 
@@ -15,6 +17,9 @@ const form = reactive<FormState>({ ...FORM_INIT })
 const file = ref<File | null>(null)
 const previewUrl = ref('')
 const selectedId = ref<string | null>(null)
+const deleting = ref(false)
+const deletingBusy = ref(false)
+const deletePassword = ref('')
 const cameraInput = ref<HTMLInputElement | null>(null)
 const albumInput = ref<HTMLInputElement | null>(null)
 const { showToast } = useToast()
@@ -32,6 +37,7 @@ const {
   fetchPhotos,
   loadMore,
   uploadPhoto,
+  deletePhoto,
   subscribeRealtime,
 } = useLivePhotos()
 
@@ -111,10 +117,15 @@ const onSubmit = async () => {
     showToast('사진을 선택해 주세요')
     return
   }
+  if (form.password.trim().length < 4) {
+    showToast('비밀번호는 4자 이상이어야 합니다')
+    return
+  }
 
   const ok = await uploadPhoto({
     name: form.name,
     message: form.message,
+    password: form.password,
     file: file.value,
   })
   if (!ok) return
@@ -128,6 +139,29 @@ const selectedPhoto = computed(() => {
   if (!selectedId.value) return null
   return photos.value.find(item => item.id === selectedId.value) ?? null
 })
+
+const closeSelected = () => {
+  selectedId.value = null
+  deleting.value = false
+  deletePassword.value = ''
+}
+
+const onDelete = async () => {
+  if (!selectedId.value || deletingBusy.value) return
+  if (!deletePassword.value) {
+    showToast('비밀번호를 입력해 주세요')
+    return
+  }
+  deletingBusy.value = true
+  const ok = await deletePhoto(selectedId.value, deletePassword.value)
+  deletingBusy.value = false
+  if (ok) {
+    closeSelected()
+    showToast('사진을 삭제했습니다')
+    return
+  }
+  showToast('비밀번호가 일치하지 않습니다')
+}
 </script>
 
 <template>
@@ -136,7 +170,7 @@ const selectedPhoto = computed(() => {
     <h2 class="mt-3 text-center font-myeongjo text-xl tracking-wide text-ink">현장 사진</h2>
     <p class="mt-3 text-center font-myeongjo text-sm leading-7 text-ink-muted">
       <template v-if="isUploadOpen">
-        오늘의 순간을 함께 남겨 주세요.<br>사진은 올려지기 전에 작게 줄입니다.
+        오늘의 순간을 함께 남겨 주세요.<br>잘못 올린 사진은 비밀번호로 지울 수 있습니다.
       </template>
       <template v-else>
         예식 당일({{ weddingConfig.schedule.dateKo }})부터<br>현장 사진을 남길 수 있습니다.
@@ -144,13 +178,22 @@ const selectedPhoto = computed(() => {
     </p>
 
     <form v-if="isUploadOpen" class="mt-8 space-y-3" @submit.prevent="onSubmit">
-      <input
-        v-model="form.name"
-        type="text"
-        maxlength="20"
-        placeholder="이름"
-        class="w-full rounded-xl border border-wine/15 bg-paper-warm px-3 py-3 font-sans text-sm outline-none placeholder:text-ink-faint focus:border-wine/40"
-      >
+      <div class="grid grid-cols-2 gap-2">
+        <input
+          v-model="form.name"
+          type="text"
+          maxlength="20"
+          placeholder="이름"
+          class="w-full rounded-xl border border-wine/15 bg-paper-warm px-3 py-3 font-sans text-sm outline-none placeholder:text-ink-faint focus:border-wine/40"
+        >
+        <input
+          v-model="form.password"
+          type="password"
+          maxlength="20"
+          placeholder="비밀번호 (4자 이상)"
+          class="w-full rounded-xl border border-wine/15 bg-paper-warm px-3 py-3 font-sans text-sm outline-none placeholder:text-ink-faint focus:border-wine/40"
+        >
+      </div>
       <textarea
         v-model="form.message"
         rows="2"
@@ -236,7 +279,7 @@ const selectedPhoto = computed(() => {
         :key="photo.id"
         type="button"
         class="group relative aspect-square overflow-hidden rounded-xl bg-sky-photo shadow-paper"
-        @click="selectedId = photo.id"
+        @click="selectedId = photo.id; deleting = false; deletePassword = ''"
       >
         <img
           :src="publicUrl(photo.storage_path)"
@@ -263,7 +306,7 @@ const selectedPhoto = computed(() => {
       <div
         v-if="selectedPhoto"
         class="fixed inset-0 z-[90] flex items-center justify-center bg-wine-deep/80 p-4 backdrop-blur-sm"
-        @click="selectedId = null"
+        @click="closeSelected"
       >
         <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-paper-lace p-3 shadow-phone" @click.stop>
           <div class="flex items-start justify-between gap-3 px-1 pb-2">
@@ -274,7 +317,7 @@ const selectedPhoto = computed(() => {
             <button
               type="button"
               class="rounded-full bg-wine px-3 py-1 font-sans text-[11px] text-paper"
-              @click="selectedId = null"
+              @click="closeSelected"
             >
               닫기
             </button>
@@ -287,6 +330,30 @@ const selectedPhoto = computed(() => {
           <p v-if="selectedPhoto.message" class="mt-3 font-myeongjo text-sm leading-7 text-ink-muted">
             {{ selectedPhoto.message }}
           </p>
+          <button
+            type="button"
+            class="mt-3 w-full font-sans text-[10px] text-ink-faint"
+            @click="deleting = !deleting"
+          >
+            삭제
+          </button>
+          <div v-if="deleting" class="mt-2 flex gap-2">
+            <input
+              v-model="deletePassword"
+              type="password"
+              placeholder="올릴 때 비밀번호"
+              class="flex-1 rounded-lg border border-wine/15 bg-paper px-3 py-2 font-sans text-xs outline-none"
+              @keyup.enter="onDelete"
+            >
+            <button
+              type="button"
+              class="rounded-lg bg-wine px-3 py-2 font-sans text-[10px] text-paper disabled:opacity-60"
+              :disabled="deletingBusy"
+              @click="onDelete"
+            >
+              확인
+            </button>
+          </div>
         </div>
       </div>
     </Teleport>
