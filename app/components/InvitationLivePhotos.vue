@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { weddingConfig } from '~/config/wedding.config'
+
 interface FormState {
   name: string
   message: string
@@ -33,10 +35,22 @@ const {
   subscribeRealtime,
 } = useLivePhotos()
 
+const nowTick = ref(Date.now())
+const isUploadOpen = computed(() => {
+  nowTick.value
+  return isLivePhotoUploadOpen()
+})
+
 onMounted(async () => {
+  const timer = setInterval(() => {
+    nowTick.value = Date.now()
+  }, 30_000)
   await fetchPhotos()
   const unsubscribe = subscribeRealtime()
-  onBeforeUnmount(unsubscribe)
+  onBeforeUnmount(() => {
+    clearInterval(timer)
+    unsubscribe()
+  })
 })
 
 onBeforeUnmount(() => {
@@ -85,6 +99,10 @@ const onFileChange = (event: Event) => {
 }
 
 const onSubmit = async () => {
+  if (!isUploadOpen.value) {
+    showToast('예식 당일부터 사진을 올릴 수 있습니다')
+    return
+  }
   if (!form.name.trim()) {
     showToast('이름을 입력해 주세요')
     return
@@ -117,10 +135,15 @@ const selectedPhoto = computed(() => {
     <p class="text-center font-sans text-[10px] uppercase tracking-invitation text-ink-faint">Live Photos</p>
     <h2 class="mt-3 text-center font-myeongjo text-xl tracking-wide text-ink">현장 사진</h2>
     <p class="mt-3 text-center font-myeongjo text-sm leading-7 text-ink-muted">
-      오늘의 순간을 함께 남겨 주세요.<br>사진은 올려지기 전에 작게 줄입니다.
+      <template v-if="isUploadOpen">
+        오늘의 순간을 함께 남겨 주세요.<br>사진은 올려지기 전에 작게 줄입니다.
+      </template>
+      <template v-else>
+        예식 당일({{ weddingConfig.schedule.dateKo }})부터<br>현장 사진을 남길 수 있습니다.
+      </template>
     </p>
 
-    <form class="mt-8 space-y-3" @submit.prevent="onSubmit">
+    <form v-if="isUploadOpen" class="mt-8 space-y-3" @submit.prevent="onSubmit">
       <input
         v-model="form.name"
         type="text"

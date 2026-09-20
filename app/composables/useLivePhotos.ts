@@ -17,6 +17,24 @@ const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'] as const
 
 const CONFIG = weddingConfig.livePhotos
 const MAX_BYTES = CONFIG.maxOriginalMb * 1024 * 1024
+const OPENS_ON = CONFIG.opensOn
+const CLOSES_ON = CONFIG.closesOn
+
+const seoulCalendarDate = (at = new Date()) => {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(at)
+}
+
+export const isLivePhotoUploadOpen = (at = new Date()) => {
+  const today = seoulCalendarDate(at)
+  if (today < OPENS_ON) return false
+  if (CLOSES_ON && today > CLOSES_ON) return false
+  return true
+}
 
 const extensionOf = (file: File) => {
   const fromName = file.name.split('.').pop()?.trim().toLowerCase() ?? ''
@@ -123,6 +141,10 @@ export const useLivePhotos = () => {
 
   const uploadPhoto = async (payload: { name: string; message: string; file: File }) => {
     if (!configured) return false
+    if (!isLivePhotoUploadOpen()) {
+      errorMessage.value = '예식 당일부터 사진을 올릴 수 있습니다.'
+      return false
+    }
     const invalid = validateFile(payload.file)
     if (invalid) {
       errorMessage.value = invalid

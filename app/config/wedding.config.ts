@@ -30,6 +30,7 @@ export const weddingConfig = {
     weekdayKo: '토요일',
     dateEn: 'JANUARY 30, 2027',
     dateKo: '2027년 1월 30일',
+    dateISO: '2027-01-30',
     timeEn: '1:20 PM',
     timeKo: '오후 1시 20분',
     venueEn: 'MBC Convention Jinju',
@@ -55,6 +56,9 @@ export const weddingConfig = {
     maxWidthOrHeight: 1200,
     quality: 0.8,
     maxOriginalMb: 15,
+    // Asia/Seoul 기준 이 날짜 0시부터 업로드 가능. 닫는 날짜를 넣으면 그날 24시까지.
+    opensOn: '2027-01-30',
+    closesOn: null as string | null,
   },
 
   music: {
