@@ -50,6 +50,13 @@ export const weddingConfig = {
     gubun: null as string | null,
   },
 
+  livePhotos: {
+    bucket: 'live-photos',
+    maxWidthOrHeight: 1200,
+    quality: 0.8,
+    maxOriginalMb: 15,
+  },
+
   music: {
     src: '/audio/wedding_sound.mp3',
     volume: 0.45,
