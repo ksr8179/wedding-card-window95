@@ -49,6 +49,8 @@ export const weddingConfig = {
   gallery: {
     imgPath: '/storage/v1/object/public/uploads/',
     gubun: null as string | null,
+    // Storage 파일명을 유지한 채 교체할 때 이 값만 올리면 캐시가 갱신된다.
+    cacheKey: '20260920',
   },
 
   livePhotos: {

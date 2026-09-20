@@ -134,7 +134,8 @@ const onPagerClickCapture = (event: MouseEvent) => {
 }
 
 const imageSrc = (filename: string) => {
-  return `${supabaseUrl}${weddingConfig.gallery.imgPath}${filename}`
+  if (!filename) return ''
+  return `${supabaseUrl}${weddingConfig.gallery.imgPath}${filename}?v=${weddingConfig.gallery.cacheKey}`
 }
 
 const selectedSrc = computed(() => {
