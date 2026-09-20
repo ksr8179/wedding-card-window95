@@ -49,12 +49,15 @@ const isUploadOpen = computed(() => {
 })
 
 onMounted(async () => {
+  window.addEventListener('keydown', onKeydown)
   const timer = setInterval(() => {
     nowTick.value = Date.now()
   }, 30_000)
   await fetchPhotos()
   const unsubscribe = subscribeRealtime()
   onBeforeUnmount(() => {
+    window.removeEventListener('keydown', onKeydown)
+    document.body.style.overflow = ''
     clearInterval(timer)
     unsubscribe()
   })
@@ -141,13 +144,67 @@ const selectedPhoto = computed(() => {
   return photos.value.find(item => item.id === selectedId.value) ?? null
 })
 
+const selectedIndex = computed(() => {
+  if (!selectedId.value) return -1
+  return photos.value.findIndex(item => item.id === selectedId.value)
+})
+
+const openPhoto = (id: string) => {
+  selectedId.value = id
+  deleting.value = false
+  deletingBusy.value = false
+  deletePassword.value = ''
+  deleteError.value = ''
+}
+
+const showPrev = () => {
+  if (!photos.value.length || selectedIndex.value < 0) return
+  const next = (selectedIndex.value + photos.value.length - 1) % photos.value.length
+  openPhoto(photos.value[next].id)
+}
+
+const showNext = () => {
+  if (!photos.value.length || selectedIndex.value < 0) return
+  const next = (selectedIndex.value + 1) % photos.value.length
+  openPhoto(photos.value[next].id)
+}
+
+const {
+  viewer,
+  scale,
+  viewerStyle,
+  resetZoom,
+  toggleZoom,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onWheel,
+} = usePinchZoom({
+  onSwipePrev: showPrev,
+  onSwipeNext: showNext,
+})
+
 const closeSelected = () => {
   selectedId.value = null
   deleting.value = false
   deletingBusy.value = false
   deletePassword.value = ''
   deleteError.value = ''
+  resetZoom()
 }
+
+const onKeydown = (event: KeyboardEvent) => {
+  if (!selectedId.value) return
+  if (event.key === 'Escape') closeSelected()
+  if (event.key === 'ArrowLeft') showPrev()
+  if (event.key === 'ArrowRight') showNext()
+}
+
+watch(selectedId, (id) => {
+  resetZoom()
+  if (!import.meta.client) return
+  document.body.style.overflow = id ? 'hidden' : ''
+})
 
 const onDelete = async () => {
   if (!selectedId.value || deletingBusy.value) return
@@ -283,7 +340,7 @@ const onDelete = async () => {
         :key="photo.id"
         type="button"
         class="group relative aspect-square overflow-hidden rounded-xl bg-sky-photo shadow-paper"
-        @click="selectedId = photo.id; deleting = false; deletePassword = ''; deleteError = ''"
+        @click="openPhoto(photo.id)"
       >
         <img
           :src="publicUrl(photo.storage_path)"
@@ -309,7 +366,7 @@ const onDelete = async () => {
     <Teleport to="body">
       <div
         v-if="selectedPhoto"
-        class="fixed inset-0 z-[90] flex items-center justify-center bg-wine-deep/80 p-4 backdrop-blur-sm"
+        class="fixed inset-0 z-[90] flex items-center justify-center overflow-y-auto bg-wine-deep/80 p-4 backdrop-blur-sm"
         @click="closeSelected"
       >
         <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-paper-lace p-3 shadow-phone" @click.stop>
@@ -326,11 +383,35 @@ const onDelete = async () => {
               닫기
             </button>
           </div>
-          <img
-            :src="publicUrl(selectedPhoto.storage_path)"
-            :alt="selectedPhoto.name"
-            class="max-h-[70vh] w-full rounded-xl object-contain"
+          <div
+            ref="viewer"
+            class="relative h-[70vh] touch-none select-none overflow-hidden rounded-xl bg-wine-deep/5"
+            @pointerdown="onPointerDown"
+            @pointermove="onPointerMove"
+            @pointerup="onPointerUp"
+            @pointercancel="onPointerUp"
+            @wheel="onWheel"
+            @dblclick="toggleZoom"
           >
+            <img
+              :src="publicUrl(selectedPhoto.storage_path)"
+              :alt="selectedPhoto.name"
+              class="pointer-events-none h-full w-full object-contain will-change-transform"
+              :style="viewerStyle"
+              draggable="false"
+            >
+            <button
+              v-if="scale > 1"
+              type="button"
+              class="absolute bottom-2 right-2 rounded-full bg-wine/80 px-3 py-1.5 font-sans text-[10px] text-paper"
+              @click.stop="resetZoom"
+            >
+              원래 크기
+            </button>
+          </div>
+          <p class="mt-2 text-center font-sans text-[10px] text-ink-faint">
+            두 손가락으로 확대 · 좌우로 밀어 사진 넘기기
+          </p>
           <p v-if="selectedPhoto.message" class="mt-3 font-myeongjo text-sm leading-7 text-ink-muted">
             {{ selectedPhoto.message }}
           </p>
