@@ -179,7 +179,7 @@ export const useLivePhotos = () => {
       }
 
       uploadStatus.value = 'saving'
-      const password_hash = await hashPassword(payload.password)
+      const password_hash = await hashPassword(payload.password.trim())
       const { error: insertError } = await supabase.from('live_photos').insert({
         name: payload.name.trim(),
         message: payload.message.trim(),
@@ -209,16 +209,21 @@ export const useLivePhotos = () => {
   const deletePhoto = async (id: string, password: string) => {
     const { data, error } = await supabase.rpc('delete_live_photo', {
       p_id: id,
-      p_password: password,
+      p_password: password.trim(),
     })
 
     if (error) {
       console.error(error)
+      errorMessage.value = '사진을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.'
       return false
     }
-    if (!data) return false
+    if (!data) {
+      errorMessage.value = '비밀번호가 일치하지 않습니다.'
+      return false
+    }
     photos.value = photos.value.filter(item => item.id !== id)
     total.value = Math.max(total.value - 1, photos.value.length)
+    errorMessage.value = ''
     return true
   }
 

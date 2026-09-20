@@ -20,6 +20,7 @@ const selectedId = ref<string | null>(null)
 const deleting = ref(false)
 const deletingBusy = ref(false)
 const deletePassword = ref('')
+const deleteError = ref('')
 const cameraInput = ref<HTMLInputElement | null>(null)
 const albumInput = ref<HTMLInputElement | null>(null)
 const { showToast } = useToast()
@@ -143,16 +144,19 @@ const selectedPhoto = computed(() => {
 const closeSelected = () => {
   selectedId.value = null
   deleting.value = false
+  deletingBusy.value = false
   deletePassword.value = ''
+  deleteError.value = ''
 }
 
 const onDelete = async () => {
   if (!selectedId.value || deletingBusy.value) return
-  if (!deletePassword.value) {
-    showToast('비밀번호를 입력해 주세요')
+  if (!deletePassword.value.trim()) {
+    deleteError.value = '비밀번호를 입력해 주세요'
     return
   }
   deletingBusy.value = true
+  deleteError.value = ''
   const ok = await deletePhoto(selectedId.value, deletePassword.value)
   deletingBusy.value = false
   if (ok) {
@@ -160,7 +164,7 @@ const onDelete = async () => {
     showToast('사진을 삭제했습니다')
     return
   }
-  showToast('비밀번호가 일치하지 않습니다')
+  deleteError.value = errorMessage.value || '비밀번호가 일치하지 않습니다'
 }
 </script>
 
@@ -279,7 +283,7 @@ const onDelete = async () => {
         :key="photo.id"
         type="button"
         class="group relative aspect-square overflow-hidden rounded-xl bg-sky-photo shadow-paper"
-        @click="selectedId = photo.id; deleting = false; deletePassword = ''"
+        @click="selectedId = photo.id; deleting = false; deletePassword = ''; deleteError = ''"
       >
         <img
           :src="publicUrl(photo.storage_path)"
@@ -337,22 +341,27 @@ const onDelete = async () => {
           >
             삭제
           </button>
-          <div v-if="deleting" class="mt-2 flex gap-2">
-            <input
-              v-model="deletePassword"
-              type="password"
-              placeholder="올릴 때 비밀번호"
-              class="flex-1 rounded-lg border border-wine/15 bg-paper px-3 py-2 font-sans text-xs outline-none"
-              @keyup.enter="onDelete"
-            >
-            <button
-              type="button"
-              class="rounded-lg bg-wine px-3 py-2 font-sans text-[10px] text-paper disabled:opacity-60"
-              :disabled="deletingBusy"
-              @click="onDelete"
-            >
-              확인
-            </button>
+          <div v-if="deleting" class="mt-2 space-y-2">
+            <div class="flex gap-2">
+              <input
+                v-model="deletePassword"
+                type="password"
+                placeholder="올릴 때 비밀번호"
+                class="flex-1 rounded-lg border border-wine/15 bg-paper px-3 py-2 font-sans text-xs outline-none"
+                @keyup.enter="onDelete"
+              >
+              <button
+                type="button"
+                class="rounded-lg bg-wine px-3 py-2 font-sans text-[10px] text-paper disabled:opacity-60"
+                :disabled="deletingBusy"
+                @click="onDelete"
+              >
+                {{ deletingBusy ? '삭제 중' : '확인' }}
+              </button>
+            </div>
+            <p v-if="deleteError" class="text-center font-sans text-[10px] text-wine">
+              {{ deleteError }}
+            </p>
           </div>
         </div>
       </div>

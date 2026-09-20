@@ -42,6 +42,9 @@ revoke update, delete on public.live_photos from anon, authenticated;
 
 create extension if not exists pgcrypto;
 
+grant usage on schema storage to postgres;
+grant delete on table storage.objects to postgres;
+
 create or replace function public.delete_live_photo(
   p_id uuid,
   p_password text
@@ -49,17 +52,19 @@ create or replace function public.delete_live_photo(
 returns boolean
 language plpgsql
 security definer
-set search_path = public, storage, extensions
+set search_path = public, extensions
 as $$
 declare
   deleted_path text;
   incoming_hash text;
+  incoming_password text;
 begin
-  if p_password is null or char_length(p_password) < 4 then
+  incoming_password := btrim(coalesce(p_password, ''));
+  if char_length(incoming_password) < 4 then
     return false;
   end if;
 
-  incoming_hash := encode(digest(p_password, 'sha256'), 'hex');
+  incoming_hash := encode(digest(incoming_password, 'sha256'), 'hex');
 
   delete from public.live_photos
   where id = p_id
@@ -70,13 +75,20 @@ begin
     return false;
   end if;
 
-  delete from storage.objects
-  where bucket_id = 'live-photos'
-    and name = deleted_path;
+  begin
+    delete from storage.objects
+    where bucket_id = 'live-photos'
+      and name = deleted_path;
+  exception
+    when others then
+      null;
+  end;
 
   return true;
 end;
 $$;
+
+alter function public.delete_live_photo(uuid, text) owner to postgres;
 
 revoke all on function public.delete_live_photo(uuid, text) from public;
 grant execute on function public.delete_live_photo(uuid, text) to anon, authenticated;
@@ -99,6 +111,13 @@ create policy "live_photos_storage_insert"
     and (timezone('Asia/Seoul', now()))::date >= date '2026-09-20'
   );
 
+drop policy if exists "live_photos_storage_delete" on storage.objects;
+create policy "live_photos_storage_delete"
+  on storage.objects
+  for delete
+  to postgres, service_role
+  using (bucket_id = 'live-photos');
+
 alter table public.live_photos replica identity full;
 
 do $$
@@ -114,3 +133,5 @@ begin
     end;
   end if;
 end $$;
+
+notify pgrst, 'reload schema';
