@@ -23,11 +23,12 @@ const copyAccount = async (person: AccountPerson) => {
   const number = numberOf(person)
   if (!number) return
 
+  const text = `${number} ${person.bank}`
   try {
-    await navigator.clipboard.writeText(number)
+    await navigator.clipboard.writeText(text)
     showToast('계좌번호가 복사되었습니다')
   } catch {
-    window.alert(`${person.bank} ${number}`)
+    window.alert(text)
   }
 }
 </script>
